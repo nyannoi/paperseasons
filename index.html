@@ -14,7 +14,7 @@
     <meta name="twitter:title" content="Paper Seasons by Rebekah Bek">
     <meta name="twitter:description" content="A book about connecting dots. Not quite an online portfolio (yet).">
     <meta name="twitter:image" content="https://paperseasons.ink/og-image.png">
-    <meta name="color-scheme" content="light dark">
+    <meta name="color-scheme" content="light">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,7 +35,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; color-scheme: light dark; }
+        html { scroll-behavior: smooth; color-scheme: light; }
 
         body {
             font-family: 'Cormorant Garamond', Georgia, serif;
@@ -438,28 +438,6 @@
             #stars { display: none; }
         }
 
-        /* ═══════════════════════════════════════
-           DARK MODE PROTECTION
-           ═══════════════════════════════════════ */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #1a1610;
-                --bg-interlude: #1f1a14;
-                --ink: #e8dfd2;
-                --mid: #c4b49e;
-                --sepia: #b89c78;
-                --faint: #6b5d4d;
-                --ghost: #3a3228;
-                --rule: #3a3228;
-            }
-            body { background: var(--bg); color: var(--ink); }
-            .illustration svg path,
-            .illustration svg line { stroke: #8a7560; }
-            .illustration svg circle { fill: #8a7560; }
-            .season-float path,
-            .season-float line,
-            .season-float circle { stroke: #6b5d4d; }
-        }
 
         /* ═══════════════════════════════════════
            FIREWORKS EASTER EGG
