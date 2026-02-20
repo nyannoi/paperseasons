@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>me, on how i built this site – paper seasons</title>
+    <meta name="description" content="I haven't coded in 20 years. I built and shipped a site in 72 hours using Claude. Now I'm having an existential crisis.">
+    <meta property="og:title" content="the making of – paper seasons">
+    <meta property="og:description" content="I haven't coded in 20 years. I built and shipped a site in 72 hours using Claude. Now I'm having an existential crisis.">
+    <meta property="og:image" content="https://paperseasons.ink/og-image.png">
+    <meta property="og:url" content="https://paperseasons.ink/making">
+    <meta property="og:type" content="article">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <meta name="color-scheme" content="light">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FAF6EF;
+            --ink: #2c2418;
+            --mid: #5c4f3d;
+            --sepia: #8a6d4e;
+            --faint: #b0a08a;
+            --rule: #d4c8b4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .nav {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 40px 24px 0;
+        }
+
+        .nav a {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 300;
+            font-size: 1.1rem;
+            color: var(--sepia);
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+
+        .nav a:hover {
+            color: var(--ink);
+        }
+
+        .article {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 60px 24px 120px;
+        }
+
+        .article-title {
+            font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            line-height: 1.25;
+            color: var(--ink);
+            margin-bottom: 16px;
+        }
+
+        .article-meta {
+            font-size: 0.88rem;
+            color: var(--faint);
+            margin-bottom: 48px;
+        }
+
+        .article-meta a {
+            color: var(--sepia);
+            text-decoration: none;
+        }
+
+        .article-meta a:hover {
+            text-decoration: underline;
+        }
+
+        .article p {
+            margin-bottom: 24px;
+            color: var(--ink);
+        }
+
+        .article strong {
+            font-weight: 600;
+        }
+
+        .article em {
+            font-style: italic;
+        }
+
+        .article h2 {
+            font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin-top: 56px;
+            margin-bottom: 24px;
+        }
+
+        .article h3 {
+            font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--mid);
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+
+        .stack-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px 0;
+        }
+
+        .stack-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--rule);
+            font-size: 1rem;
+        }
+
+        .stack-list li:last-child {
+            border-bottom: none;
+            font-weight: 600;
+        }
+
+        .stack-list li span.label {
+            color: var(--sepia);
+            font-weight: 500;
+        }
+
+        .commit-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px 0;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+
+        .commit-list li {
+            padding: 6px 0;
+            color: var(--mid);
+        }
+
+        .commit-list li::before {
+            content: '$ ';
+            color: var(--faint);
+        }
+
+        .article-image {
+            margin: 32px 0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .article-image img {
+            width: 100%;
+            display: block;
+        }
+
+        .article-image .placeholder {
+            background: #ede6da;
+            border: 1px dashed var(--rule);
+            padding: 48px 24px;
+            text-align: center;
+            color: var(--faint);
+            font-size: 0.85rem;
+            border-radius: 4px;
+        }
+
+        .image-caption {
+            font-size: 0.82rem;
+            color: var(--faint);
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .comparison {
+            margin: 32px 0;
+        }
+
+        .comparison-block {
+            background: #f3ede3;
+            border-left: 3px solid var(--rule);
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .comparison-block.after {
+            border-left-color: var(--sepia);
+        }
+
+        .comparison-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--faint);
+            margin-bottom: 8px;
+        }
+
+        .comparison-block.after .comparison-label {
+            color: var(--sepia);
+        }
+
+        .comparison-block p {
+            margin-bottom: 0;
+            font-size: 1rem;
+            line-height: 1.7;
+            font-style: italic;
+            color: var(--mid);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 48px 0;
+            color: var(--faint);
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+        }
+
+        .article-cta {
+            margin-top: 56px;
+            padding-top: 40px;
+            border-top: 1px solid var(--rule);
+        }
+
+        .article-cta a {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: var(--sepia);
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+
+        .article-cta a:hover {
+            color: var(--ink);
+        }
+
+        .article-cta .subtext {
+            font-size: 0.85rem;
+            color: var(--faint);
+            margin-top: 8px;
+        }
+
+        .footer {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+            font-size: 0.82rem;
+            color: var(--faint);
+        }
+
+        .footer a {
+            color: var(--sepia);
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .article-title {
+                font-size: 1.7rem;
+            }
+
+            .article {
+                padding: 40px 20px 80px;
+            }
+
+            body {
+                font-size: 1.05rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav">
+    <a href="/">← paper seasons</a>
+</nav>
+
+<article class="article">
+
+    <h1 class="article-title">I haven't coded in 20 years. I built and shipped a site in 72 hours using Claude. Now I'm having an existential crisis.</h1>
+
+    <div class="article-meta">
+        by <a href="/">rebekah bek</a> · february 2026
+    </div>
+
+    <p>The last page I built was in 2001 or something. It was for my beloved Neopet, an Aisha called MidnightHikari90. It had tables inside tables, frames that didn't scroll properly, and fireworks that exploded when you clicked your mouse.</p>
+
+    <p>It was terrible. I loved it so much.</p>
+
+    <p>Twenty odd years later, I found myself enjoying a short career break for the first time in my life and I had the itch to revisit that childhood hobby that brought me SO much joy – building websites.</p>
+
+    <p>I wanted something a little less…expected…but that still told my story: about my career, my obsessions, and why I think everything I've ever done is secretly the same thing.</p>
+
+    <p>Here's how that went.</p>
+
+    <h2>The tools</h2>
+
+    <p>I built the entire thing in a chat window with Claude. By that, I don't mean "it checked my grammar." I mean I opened a conversation and didn't close it for three days.</p>
+
+    <p>The full stack:</p>
+
+    <ul class="stack-list">
+        <li><span class="label">Writing &amp; code:</span> Claude (via claude.ai)</li>
+        <li><span class="label">Domain:</span> Porkbun ($1.99 for a .ink domain on sale, lucky me)</li>
+        <li><span class="label">Hosting:</span> Netlify (free)</li>
+        <li><span class="label">Version control:</span> Git + GitHub (learned from scratch on day 2. although I hesitate to say "learned", maybe more "struggled to follow tutorials")</li>
+        <li><span class="label">Illustrations:</span> Hand-coded SVG via Claude + Nano Banana for the watercolour pieces. (I still don't know how I feel about AI images, but that's a story for another day)</li>
+        <li><span class="label">Total cost:</span> $1.99 and just a tiny chunk of my sanity</li>
+    </ul>
+     <div class="article-image">
+        <img src="/making/images/ss-1.png">
+    </div>
+
+    <h2>Day 1: The concept</h2>
+
+    <p>I started with a rough idea: I wanted something like a portfolio, but not quite. Something that showed who I am and what I can do and how my career has led me here.</p>
+
+    <p>As one does, I started off strong: procrastinating in the name of research. With <strong>Mobbin</strong>, of course. I had the perfect excuse to spend hours looking at other people's personal sites and calling it "work." (It was genuinely SO useful though, to be able to search by style and section – saved me literal hours by shortcutting the what-do-i-like and what-do-i-definitely-not-want process.)</p>
+
+    <div class="article-image">
+        <img src="/making/images/ss-2.png">
+    </div>
+
+    <p>After this I tested the big names in website building: univer.se, Framer, Readymag. They were all gorgeous. They were all polished. They all felt like someone else's template, idea, and soul.</p>
+
+    <p>I found myself thinking, I don't want a template. I want a thing, my own thing. Something that feels like it could only be mine.</p>
+
+    <p>So I closed all the tabs and opened a chat window with Claude instead.</p>
+
+    <h2>The design</h2>
+
+    <p>From hours of looking at beautiful, modern portfolio sites, I knew what I didn't want – I didn't want a polished collection of images and links.</p>
+
+    <p>I wanted it to be a collection of my writing – my thoughts, my ideas, me.</p>
+
+    <p>Then it hit me: I wanted it to feel like a book. Not a website, not a blog; a book you scroll through. One continuous piece, no navigation, no sidebar, no "subscribe to my newsletter."</p>
+
+    <h2>The writing</h2>
+
+    <p>I gave Claude a messy first pass here. Stream of consciousness, half-formed thoughts, the works – plus some of my previous writing as reference.</p>
+
+    <p>It came back in literal SECONDS with something that sounded like me. Uncomfortably like me. 80% right, but with this weird, hollow quality – like hearing your voice on a recording, and with some words you'd never use.</p>
+
+    <p>This is the part nobody talks about with AI writing. It's not that it's bad. It's that it's almost good, and the almost is where it gets super weird.</p>
+
+    <p>Anyway, I took that rough pass, and I edited. And edited. And edited.</p>
+
+    <p>I rewrote paragraphs that were technically fine but didn't feel like things I'd actually say. I cut things that were too neat. I added the mess back in, and I told Claude to stop editing out things I was writing.</p>
+
+    <p>I think the process can be summed up as: the AI gave me the shape, but I molded it from there, filled it in, and gave it the texture.</p>
+
+    <div class="comparison">
+        <div class="comparison-block">
+            <div class="comparison-label">Before — raw from Claude</div>
+            <p>"There is a particular kind of conversation you can only have with yourself in life's quieter moments — during a long commute, in the stillness of a shower, or in those reflective hours when the world has gone to sleep and your thoughts finally have room to breathe."</p>
+        </div>
+        <div class="comparison-block after">
+            <div class="comparison-label">After — live version</div>
+            <p>"There is a particular kind of conversation you can only have with yourself on a train, or in the shower, or at 2am when your cat has just barfed and you can't get back to sleep after panic-scrubbing and wondering why you'd ever thought to purchase a cream-coloured carpet."</p>
+        </div>
+    </div>
+
+    <h2>The design, continued</h2>
+
+    <p>Some decisions that mattered:</p>
+
+    <h3>No navigation.</h3>
+    <p>Start at the top, scroll to the bottom. If you want to leave, leave.</p>
+
+    <h3>Two voices.</h3>
+    <p>The chapters are in third person, while the interludes are in first. I'm not a designer and don't pretend to be one, so I outsourced the "feel" to Claude. It came back with a few suggestions, and after some back-and-forths, we landed on: polished, serif font for the main chapters. The interludes are first person, lowercase, system sans. Like someone wrote a story and then scribbled in the margins.</p>
+
+    <div class="article-image">
+        <img src="/making/images/ss-5.png">
+    </div>
+
+    <h3>Hand-drawn SVG illustrations.</h3>
+    <p>I convinced myself that I wanted this, so I asked Claude to draw a girl reading with a cat, and we went back and forth on it line by line in code. Was it good art? No. Was it charming? Kinda. Did I eventually scratch most of it and go to Nano Banana?</p>
+
+    <p>…yes…</p>
+
+
+    <h3>The fireworks.</h3>
+    <p>There's an easter egg in one of the interludes. Click around and you'll find it. I had fireworks on my Neopets page in 2004. I'm manifesting this comeback and you can't stop me.</p>
+
+    <div class="article-image">
+        <img src="/making/images/ss-6.png">
+    </div>
+
+    <h2>The writing, continued</h2>
+
+    <p>Yes, we're back to writing. I edited my edits, then edited them again. It's actually harder to write something from a draft than it is to write from scratch sometimes.</p>
+
+    <h2>Day 2: The deployment</h2>
+
+    <p>This is where I learned Git. By "learned" I mean I typed commands that Claude told me to type and prayed to God, and then asked Claude "why isn't it working". Rinse and repeat x99.</p>
+
+    <p>My commit history:</p>
+
+    <ul class="commit-list">
+        <li>"first commit"</li>
+        <li>"testing test"</li>
+        <li>"better cat icon"</li>
+        <li>"cat is cuter"</li>
+        <li>"force light mode"</li>
+    </ul>
+
+    <p>At one point Git asked me who I was and I didn't know what that meant, so I asked Claude why Git wanted to get to know me. At another point I pasted all the commands at once including the comments and broke everything. At another point GitHub rejected my password because apparently passwords aren't a thing anymore.</p>
+
+    <p>But then a couple hours later, I typed <code style="background: #ede6da; padding: 2px 6px; border-radius: 3px; font-size: 0.95em;">git push</code> and my website existed on the internet and honestly I FELT LIKE FREAKING ARAGORN.</p>
+
+    <div class="article-image">
+        <img src="/making/images/ss-7.png">
+    </div>
+
+    <h2>Day 3: The polish</h2>
+
+    <p>Ahhh the fun day.</p>
+
+    <p>The writing was done. The site was live. Quick check, publish – I mean commit and push – right?</p>
+
+    <p>OF COURSE I spent the entire day tweaking.</p>
+
+    <p>The font is too small. The interludes are hard to read. The cover feels too kiddy. The margins need a bit of oomph. The dark mode is all wrong. The cat icon looks like a marshmallow. Now the cat icon looks like an alien. Now the cat icon is cut off at the bottom.</p>
+
+    <p>I guess this is the part that's fully mine. Not the first draft, but the seventeenth – having something that's handed to you almost right but not being able to stop iterating until it is.</p>
+
+    <p>The AI doesn't do this. It gives you the 80% and it's done. The last 20% is you at midnight going "THE DAMN DEDICATION IS STILL TOO PRECIOUS."</p>
+
+    <div class="divider">· · ·</div>
+
+    <h2>The part I keep thinking about</h2>
+
+    <p>I wrote a whole chapter about making things with AI on the site. Go read it! It's the last section if you just want to skip right to it, and it's the most daring piece on there – in 2026, to publicly admit that I write with AI.</p>
+
+    <p>Short version: I still don't know how I feel about the state of craft right now.</p>
+
+    <p>Just half a year ago, I was convinced of the PURITY and SOVEREIGNTY of 100% human hand-rolled.</p>
+
+    <p>But AI was fast; absurdly fast. I went from nothing to a live website with a custom domain in three days, and I hadn't touched code in twenty years, and I was rusty as all hell from a decade of corporate writing.</p>
+
+    <p>I keep waiting for it to feel like cheating, but it…hasn't. What it feels like is: I had something in my head, and now it's a thing on the internet, and I LIKE it, and it feels like me, and the distance between existing and not existing has never been smaller.</p>
+
+    <p>But the distance is also where the craft lives. The struggle to tell Claude what it got wrong and what I need it to be, the four hours to get one paragraph right, the "idk if you can do this for me but i need some fireworks on a click".</p>
+
+    <p>Did I lose something by not struggling more? I don't know.</p>
+
+    <p>What I do know: I chose the voice. I chose the story. I chose what to cut. I chose "more musing than rebellious." I chose the fireworks. And then I chose to choose over and over and over again until it felt right.</p>
+
+    <p>I think the choosing is the part that's mine.</p>
+
+    <div class="article-cta">
+        <a href="/">go have a click around: paperseasons.ink →</a>
+        <div class="subtext">there's an easter egg. you'll know it when you find it.</div>
+    </div>
+
+</article>
+
+<footer class="footer">
+    <a href="https://x.com/paperseasons">x</a> · <a href="https://www.linkedin.com/in/rebekahbek/">linkedin</a> · 2026
+</footer>
+
+</body>
+</html>
