@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>send a note — a little thing from Paper Seasons</title>
+  <meta name="description" content="Send a love note in ASCII.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f5f3ee;
+      --white: #fdfcfa;
+      --ink:   #1a1916;
+      --mid:   #8a8680;
+      --rule:  #dedad3;
+      --light: #c8c4bc;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 64px 32px 80px;
+    }
+
+    /* ── TITLE ── */
+    h1 {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: 48px;
+      line-height: 1.5;
+    }
+
+    .sub {
+      font-size: 11px;
+      color: var(--light);
+      letter-spacing: 0.08em;
+      margin-bottom: 48px;
+    }
+
+    /* ── FIELDS ── */
+    .field {
+      margin-bottom: 40px;
+    }
+
+    .field-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--rule);
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: 14px;
+      color: var(--ink);
+      padding: 8px 0;
+      outline: none;
+      transition: border-color 0.15s;
+      display: block;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-bottom-color: var(--ink);
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: var(--light);
+    }
+
+    .field textarea {
+      resize: none;
+      height: 52px;
+      line-height: 1.6;
+    }
+
+    /* ── PREFILLS ── */
+    .prefills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .prefill {
+      background: none;
+      border: 1px solid var(--rule);
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: 11px;
+      color: var(--mid);
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all 0.12s;
+      letter-spacing: 0.04em;
+    }
+
+    .prefill:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+
+    .prefill-hint {
+      font-size: 10px;
+      color: var(--light);
+      letter-spacing: 0.06em;
+      margin-top: 8px;
+    }
+
+    /* ── SHAPES ── */
+    .shapes {
+      display: flex;
+      gap: 1px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .shape {
+      background: var(--white);
+      border: none;
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: all 0.1s;
+      border: 1px solid var(--rule);
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      line-height: 1;
+    }
+
+    .shape-glyph {
+      font-size: 15px;
+      line-height: 1;
+      display: block;
+    }
+
+    .shape:hover { color: var(--ink); border-color: var(--light); }
+
+    .shape.active {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+
+    @keyframes shapepulse {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.18); }
+      100% { transform: scale(1); }
+    }
+
+    .shape-glyph.pulse {
+      animation: shapepulse 0.25s ease;
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    #output-pre {
+      animation: fadein 0.3s ease;
+    }
+
+    /* ── GENERATE ── */
+    .gen-btn {
+      background: var(--ink);
+      color: var(--paper);
+      border: none;
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 13px 28px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      margin-bottom: 48px;
+    }
+
+    .gen-btn:hover { opacity: 0.8; }
+    .gen-btn:active { opacity: 0.6; }
+
+    /* ── OUTPUT ── */
+    .output {
+      border-top: 1px solid var(--rule);
+      padding-top: 28px;
+    }
+
+    .output-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 20px;
+    }
+
+    .output-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .copy-btn {
+      background: none;
+      border: none;
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--mid);
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: var(--rule);
+      transition: color 0.12s;
+    }
+
+    .copy-btn:hover { color: var(--ink); text-decoration-color: var(--ink); }
+    .copy-btn.done  { color: var(--ink); }
+
+    .copy-actions {
+      display: none;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .copy-note {
+      font-size: 10px;
+      color: var(--light);
+      letter-spacing: 0.06em;
+      text-align: right;
+    }
+
+    .output-area {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      padding: 28px 24px;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .output-working {
+      font-size: 11px;
+      color: var(--mid);
+      letter-spacing: 0.08em;
+      display: none;
+    }
+
+    .output-idle {
+      font-size: 11px;
+      color: var(--light);
+      letter-spacing: 0.08em;
+      text-align: center;
+      line-height: 2;
+    }
+
+    #out-to {
+      width: 100%;
+      font-size: 13px;
+      color: var(--mid);
+      letter-spacing: 0.08em;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 20px;
+    }
+
+    #output-pre {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: 0.68rem;
+      line-height: 1.18;
+      white-space: pre;
+      color: var(--ink);
+      display: none;
+      width: 100%;
+    }
+
+    .png-link {
+      display: block;
+      text-align: right;
+      font-size: 11px;
+      color: #b0aca6;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      margin-top: 2px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .png-link:hover { color: var(--ink); }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 64px;
+      font-size: 11px;
+      color: var(--light);
+      letter-spacing: 0.1em;
+    }
+
+    footer a { color: var(--mid); text-decoration: none; }
+    footer a:hover { color: var(--ink); }
+
+    @media (max-width: 480px) {
+      .page { padding: 48px 20px 64px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <h1>send a note as ascii art.</h1>
+
+
+
+  <!-- TO -->
+  <div class="field">
+    <label class="field-label" for="to-field">To</label>
+    <input id="to-field" type="text" placeholder="sammy, sis, future me…"
+      maxlength="40" autocomplete="off" spellcheck="false">
+  </div>
+
+  <!-- MESSAGE -->
+  <div class="field">
+    <label class="field-label" for="msg-field">Message</label>
+    <textarea id="msg-field"
+      placeholder="write something — it'll repeat to fill the shape"
+      maxlength="280" spellcheck="false"></textarea>
+    <div class="prefills">
+      <button class="prefill" data-key="love">i love you</button>
+      <button class="prefill" data-key="thought">just thought of you</button>
+      <button class="prefill" data-key="proud">so proud of you</button>
+      <button class="prefill" data-key="sorry">i messed up</button>
+      <button class="prefill" data-key="words">i don't know what to say, but…</button>
+      <button class="prefill" data-key="hype">you got this</button>
+      <button class="prefill" data-key="here">hey, i'm here</button>
+      <button class="prefill" data-key="night">goodnight</button>
+    </div>
+    <div class="prefill-hint">keep clicking for more versions</div>
+  </div>
+
+  <!-- SHAPE -->
+  <div class="field">
+    <label class="field-label">Shape</label>
+    <div class="shapes" id="shape-grid"></div>
+  </div>
+
+  <!-- GENERATE -->
+  <button class="gen-btn" onclick="generate()">Create</button>
+
+  <!-- OUTPUT -->
+  <div class="output">
+    <div class="output-bar">
+      <span class="output-label" id="out-label">Your note</span>
+      <div class="copy-actions" id="copy-actions">
+        <button class="copy-btn" id="copy-mobile-btn" onclick="copyMobile()">copy for mobile</button>
+        <button class="copy-btn" id="copy-web-btn" onclick="copyWeb()">copy for web</button>
+      </div>
+    </div>
+    <a class="png-link" id="png-link" onclick="saveAsPng()" href="#" style="display:none;">(or save as image)</a>
+    <div class="output-area" id="output-area">
+      <div class="output-idle" id="out-idle">Fill a shape with something you mean.</div>
+      <div class="output-working" id="out-working" style="display:none;"></div>
+      <div id="out-to" style="display:none;"></div>
+      <pre id="output-pre" style="display:none; width:100%;"></pre>
+    </div>
+  </div>
+
+  <footer>
+    <a href="https://paperseasons.ink" target="_blank">Paper Seasons</a> &nbsp;&middot;&nbsp; <span id="season-footer"></span>
+  </footer>
+
+</div>
+
+<canvas id="mask-canvas" style="display:none;"></canvas>
+<canvas id="png-canvas" style="display:none;"></canvas>
+
+<script>
+// ── SHAPES ─────────────────────────────────────────────────────────────────
+const SHAPES = [
+  { id:'heart',    label:'Heart',    glyph:'♥' },
+  { id:'moon',     label:'Moon',     glyph:'☽' },
+  { id:'star',     label:'Star',     glyph:'★' },
+  { id:'circle',   label:'Circle',   glyph:'○' },
+  { id:'teardrop', label:'Teardrop', glyph:'<svg width="8" height="11" viewBox="0 0 12 14" fill="currentColor" style="display:inline-block;vertical-align:middle;margin-top:-2px"><path d="M6 0 C6 0 11 6 11 9.5 A5 5 0 0 1 1 9.5 C1 6 6 0 6 0Z"/></svg>' },
+  { id:'tree',     label:'Tree',     glyph:'↟' },
+];
+
+let selectedShape = 'heart';
+
+function buildShapes() {
+  const grid = document.getElementById('shape-grid');
+  SHAPES.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'shape' + (i === 0 ? ' active' : '');
+    btn.innerHTML = `<span class="shape-glyph">${s.glyph}</span>${s.label}`;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.shape').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedShape = s.id;
+      const glyph = btn.querySelector('.shape-glyph');
+      glyph.classList.remove('pulse');
+      void glyph.offsetWidth; // force reflow
+      glyph.classList.add('pulse');
+    });
+    grid.appendChild(btn);
+  });
+}
+
+// ── PREFILLS ───────────────────────────────────────────────────────────────
+const PREFILL_SETS = {
+  love: [
+    'i love you i love you i just wanted to say it again ',
+    'i love you in ways i stopped trying to explain a long time ago ',
+    'i love you more today than i did yesterday and i loved you a lot yesterday ',
+    'you are not always easy and i would choose you every single time ',
+    'i don\'t know what i was doing before you probably nothing important ',
+  ],
+  thought: [
+    'just thought of you just like that out of nowhere ',
+    'thought of you today no reason just because ',
+    'i don\'t always say it but i think of you more than you know ',
+    'thought of you and then got distracted and then thought of you again ',
+    'you crossed my mind and then i thought about what you\'d say about this and laughed ',
+  ],
+  proud: [
+    'i have been proud of you for longer than you know ',
+    'i watched you do that and i thought that\'s my person ',
+    'proud of you not just for this but for everything it took to get here ',
+    'i\'m so proud of you that i told a stranger about you i hope that\'s okay ',
+    'you did it and i knew you would and i\'m going to need you to let me say i told you so ',
+  ],
+  words: [
+    'i don\'t know what to say but i\'m here i\'m here i\'m here ',
+    'i don\'t have the right words i just didn\'t want you to be alone in this ',
+    'i\'m here that\'s all i\'ve got right now but i mean it ',
+    'i made a face when you told me but i\'m completely on your side ',
+    'i looked up what to say and none of it sounded like me so i\'m just saying this ',
+  ],
+  hype: [
+    'you got this you really do even when it doesn\'t feel like it ',
+    'you have done harder things than this i have watched you do them ',
+    'i\'ve seen you in harder moments than this you are going to be fine ',
+    'you\'ve done this exact type of thing before and complained the whole time and been fine ',
+    'worst case scenario you fail and i\'ll be there and it\'ll still be okay ',
+  ],
+  here: [
+    'hey i\'m here i\'m here just wanted you to know i\'m here ',
+    'i\'m here no pressure no rush just here ',
+    'i\'m here i\'ve always been here that\'s not going to change ',
+    'i\'m here i brought nothing useful but i want to be here ',
+    'i\'m here and i\'m not going to ask how you are unless you want me to ',
+  ],
+  night: [
+    'goodnight rest now you did enough today ',
+    'goodnight stop thinking about it now it will keep ',
+    'goodnight you carried a lot today put it down now rest ',
+    'goodnight you were slightly impossible today and i\'d do it all again ',
+    'goodnight tomorrow is a new day and we will deal with it then together ',
+  ],
+  sorry: [
+    'i handled that badly and you\'re going to say it\'s okay and i need you to know i know it\'s not ',
+    'i was wrong and i\'ve been sitting here trying to figure out how to say it without making it about me ',
+    'i\'ve been replaying it and it doesn\'t get better the more i watch it ',
+    'i messed up and i love you and those are both just true right now and i\'m not trying to use one to cancel the other ',
+    'i don\'t want to go to sleep like this ',
+    'i already know what i did and i know you know and i just didn\'t want to leave it unsaid ',
+  ],
+};
+
+const prefillIndices = {};
+
+document.querySelectorAll('.prefill').forEach(btn => {
+  const key = btn.dataset.key;
+  prefillIndices[key] = 0;
+  btn.addEventListener('click', () => {
+    const set = PREFILL_SETS[key];
+    const text = set[prefillIndices[key] % set.length];
+    prefillIndices[key]++;
+    document.getElementById('msg-field').value = text.trim();
+    lastPrefillKey = key;
+  });
+});
+
+// ── SHAPE DRAWING ──────────────────────────────────────────────────────────
+const SZ = 600;
+
+function drawShape(ctx, shape, w, h) {
+  const cx = w/2, cy = h/2, s = Math.min(w,h)*0.43;
+  ctx.beginPath();
+  switch(shape) {
+    case 'heart': {
+      // Wider, fuller heart — better ASCII density
+      const sc = s/50; ctx.save(); ctx.translate(cx, cy+s*0.06); ctx.scale(sc, sc);
+      ctx.moveTo(0, 40);
+      ctx.bezierCurveTo(-28, 16, -50, 0, -50, -22);
+      ctx.bezierCurveTo(-50, -40, -36, -50, -22, -50);
+      ctx.bezierCurveTo(-10, -50, -2, -42, 0, -32);
+      ctx.bezierCurveTo(2, -42, 10, -50, 22, -50);
+      ctx.bezierCurveTo(36, -50, 50, -40, 50, -22);
+      ctx.bezierCurveTo(50, 0, 28, 16, 0, 40);
+      ctx.restore(); break;
+    }
+    case 'moon': {
+      // Crisper crescent — wider gap between arcs
+      const sc = s/100; ctx.save(); ctx.translate(cx, cy); ctx.scale(sc, sc);
+      ctx.arc(0, 0, 100, -Math.PI*0.75, Math.PI*0.75);
+      ctx.arc(38, 0, 72, Math.PI*0.75, -Math.PI*0.75, true);
+      ctx.closePath();
+      ctx.restore(); break;
+    }
+    case 'star': {
+      const or=s, ir=s*0.42;
+      for(let i=0;i<10;i++){
+        const r=i%2===0?or:ir, a=(i*Math.PI/5)-Math.PI/2;
+        i===0?ctx.moveTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r)
+             :ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);
+      }
+      ctx.closePath(); break;
+    }
+    case 'circle': {
+      ctx.arc(cx, cy, s*0.92, 0, Math.PI*2); break;
+    }
+    case 'teardrop': {
+      // Round bottom, pointed top — like a water drop inverted
+      const sc=s/100; ctx.save(); ctx.translate(cx,cy); ctx.scale(sc,sc);
+      ctx.moveTo(0,-100);
+      ctx.bezierCurveTo(60,-60, 90,10, 90,45);
+      ctx.bezierCurveTo(90,80, 50,105, 0,105);
+      ctx.bezierCurveTo(-50,105, -90,80, -90,45);
+      ctx.bezierCurveTo(-90,10, -60,-60, 0,-100);
+      ctx.closePath();
+      ctx.restore(); break;
+    }
+    case 'tree': {
+      // Taller, more tapered tiers — more recognisably a pine
+      const sc = s/100; ctx.save(); ctx.translate(cx, cy); ctx.scale(sc, sc);
+      // Trunk
+      ctx.moveTo(-12, 100); ctx.lineTo(-12, 55);
+      ctx.lineTo(12, 55);   ctx.lineTo(12, 100);
+      ctx.closePath();
+      // Bottom tier
+      ctx.moveTo(0, -15);
+      ctx.lineTo(-95, 68); ctx.lineTo(95, 68);
+      ctx.closePath();
+      // Middle tier
+      ctx.moveTo(0, -52);
+      ctx.lineTo(-70, 22); ctx.lineTo(70, 22);
+      ctx.closePath();
+      // Top tier
+      ctx.moveTo(0, -100);
+      ctx.lineTo(-42, -18); ctx.lineTo(42, -18);
+      ctx.closePath();
+      ctx.restore(); break;
+    }
+  }
+  ctx.fill();
+}
+
+function buildMask(shape) {
+  const c = document.getElementById('mask-canvas');
+  c.width = c.height = SZ;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,SZ,SZ);
+  ctx.fillStyle = '#000';
+  drawShape(ctx, shape, SZ, SZ);
+  return ctx.getImageData(0,0,SZ,SZ).data;
+}
+
+// ── ASCII ───────────────────────────────────────────────────────────────────
+function makeAscii(phrase, shape, cols) {
+  cols = cols || 32;
+  const mask = buildMask(shape);
+  const aspect = 2.05;
+  const rows = Math.round(cols / aspect);
+  const cw = SZ / cols, ch = SZ / rows;
+  const ph = phrase.trim() + ' ';
+  let ci = 0, lines = [];
+
+  for (let row = 0; row < rows; row++) {
+    let line = '';
+    for (let col = 0; col < cols; col++) {
+      const px = Math.floor((col+0.5)*cw);
+      const py = Math.floor((row+0.5)*ch);
+      if (px<SZ && py<SZ && mask[(py*SZ+px)*4+3]>128) {
+        line += ph[ci++ % ph.length];
+      } else {
+        line += ' ';
+      }
+    }
+    lines.push(line.trimEnd());
+  }
+
+  while (lines.length && !lines[0].trim()) lines.shift();
+  while (lines.length && !lines[lines.length-1].trim()) lines.pop();
+  return lines.join('\n');
+}
+
+let lastOutputMobile = '';
+let lastOutputWeb    = '';
+let lastPrefillKey   = '';
+
+const COPY_CONFIRMS = [
+  'copied — now send it ♥',
+  'copied — go make someone\'s day',
+  'copied — they\'ll love this',
+  'copied — off it goes',
+];
+
+const COPY_CONFIRMS_SORRY = [
+  'copied — now actually send it',
+  'copied — don\'t sit on this one',
+  'copied — they need to hear it',
+  'copied — you know you have to send it',
+];
+
+function generate() {
+  const phrase = document.getElementById('msg-field').value.trim();
+  if (!phrase) { document.getElementById('msg-field').focus(); return; }
+
+  document.getElementById('out-idle').style.display    = 'none';
+  document.getElementById('out-to').style.display      = 'none';
+  document.getElementById('output-pre').style.display  = 'none';
+  document.getElementById('copy-actions').style.display = 'none';
+  document.getElementById('png-link').style.display    = 'none';
+  document.getElementById('out-working').style.display = 'block';
+
+  requestAnimationFrame(() => setTimeout(() => {
+    const toVal = document.getElementById('to-field').value.trim();
+    const asciiMobile = makeAscii(phrase, selectedShape, 26);
+    const asciiWeb    = makeAscii(phrase, selectedShape, 52);
+
+    function withHeader(ascii, cols) {
+      if (!toVal) return ascii;
+      const header = 'to: ' + toVal;
+      const rule = '-'.repeat(Math.min(cols, Math.max(header.length,
+        ascii.split('\n').reduce((m,l) => Math.max(m,l.length), 0))));
+      return [header, rule, '', ascii].join('\n');
+    }
+
+    lastOutputMobile = withHeader(asciiMobile, 26);
+    lastOutputWeb    = withHeader(asciiWeb, 52);
+
+    // out-to header div (visual only)
+    const outTo = document.getElementById('out-to');
+    if (toVal) { outTo.textContent = 'to: ' + toVal; outTo.style.display = 'block'; }
+    else { outTo.style.display = 'none'; }
+
+    const pre = document.getElementById('output-pre');
+    pre.textContent    = asciiWeb;
+    pre.style.fontSize = '';
+    pre.style.display  = 'block';
+
+    document.getElementById('out-working').style.display  = 'none';
+    document.getElementById('copy-actions').style.display = 'flex';
+    document.getElementById('png-link').style.display = 'block';
+
+    // Update create button
+    const genBtn = document.querySelector('.gen-btn');
+    genBtn.textContent = 'make another';
+
+    requestAnimationFrame(() => {
+      const maxLen    = asciiWeb.split('\n').reduce((m,l) => Math.max(m,l.length), 0);
+      const basePx    = parseFloat(getComputedStyle(pre).fontSize);
+      const available = pre.parentElement.clientWidth - 48;
+      if (maxLen * basePx * 0.602 > available) {
+        pre.style.fontSize = (available / maxLen / 0.602) + 'px';
+      }
+    });
+  }, 30));
+}
+
+function copyMobile() {
+  if (!lastOutputMobile) return;
+  const btn = document.getElementById('copy-mobile-btn');
+  doCopy('```\n' + lastOutputMobile + '\n```', btn);
+}
+
+function copyWeb() {
+  if (!lastOutputWeb) return;
+  const btn = document.getElementById('copy-web-btn');
+  doCopy('```\n' + lastOutputWeb + '\n```', btn);
+}
+
+function doCopy(text, btn) {
+  const confirms = lastPrefillKey === 'sorry' ? COPY_CONFIRMS_SORRY : COPY_CONFIRMS;
+  const done = () => {
+    btn.classList.add('done');
+    btn.textContent = confirms[Math.floor(Math.random() * confirms.length)];
+    const original = btn.id === 'copy-mobile-btn' ? 'copy for mobile' : 'copy for web';
+    setTimeout(() => { btn.classList.remove('done'); btn.textContent = original; }, 2800);
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallback(text, done));
+  } else {
+    fallback(text, done);
+  }
+}
+
+function fallback(text, done) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); done(); } catch(e) {}
+  document.body.removeChild(ta);
+}
+
+// ── SAVE AS PNG (POSTCARD) ──────────────────────────────────────────────────
+async function saveAsPng() {
+  if (!lastOutputWeb) return;
+
+  const btn = document.getElementById('png-btn');
+  btn.textContent = 'rendering…';
+  btn.style.pointerEvents = 'none';
+
+  // Wait for fonts
+  await document.fonts.ready;
+
+  const W = 900, H = 1200;
+  const PAPER   = '#f5f3ee';
+  const INK     = '#1a1916';
+  const MID     = '#8a8680';
+  const LIGHT   = '#ccc9c2';
+  const BORDER  = 28;
+  const PAD     = 64;
+
+  const canvas = document.getElementById('png-canvas');
+  canvas.width  = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Background
+  ctx.fillStyle = PAPER;
+  ctx.fillRect(0, 0, W, H);
+
+  // Inset border
+  ctx.strokeStyle = LIGHT;
+  ctx.lineWidth = 1;
+  ctx.strokeRect(BORDER, BORDER, W - BORDER*2, H - BORDER*2);
+
+  // Corner marks (tiny cross-hairs at corners, like a real card)
+  const cm = 10, co = BORDER;
+  [[co,co],[W-co,co],[co,H-co],[W-co,H-co]].forEach(([x,y]) => {
+    ctx.beginPath();
+    ctx.strokeStyle = LIGHT;
+    ctx.lineWidth = 0.8;
+    ctx.moveTo(x-cm,y); ctx.lineTo(x+cm,y);
+    ctx.moveTo(x,y-cm); ctx.lineTo(x,y+cm);
+    ctx.stroke();
+  });
+
+  let y = PAD + 24;
+
+  // "to:" label
+  const toVal = document.getElementById('to-field').value.trim();
+  if (toVal) {
+    ctx.fillStyle = MID;
+    ctx.font = `400 13px "Courier Prime", "Courier New", monospace`;
+    ctx.textBaseline = 'top';
+    ctx.letterSpacing = '0.18em';
+    ctx.fillText('TO', PAD, y);
+    ctx.letterSpacing = '0em';
+    y += 22;
+
+    // Recipient name — large
+    ctx.fillStyle = INK;
+    ctx.font = `400 52px "Courier Prime", "Courier New", monospace`;
+    ctx.textBaseline = 'top';
+    ctx.fillText(toVal, PAD, y);
+    y += 64;
+
+    // Rule
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 0.75;
+    ctx.beginPath();
+    ctx.moveTo(PAD, y);
+    ctx.lineTo(W - PAD, y);
+    ctx.stroke();
+    y += 48;
+  } else {
+    y += 16;
+  }
+
+  // ASCII art — use web version (52 cols) for PNG quality
+  const asciiForPng = lastOutputWeb.split('\n').filter(l => !l.startsWith('to:') && !l.startsWith('---') && l !== '').join('\n');
+  const lines = (lastOutputWeb.includes('to:') ? asciiForPng : lastOutputWeb).split('\n');
+  const asciiSize = 10;
+  const lineH = asciiSize * 1.22;
+  const charW = asciiSize * 0.602;
+  const maxLen = lines.reduce((m,l) => Math.max(m, l.length), 0);
+  const blockW = maxLen * charW;
+  const blockH = lines.length * lineH;
+  // Available height for ascii
+  const footerH = 60;
+  const availH = H - y - footerH - PAD;
+  const scale = Math.min(1, availH / blockH, (W - PAD*2) / blockW);
+  const finalSize = asciiSize * scale;
+  const finalLineH = finalSize * 1.22;
+  const finalCharW = finalSize * 0.602;
+  const finalBlockW = maxLen * finalCharW;
+  const finalBlockH = lines.length * finalLineH;
+  const finalX = (W - finalBlockW) / 2;
+  const finalY = y + (availH - finalBlockH) / 2;
+
+  ctx.fillStyle = INK;
+  ctx.font = `400 ${finalSize}px "Courier Prime", "Courier New", monospace`;
+  ctx.textBaseline = 'top';
+
+  lines.forEach((line, i) => {
+    ctx.fillText(line, finalX, finalY + i * finalLineH);
+  });
+
+  // Footer — Paper Seasons mark
+  ctx.fillStyle = LIGHT;
+  ctx.font = `400 11px "Courier Prime", "Courier New", monospace`;
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('paperseasons.ink/note', PAD, H - PAD + 8);
+
+  // Download
+  const link = document.createElement('a');
+  const name = (document.getElementById('to-field').value.trim() || 'note').replace(/\s+/g,'-').toLowerCase();
+  link.download = `note-${name}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+
+  btn.textContent = 'save as image';
+  btn.style.pointerEvents = '';
+}
+
+// ── KEYBOARD ───────────────────────────────────────────────────────────────
+document.getElementById('msg-field').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generate(); }
+});
+document.getElementById('to-field').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('msg-field').focus(); }
+});
+// ── INIT ───────────────────────────────────────────────────────────────────
+buildShapes();
+
+// Seasonal footer
+(function() {
+  const m = new Date().getMonth();
+  const season = m >= 2 && m <= 4 ? 'spring' :
+                 m >= 5 && m <= 7 ? 'summer' :
+                 m >= 8 && m <= 10 ? 'autumn' : 'winter';
+  const year = new Date().getFullYear();
+  document.getElementById('season-footer').textContent = season + ' ' + year;
+})();
+
+// ⌘+Enter / Ctrl+Enter to generate
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+    e.preventDefault();
+    generate();
+  }
+});
+</script>
+</body>
+</html>
