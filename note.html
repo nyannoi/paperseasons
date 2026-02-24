@@ -754,25 +754,33 @@ async function saveAsPng() {
   const PAD     = 64;
 
   const canvas = document.getElementById('png-canvas');
+  const ctx2 = canvas.getContext('2d');
 
-  // Get the actual pre element to measure rendered size
-  const pre = document.getElementById('output-pre');
-  const asciiLines = pre.textContent.split('\n');
-  const maxLen = asciiLines.reduce((m,l) => Math.max(m,l.length), 0);
-  const lineCount = asciiLines.length;
+  // Measure actual character width at our target size
+  const charPx = 13;
+  ctx2.font = `400 ${charPx}px "Courier Prime", "Courier New", monospace`;
+  const measuredCharW = ctx2.measureText('m').width;
+  const lineH = charPx * 1.22;
 
-  // Match the screen: monospace char ratio
-  const charPx  = 13;    // base char width at export size
-  const lineH   = charPx * 1.18;
-  const blockW  = maxLen * charPx * 0.602;
-  const blockH  = lineCount * lineH;
+  const asciiLines = lastOutputWeb
+    .split('\n')
+    .filter(l => !l.startsWith('to:') && !l.match(/^-+$/) && !(l.trim() === '' && lastOutputWeb.includes('to:')));
 
-  const PAD = 80;
-  const toVal = document.getElementById('to-field').value.trim();
-  const toH   = toVal ? 52 : 0;  // space for to: line
+  // strip leading/trailing blank lines
+  while (asciiLines.length && !asciiLines[0].trim()) asciiLines.shift();
+  while (asciiLines.length && !asciiLines[asciiLines.length-1].trim()) asciiLines.pop();
 
-  const CW = Math.round(blockW + PAD * 2);
-  const CH = Math.round(blockH + PAD * 2 + toH + 32);  // 32 = watermark
+  const maxLen  = asciiLines.reduce((m,l) => Math.max(m,l.length), 0);
+  const blockW  = maxLen * measuredCharW;
+  const blockH  = asciiLines.length * lineH;
+
+  const PAD2   = 72;
+  const toVal  = document.getElementById('to-field').value.trim();
+  const toH    = toVal ? 44 : 0;
+  const waterH = 28;
+
+  const CW = Math.round(blockW + PAD2 * 2);
+  const CH = Math.round(blockH + PAD2 * 2 + toH + waterH);
 
   canvas.width  = CW;
   canvas.height = CH;
@@ -782,45 +790,43 @@ async function saveAsPng() {
   ctx.fillStyle = '#f5f3ee';
   ctx.fillRect(0, 0, CW, CH);
 
-  let y = PAD;
+  let drawY = PAD2;
 
-  // to: field — small, muted, above the shape
+  // to: header
   if (toVal) {
     ctx.fillStyle = '#8a8680';
     ctx.font = `400 11px "Courier Prime", "Courier New", monospace`;
     ctx.textBaseline = 'top';
-    ctx.fillText('to: ' + toVal, PAD, y);
-
-    // thin rule
+    ctx.fillText('to: ' + toVal, PAD2, drawY);
+    drawY += 18;
     ctx.strokeStyle = '#dedad3';
     ctx.lineWidth = 0.75;
     ctx.beginPath();
-    ctx.moveTo(PAD, y + 18);
-    ctx.lineTo(CW - PAD, y + 18);
+    ctx.moveTo(PAD2, drawY);
+    ctx.lineTo(CW - PAD2, drawY);
     ctx.stroke();
-    y += toH;
+    drawY += toH - 18;
   }
 
-  // ASCII art — centered, ink coloured
+  // ASCII shape
   ctx.fillStyle = '#1a1916';
   ctx.font = `400 ${charPx}px "Courier Prime", "Courier New", monospace`;
   ctx.textBaseline = 'top';
-
   const textX = (CW - blockW) / 2;
   asciiLines.forEach((line, i) => {
-    ctx.fillText(line, textX, y + i * lineH);
+    ctx.fillText(line, textX, drawY + i * lineH);
   });
 
-  // Quiet watermark
+  // Watermark
   ctx.fillStyle = '#ccc9c2';
   ctx.font = `400 9px "Courier Prime", "Courier New", monospace`;
   ctx.textBaseline = 'bottom';
-  ctx.fillText('paperseasons.ink/note', PAD, CH - 16);
+  ctx.fillText('paperseasons.ink/note', PAD2, CH - 10);
 
   // Download
   const dl = document.createElement('a');
-  const name = (document.getElementById('to-field').value.trim() || 'note').replace(/\s+/g,'-').toLowerCase();
-  dl.download = `note-${name}.png`;
+  const toSlug = toVal.replace(/\s+/g,'-').toLowerCase();
+  dl.download = toVal ? `note-${toSlug}.png` : 'note.png';
   dl.href = canvas.toDataURL('image/png');
   dl.click();
 
