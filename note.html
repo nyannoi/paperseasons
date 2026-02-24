@@ -737,9 +737,10 @@ function fallback(text, done) {
 async function saveAsPng() {
   if (!lastOutputWeb) return;
 
-  const btn = document.getElementById('png-btn');
-  btn.textContent = 'rendering…';
-  btn.style.pointerEvents = 'none';
+  const link_el = document.getElementById('png-link');
+  const origText = link_el.textContent;
+  link_el.textContent = 'rendering…';
+  link_el.style.pointerEvents = 'none';
 
   // Wait for fonts
   await document.fonts.ready;
@@ -851,8 +852,8 @@ async function saveAsPng() {
   link.href = canvas.toDataURL('image/png');
   link.click();
 
-  btn.textContent = 'save as image';
-  btn.style.pointerEvents = '';
+  link_el.textContent = origText;
+  link_el.style.pointerEvents = '';
 }
 
 // ── KEYBOARD ───────────────────────────────────────────────────────────────
