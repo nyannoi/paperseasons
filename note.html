@@ -754,103 +754,75 @@ async function saveAsPng() {
   const PAD     = 64;
 
   const canvas = document.getElementById('png-canvas');
-  canvas.width  = W;
-  canvas.height = H;
+
+  // Get the actual pre element to measure rendered size
+  const pre = document.getElementById('output-pre');
+  const asciiLines = pre.textContent.split('\n');
+  const maxLen = asciiLines.reduce((m,l) => Math.max(m,l.length), 0);
+  const lineCount = asciiLines.length;
+
+  // Match the screen: monospace char ratio
+  const charPx  = 13;    // base char width at export size
+  const lineH   = charPx * 1.18;
+  const blockW  = maxLen * charPx * 0.602;
+  const blockH  = lineCount * lineH;
+
+  const PAD = 80;
+  const toVal = document.getElementById('to-field').value.trim();
+  const toH   = toVal ? 52 : 0;  // space for to: line
+
+  const CW = Math.round(blockW + PAD * 2);
+  const CH = Math.round(blockH + PAD * 2 + toH + 32);  // 32 = watermark
+
+  canvas.width  = CW;
+  canvas.height = CH;
   const ctx = canvas.getContext('2d');
 
-  // Background
-  ctx.fillStyle = PAPER;
-  ctx.fillRect(0, 0, W, H);
+  // Paper background
+  ctx.fillStyle = '#f5f3ee';
+  ctx.fillRect(0, 0, CW, CH);
 
-  // Inset border
-  ctx.strokeStyle = LIGHT;
-  ctx.lineWidth = 1;
-  ctx.strokeRect(BORDER, BORDER, W - BORDER*2, H - BORDER*2);
+  let y = PAD;
 
-  // Corner marks (tiny cross-hairs at corners, like a real card)
-  const cm = 10, co = BORDER;
-  [[co,co],[W-co,co],[co,H-co],[W-co,H-co]].forEach(([x,y]) => {
-    ctx.beginPath();
-    ctx.strokeStyle = LIGHT;
-    ctx.lineWidth = 0.8;
-    ctx.moveTo(x-cm,y); ctx.lineTo(x+cm,y);
-    ctx.moveTo(x,y-cm); ctx.lineTo(x,y+cm);
-    ctx.stroke();
-  });
-
-  let y = PAD + 24;
-
-  // "to:" label
-  const toVal = document.getElementById('to-field').value.trim();
+  // to: field — small, muted, above the shape
   if (toVal) {
-    ctx.fillStyle = MID;
-    ctx.font = `400 13px "Courier Prime", "Courier New", monospace`;
+    ctx.fillStyle = '#8a8680';
+    ctx.font = `400 11px "Courier Prime", "Courier New", monospace`;
     ctx.textBaseline = 'top';
-    ctx.letterSpacing = '0.18em';
-    ctx.fillText('TO', PAD, y);
-    ctx.letterSpacing = '0em';
-    y += 22;
+    ctx.fillText('to: ' + toVal, PAD, y);
 
-    // Recipient name — large
-    ctx.fillStyle = INK;
-    ctx.font = `400 52px "Courier Prime", "Courier New", monospace`;
-    ctx.textBaseline = 'top';
-    ctx.fillText(toVal, PAD, y);
-    y += 64;
-
-    // Rule
-    ctx.strokeStyle = INK;
+    // thin rule
+    ctx.strokeStyle = '#dedad3';
     ctx.lineWidth = 0.75;
     ctx.beginPath();
-    ctx.moveTo(PAD, y);
-    ctx.lineTo(W - PAD, y);
+    ctx.moveTo(PAD, y + 18);
+    ctx.lineTo(CW - PAD, y + 18);
     ctx.stroke();
-    y += 48;
-  } else {
-    y += 16;
+    y += toH;
   }
 
-  // ASCII art — use web version (52 cols) for PNG quality
-  const asciiForPng = lastOutputWeb.split('\n').filter(l => !l.startsWith('to:') && !l.startsWith('---') && l !== '').join('\n');
-  const lines = (lastOutputWeb.includes('to:') ? asciiForPng : lastOutputWeb).split('\n');
-  const asciiSize = 10;
-  const lineH = asciiSize * 1.22;
-  const charW = asciiSize * 0.602;
-  const maxLen = lines.reduce((m,l) => Math.max(m, l.length), 0);
-  const blockW = maxLen * charW;
-  const blockH = lines.length * lineH;
-  // Available height for ascii
-  const footerH = 60;
-  const availH = H - y - footerH - PAD;
-  const scale = Math.min(1, availH / blockH, (W - PAD*2) / blockW);
-  const finalSize = asciiSize * scale;
-  const finalLineH = finalSize * 1.22;
-  const finalCharW = finalSize * 0.602;
-  const finalBlockW = maxLen * finalCharW;
-  const finalBlockH = lines.length * finalLineH;
-  const finalX = (W - finalBlockW) / 2;
-  const finalY = y + (availH - finalBlockH) / 2;
-
-  ctx.fillStyle = INK;
-  ctx.font = `400 ${finalSize}px "Courier Prime", "Courier New", monospace`;
+  // ASCII art — centered, ink coloured
+  ctx.fillStyle = '#1a1916';
+  ctx.font = `400 ${charPx}px "Courier Prime", "Courier New", monospace`;
   ctx.textBaseline = 'top';
 
-  lines.forEach((line, i) => {
-    ctx.fillText(line, finalX, finalY + i * finalLineH);
+  const textX = (CW - blockW) / 2;
+  asciiLines.forEach((line, i) => {
+    ctx.fillText(line, textX, y + i * lineH);
   });
 
-  // Footer — Paper Seasons mark
-  ctx.fillStyle = LIGHT;
-  ctx.font = `400 11px "Courier Prime", "Courier New", monospace`;
+  // Quiet watermark
+  ctx.fillStyle = '#ccc9c2';
+  ctx.font = `400 9px "Courier Prime", "Courier New", monospace`;
   ctx.textBaseline = 'bottom';
-  ctx.fillText('paperseasons.ink/note', PAD, H - PAD + 8);
+  ctx.fillText('paperseasons.ink/note', PAD, CH - 16);
 
   // Download
-  const link = document.createElement('a');
+  const dl = document.createElement('a');
   const name = (document.getElementById('to-field').value.trim() || 'note').replace(/\s+/g,'-').toLowerCase();
-  link.download = `note-${name}.png`;
-  link.href = canvas.toDataURL('image/png');
-  link.click();
+  dl.download = `note-${name}.png`;
+  dl.href = canvas.toDataURL('image/png');
+  dl.click();
 
   link_el.textContent = origText;
   link_el.style.pointerEvents = '';
