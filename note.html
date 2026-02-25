@@ -34,9 +34,9 @@
 
     /* ── TITLE ── */
     h1 {
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 400;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
       margin-bottom: 48px;
       line-height: 1.5;
     }
@@ -50,12 +50,12 @@
 
     /* ── FIELDS ── */
     .field {
-      margin-bottom: 40px;
+      margin-bottom: 52px;
     }
 
     .field-label {
-      font-size: 11px;
-      letter-spacing: 0.18em;
+      font-size: 12px;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--mid);
       display: block;
@@ -105,7 +105,7 @@
       background: none;
       border: 1px solid var(--rule);
       font-family: 'Courier Prime', 'Courier New', monospace;
-      font-size: 11px;
+      font-size: 12px;
       color: var(--mid);
       padding: 4px 10px;
       cursor: pointer;
@@ -114,12 +114,13 @@
     }
 
     .prefill:hover {
-      border-color: var(--ink);
-      color: var(--ink);
+      border-color: #b09070;
+      color: #3d2e1e;
+      background: #f0ebe0;
     }
 
     .prefill-hint {
-      font-size: 10px;
+      font-size: 11px;
       color: var(--light);
       letter-spacing: 0.06em;
       margin-top: 8px;
@@ -138,10 +139,10 @@
       border: none;
       font-family: 'Courier Prime', 'Courier New', monospace;
       font-size: 11px;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
       color: var(--mid);
-      padding: 10px 14px;
+      padding: 11px 15px;
       cursor: pointer;
       transition: all 0.1s;
       border: 1px solid var(--rule);
@@ -154,17 +155,17 @@
     }
 
     .shape-glyph {
-      font-size: 15px;
+      font-size: 16px;
       line-height: 1;
       display: block;
     }
 
-    .shape:hover { color: var(--ink); border-color: var(--light); }
+    .shape:hover { color: #3d2e1e; border-color: #b09070; background: #f0ebe0; }
 
     .shape.active {
-      background: var(--ink);
+      background: #3d2e1e;
       color: var(--paper);
-      border-color: var(--ink);
+      border-color: #3d2e1e;
     }
 
     @keyframes shapepulse {
@@ -188,12 +189,12 @@
 
     /* ── GENERATE ── */
     .gen-btn {
-      background: var(--ink);
+      background: #3d2e1e;
       color: var(--paper);
       border: none;
       font-family: 'Courier Prime', 'Courier New', monospace;
-      font-size: 12px;
-      letter-spacing: 0.18em;
+      font-size: 13px;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       padding: 13px 28px;
       cursor: pointer;
@@ -218,8 +219,8 @@
     }
 
     .output-label {
-      font-size: 11px;
-      letter-spacing: 0.18em;
+      font-size: 12px;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--mid);
     }
@@ -228,8 +229,8 @@
       background: none;
       border: none;
       font-family: 'Courier Prime', 'Courier New', monospace;
-      font-size: 11px;
-      letter-spacing: 0.12em;
+      font-size: 12px;
+      letter-spacing: 0.08em;
       color: var(--mid);
       cursor: pointer;
       padding: 0;
@@ -240,7 +241,7 @@
     }
 
     .copy-btn:hover { color: var(--ink); text-decoration-color: var(--ink); }
-    .copy-btn.done  { color: var(--ink); }
+    .copy-btn.done  { color: #8a6d4e; }
 
     .copy-actions {
       display: none;
@@ -250,15 +251,15 @@
     }
 
     .copy-note {
-      font-size: 10px;
+      font-size: 11px;
       color: var(--light);
       letter-spacing: 0.06em;
       text-align: right;
     }
 
     .output-area {
-      background: var(--white);
-      border: 1px solid var(--rule);
+      background: var(--paper);
+      border: 1px solid #c8bfb0;
       padding: 28px 24px;
       min-height: 320px;
       display: flex;
@@ -270,23 +271,24 @@
 
     .output-working {
       font-size: 11px;
-      color: var(--mid);
+      color: var(--light);
       letter-spacing: 0.08em;
       display: none;
     }
 
     .output-idle {
-      font-size: 11px;
-      color: var(--light);
-      letter-spacing: 0.08em;
-      text-align: center;
+      font-size: 12px;
+      color: var(--mid);
+      letter-spacing: 0.04em;
+      text-align: left;
+      font-style: italic;
       line-height: 2;
     }
 
     #out-to {
       width: 100%;
       font-size: 13px;
-      color: var(--mid);
+      color: #8a6d4e;
       letter-spacing: 0.08em;
       padding-bottom: 12px;
       border-bottom: 1px solid var(--rule);
@@ -385,7 +387,7 @@
     </div>
     <a class="png-link" id="png-link" onclick="saveAsPng()" href="#" style="display:none;">(or save as image)</a>
     <div class="output-area" id="output-area">
-      <div class="output-idle" id="out-idle">Fill a shape with something you mean.</div>
+      <div class="output-idle" id="out-idle">Sometimes it's just better in a shape.</div>
       <div class="output-working" id="out-working" style="display:none;"></div>
       <div id="out-to" style="display:none;"></div>
       <pre id="output-pre" style="display:none; width:100%;"></pre>
@@ -786,30 +788,35 @@ async function saveAsPng() {
   canvas.height = CH;
   const ctx = canvas.getContext('2d');
 
-  // Paper background
+  // Warm paper background
   ctx.fillStyle = '#f5f3ee';
   ctx.fillRect(0, 0, CW, CH);
 
+  // Subtle warm border
+  ctx.strokeStyle = '#c8bfb0';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(20, 20, CW - 40, CH - 40);
+
   let drawY = PAD2;
 
-  // to: header
+  // to: header — sepia, warm rule
   if (toVal) {
-    ctx.fillStyle = '#8a8680';
-    ctx.font = `400 11px "Courier Prime", "Courier New", monospace`;
+    ctx.fillStyle = '#8a6d4e';
+    ctx.font = `italic 400 12px "Courier Prime", "Courier New", monospace`;
     ctx.textBaseline = 'top';
     ctx.fillText('to: ' + toVal, PAD2, drawY);
-    drawY += 18;
-    ctx.strokeStyle = '#dedad3';
+    drawY += 20;
+    ctx.strokeStyle = '#d6c9b5';
     ctx.lineWidth = 0.75;
     ctx.beginPath();
     ctx.moveTo(PAD2, drawY);
     ctx.lineTo(CW - PAD2, drawY);
     ctx.stroke();
-    drawY += toH - 18;
+    drawY += toH - 20;
   }
 
-  // ASCII shape
-  ctx.fillStyle = '#1a1916';
+  // ASCII shape — warm ink
+  ctx.fillStyle = '#2c1f0e';
   ctx.font = `400 ${charPx}px "Courier Prime", "Courier New", monospace`;
   ctx.textBaseline = 'top';
   const textX = (CW - blockW) / 2;
@@ -817,11 +824,11 @@ async function saveAsPng() {
     ctx.fillText(line, textX, drawY + i * lineH);
   });
 
-  // Watermark
-  ctx.fillStyle = '#ccc9c2';
-  ctx.font = `400 9px "Courier Prime", "Courier New", monospace`;
+  // Watermark — warm sepia
+  ctx.fillStyle = '#c4b49e';
+  ctx.font = `italic 400 9px "Courier Prime", "Courier New", monospace`;
   ctx.textBaseline = 'bottom';
-  ctx.fillText('paperseasons.ink/note', PAD2, CH - 10);
+  ctx.fillText('paperseasons.ink/note', PAD2, CH - 14);
 
   // Download
   const dl = document.createElement('a');
