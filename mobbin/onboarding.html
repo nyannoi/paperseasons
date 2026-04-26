@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Late Night Research Club 001 — The Long Onboarding: A Study of 1,460 Flows</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf8f4;
+    --card: #ffffff;
+    --text: #141414;
+    --muted: #64748b;the one after the user has been shown what they came for.
+    --border: #e8e4de;
+    --accent: #0079FF;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --sans: Inter, -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+  body { font-family: var(--serif); font-size: 19px; line-height: 1.62; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 64px 32px 120px; }
+  header.title { margin-bottom: 72px; text-align: left; }
+  header.title .kicker { font-family: var(--sans); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  header.title h1 { font-family: var(--serif); font-weight: 400; font-size: 48px; line-height: 1.12; margin: 0 0 14px; letter-spacing: -0.01em; }
+  header.title .byline { font-family: var(--sans); font-size: 14px; color: var(--text); margin-bottom: 6px; letter-spacing: 0.02em; }
+  header.title .byline em { font-style: italic; color: var(--muted); }
+  header.title .sub { color: var(--muted); font-size: 14px; font-style: italic; }
+  h2.section {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 64px 0 28px;
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+  }
+  h2.section .num { color: var(--text); margin-right: 10px; }
+  p { margin: 0 0 1.1em; }
+  p em { font-style: italic; }
+  p strong { font-weight: 600; }
+  .lede { font-size: 22px; line-height: 1.52; }
+  .chart-block {
+    margin: 40px -60px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 24px 20px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  }
+  @media (max-width: 860px) {
+    .chart-block { margin: 36px 0; }
+    .wrap { padding: 40px 20px 80px; }
+    header.title h1 { font-size: 36px; }
+    body { font-size: 18px; }
+  }
+  .chart-caption {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 0.02em;
+  }
+  .chart-caption .label { font-weight: 700; color: var(--text); letter-spacing: 0.08em; margin-right: 8px; }
+  .chart-title { font-family: var(--sans); font-size: 20px; font-weight: 700; text-align: center; margin: 0 0 4px; color: var(--text); }
+  .chart-sub { font-family: var(--sans); font-size: 11px; color: var(--muted); text-align: center; margin: 0 0 16px; }
+  .chart-legend { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+  .chart-legend .item { display: flex; align-items: center; gap: 6px; font-family: var(--sans); font-size: 11px; color: var(--muted); }
+  .chart-legend .swatch { width: 10px; height: 10px; border-radius: 2px; }
+  .callout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .callout { background: #f5f2ee; border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; font-family: var(--sans); font-size: 12px; }
+  .callout .h { font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .callout .b { color: var(--muted); line-height: 1.55; }
+  @media (max-width: 640px) { .callout-grid { grid-template-columns: 1fr; } }
+  .pullstat { font-family: var(--sans); text-align: center; margin: 16px 0 8px; }
+  .pullstat .pre { font-size: 12px; color: var(--muted); }
+  .pullstat .n { font-size: 32px; font-weight: 800; color: var(--text); line-height: 1.1; }
+  .pullstat .post { font-size: 12px; color: var(--muted); }
+  .footer-note { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border); font-family: var(--sans); font-size: 12px; color: var(--muted); }
+  /* screen comparison block (Mobbin flow views) */
+  .screen-compare {
+    margin: 40px -60px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 28px 22px;
+  }
+  .screen-compare .flow-row + .flow-row {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px dashed var(--border);
+  }
+  .screen-compare .flow-row h4 {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin: 0 0 2px;
+  }
+  .screen-compare .flow-row .meta {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+  }
+  .screen-compare .flow-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: #fff;
+  }
+  .screen-compare .breadcrumb {
+    font-family: var(--sans);
+    font-size: 10.5px;
+    color: var(--muted);
+    margin-top: 8px;
+    letter-spacing: 0.03em;
+    text-align: left;
+  }
+  .screen-compare .triptych {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .screen-compare .triptych-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: #fff;
+  }
+  @media (max-width: 860px) {
+    .screen-compare .triptych { grid-template-columns: 1fr; gap: 14px; }
+  }
+  .screen-compare .caption {
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 14px;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+  @media (max-width: 860px) {
+    .screen-compare { margin: 32px 0; padding: 22px 18px 16px; }
+  }
+  /* portrait hero (Section X — Caramel) */
+  .caramel-hero {
+    margin: 36px auto;
+    text-align: center;
+  }
+  .caramel-hero img {
+    display: block;
+    margin: 0 auto;
+    max-width: 280px;
+    width: 100%;
+    height: auto;
+    border-radius: 18px;
+  }
+  .caramel-hero .caption {
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 12px;
+    letter-spacing: 0.02em;
+  }
+  /* in-line youtube plug (Section I) */
+  .video-plug {
+    border-left: 2px solid var(--border);
+    padding: 4px 0 4px 16px;
+    margin: 28px 0 28px;
+    font-style: italic;
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  .video-plug a { color: var(--text); text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px; }
+  .video-plug a:hover { text-decoration-color: var(--text); }
+  /* end-of-piece youtube poster-link */
+  a.video-embed {
+    display: block;
+    margin: 72px -60px 24px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+  }
+  .video-embed .frame-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .video-embed .frame-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .video-embed:hover .frame-wrap img { transform: scale(1.02); }
+  .video-embed .play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.92;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+  }
+  .video-embed:hover .play-button { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+  .video-caption {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    text-align: center;
+    margin-top: 14px;
+    letter-spacing: 0.02em;
+  }
+  .video-caption-cue {
+    font-style: normal;
+    color: var(--text);
+    margin-left: 6px;
+    letter-spacing: 0.04em;
+  }
+  @media (max-width: 860px) {
+    a.video-embed { margin: 56px 0 20px; }
+  }
+  #loading { font-family: var(--sans); color: var(--muted); text-align: center; padding: 120px 0; }
+</style>
+</head>
+<body>
+<div id="root"><div id="loading">Loading charts…</div></div>
+
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
+<script crossorigin src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+
+<script type="text/babel" data-type="module">
+const { useState, useEffect } = React;
+const {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer, Cell, LabelList
+} = Recharts;
+
+const BRAND = "#C8D8E8";
+const ACCENT = "#0079FF";
+const SOFT = "#95C492";
+const CARD = "#ffffff";
+const TEXT = "#141414";
+const MUTED = "#64748b";
+const BORDER = "#e8e4de";
+
+// ── data ────────────────────────────────────────────────────────────
+const catAvgData = [
+  { cat: "Finance", screens: 40.1, color: "#0079FF" },
+  { cat: "Health & Fitness", screens: 35.8, color: "#0079FF" },
+  { cat: "Education", screens: 29.0, color: "#0079FF" },
+  { cat: "Lifestyle", screens: 28.8, color: "#0079FF" },
+  { cat: "Social Networking", screens: 26.3, color: "#95C492" },
+  { cat: "Business", screens: 24.5, color: "#95C492" },
+  { cat: "Productivity", screens: 24.3, color: "#95C492" },
+  { cat: "Music & Audio", screens: 24.2, color: "#95C492" },
+  { cat: "Sports", screens: 21.6, color: "#95C492" },
+  { cat: "Entertainment", screens: 19.9, color: "#95C492" },
+  { cat: "Food & Drink", screens: 18.8, color: "#F3AC92" },
+  { cat: "News", screens: 18.6, color: "#F3AC92" },
+  { cat: "Shopping", screens: 18.2, color: "#F3AC92" },
+  { cat: "AI", screens: 17.7, color: "#F3AC92" },
+  { cat: "Developer Tools", screens: 16.5, color: "#F3AC92" },
+  { cat: "Travel", screens: 16.6, color: "#F3AC92" },
+  { cat: "Graphics & Design", screens: 13.8, color: "#F3AC92" },
+  { cat: "Maps & Nav", screens: 13.4, color: "#F3AC92" },
+];
+
+const spreadCats = [
+  { cat: "Finance",          n: 93,  mean: 43.6, median: 37, q1: 20, q3: 58,  std: 31.5, vals: [3,5,6,7,8,8,10,10,12,14,14,14,15,15,17,17,17,18,18,19,19,19,19,20,20,21,21,23,24,24,25,25,25,26,27,27,27,28,29,30,31,31,35,35,35,36,37,38,40,41,41,44,44,46,47,47,47,48,48,49,50,51,52,52,52,52,52,55,57,58,61,61,63,65,66,68,68,68,70,73,74,74,77,78,79,85,96,98,102,111,114,143,187] },
+  { cat: "Health & Fitness", n: 84,  mean: 36.4, median: 33, q1: 24, q3: 49,  std: 19.1, vals: [5,6,8,8,8,10,10,13,15,16,16,16,17,17,18,20,21,21,23,24,24,24,24,25,25,25,25,26,26,26,27,29,30,30,30,30,30,31,31,32,33,33,33,34,37,38,38,39,39,39,40,40,41,41,42,42,43,44,44,45,46,47,47,49,50,50,50,51,52,55,55,55,55,56,58,61,62,63,66,66,73,74,79,113] },
+  { cat: "Education",        n: 37,  mean: 30.2, median: 26, q1: 17, q3: 39,  std: 17.8, vals: [4,7,10,10,10,14,14,16,17,17,19,20,20,21,24,25,25,26,26,27,27,28,29,31,31,32,35,39,44,49,51,53,55,56,57,71,76] },
+  { cat: "Lifestyle",        n: 59,  mean: 29.1, median: 23, q1: 14, q3: 40,  std: 21.8, vals: [4,5,5,7,7,8,9,10,10,11,11,12,12,14,14,15,15,16,16,17,17,17,19,19,20,21,21,22,22,23,23,26,26,26,26,28,28,28,28,29,33,34,35,39,40,41,41,42,43,45,51,51,56,62,64,64,93,95,99] },
+  { cat: "Social Networking",n: 59,  mean: 27.9, median: 24, q1: 19, q3: 31,  std: 14.8, vals: [6,11,12,12,13,13,14,16,16,16,16,18,18,19,19,20,20,20,21,21,22,22,22,22,23,23,23,23,23,24,24,24,25,25,26,27,27,28,29,29,29,30,30,30,31,32,33,37,37,40,43,43,44,47,56,57,64,69,85] },
+  { cat: "Productivity",     n: 79,  mean: 26.5, median: 24, q1: 18, q3: 31,  std: 13.6, vals: [9,10,10,10,10,11,11,11,12,12,12,13,14,14,15,15,16,17,18,18,18,18,19,19,19,20,20,21,21,21,21,22,22,22,22,23,23,23,24,24,25,25,26,26,27,27,27,27,27,28,28,28,28,28,29,29,29,31,31,31,32,34,34,34,35,36,37,38,40,41,42,43,45,46,50,60,65,71,76] },
+  { cat: "Business",         n: 104, mean: 24.9, median: 22, q1: 15, q3: 33,  std: 15.4, vals: [4,5,7,7,7,8,8,8,9,10,10,11,11,11,11,12,12,12,12,12,12,13,13,13,14,14,15,15,15,15,16,16,16,16,17,17,18,18,18,18,19,19,19,20,20,20,20,20,21,21,22,22,22,22,23,23,23,23,23,24,24,24,25,25,25,25,25,25,26,26,28,28,28,30,30,31,31,32,33,33,33,34,34,34,34,35,35,36,37,38,40,41,42,43,44,45,47,54,56,56,57,61,81,97] },
+  { cat: "AI",               n: 41,  mean: 19.0, median: 15, q1: 11, q3: 22,  std: 13.0, vals: [3,4,5,7,7,8,10,10,11,11,11,13,13,13,13,13,13,14,14,14,15,16,16,17,17,19,19,20,20,22,22,23,23,25,26,32,35,43,44,51,66] },
+  { cat: "Developer Tools",  n: 33,  mean: 17.1, median: 16, q1: 12, q3: 21,  std: 7.4,  vals: [7,8,9,9,9,10,11,11,12,12,12,13,13,13,14,15,16,17,18,18,19,19,20,20,21,22,22,23,26,27,28,30,40] },
+];
+
+const platformData = [
+  { platform: "Web", screens: 21.0, color: "#F3AC92" },
+  { platform: "Android", screens: 24.9, color: "#95C492" },
+  { platform: "iOS", screens: 26.5, color: "#0079FF" },
+];
+
+const top20Shortest = [
+  { app: "Amazon Shopping", screens: 5, cat: "Shopping" },
+  { app: "Google Gemini", screens: 5, cat: "AI" },
+  { app: "Weavy", screens: 5, cat: "AI" },
+  { app: "Saily", screens: 5, cat: "Travel" },
+  { app: "Neuecast", screens: 5, cat: "News" },
+  { app: "one year", screens: 5, cat: "Health & Fitness" },
+  { app: "Pangea Charging", screens: 5, cat: "Maps & Nav" },
+  { app: "Moda Operandi", screens: 4, cat: "Shopping" },
+  { app: "Google Podcasts", screens: 4, cat: "Entertainment" },
+  { app: "Angi", screens: 4, cat: "Lifestyle" },
+  { app: "Podia", screens: 4, cat: "Business" },
+  { app: "Microsoft Copilot", screens: 4, cat: "AI" },
+  { app: "Luma AI", screens: 4, cat: "AI" },
+  { app: "OpenSea", screens: 4, cat: "Graphics & Design" },
+  { app: "Netflix", screens: 4, cat: "Entertainment" },
+  { app: "Compass", screens: 3, cat: "Lifestyle" },
+  { app: "Midjourney", screens: 3, cat: "AI" },
+  { app: "PamPam", screens: 3, cat: "Maps & Nav" },
+  { app: "Procreate Pocket", screens: 2, cat: "Graphics & Design" },
+  { app: "Google News", screens: 2, cat: "News" },
+].reverse();
+
+const top10LongestOther = [
+  { app: "Philips Hue", screens: 99, cat: "Lifestyle" },
+  { app: "Upwork", screens: 97, cat: "Business" },
+  { app: "Hinge", screens: 95, cat: "Lifestyle" },
+  { app: "Bumble", screens: 93, cat: "Lifestyle" },
+  { app: "Tinder", screens: 85, cat: "Social Networking" },
+  { app: "LinkedIn", screens: 81, cat: "Business" },
+  { app: "Duolingo", screens: 76, cat: "Education" },
+  { app: "TimeTree", screens: 76, cat: "Productivity" },
+  { app: "Sonos", screens: 73, cat: "Music & Audio" },
+  { app: "IPSY", screens: 73, cat: "Shopping" },
+  { app: "Opal", screens: 71, cat: "Productivity" },
+  { app: "Imprint", screens: 71, cat: "Education" },
+  { app: "Snapchat", screens: 69, cat: "Social Networking" },
+  { app: "Meta Quest", screens: 67, cat: "Entertainment" },
+  { app: "Beside", screens: 66, cat: "AI" },
+  { app: "Superhuman Mail", screens: 65, cat: "Productivity" },
+  { app: "Badoo", screens: 64, cat: "Lifestyle" },
+  { app: "Peerlist", screens: 64, cat: "Social Networking" },
+  { app: "Peanut", screens: 64, cat: "Lifestyle" },
+  { app: "Xbox", screens: 62, cat: "Entertainment" },
+];
+
+const paywallVsPersonalData = [
+  { group: "Neither", count: 600, avg: 21, color: "#e8e4de" },
+  { group: "Personalize only", count: 168, avg: 35, color: "#95C492" },
+  { group: "Paywall only", count: 155, avg: 31, color: "#F3AC92" },
+  { group: "Both", count: 62, avg: 42, color: "#0079FF" },
+];
+
+const top10Longest = [
+  { app: "Hyundai Card", screens: 187, cat: "Finance" },
+  { app: "Lemonade", screens: 143, cat: "Finance" },
+  { app: "Monzo", screens: 114, cat: "Finance" },
+  { app: "Noom", screens: 113, cat: "Health & Fitness" },
+  { app: "Neo Financial", screens: 111, cat: "Finance" },
+  { app: "Kit", screens: 102, cat: "Finance" },
+  { app: "Philips Hue", screens: 99, cat: "Lifestyle" },
+  { app: "Chase UK", screens: 98, cat: "Finance" },
+  { app: "Upwork", screens: 97, cat: "Business" },
+  { app: "Mercury", screens: 96, cat: "Finance" },
+].reverse();
+
+const patternsData = [
+  { pattern: "Verification", pct: 43.9, color: "#F3AC92" },
+  { pattern: "Personalization", pct: 23.4, color: "#0079FF" },
+  { pattern: "Paywall", pct: 22.0, color: "#E2C76E" },
+  { pattern: "Social seeding", pct: 9.4, color: "#95C492" },
+  { pattern: "Tutorial", pct: 7.9, color: "#7BAFD4" },
+  { pattern: "Connect accounts", pct: 6.9, color: "#D4A0D0" },
+].reverse();
+
+const tutorialByCatData = [
+  { cat: "Productivity", pct: 22.2 },
+  { cat: "Health & Fitness", pct: 10.7 },
+  { cat: "Photo & Video", pct: 9.7 },
+  { cat: "Developer Tools", pct: 9.1 },
+  { cat: "Finance", pct: 8.6 },
+  { cat: "Business", pct: 7.8 },
+  { cat: "Sports", pct: 6.2 },
+  { cat: "Entertainment", pct: 5.9 },
+  { cat: "Education", pct: 5.4 },
+  { cat: "Travel", pct: 5.4 },
+  { cat: "AI", pct: 5.0 },
+  { cat: "Social Networking", pct: 5.0 },
+  { cat: "Lifestyle", pct: 3.4 },
+  { cat: "Food & Drink", pct: 3.1 },
+  { cat: "Shopping", pct: 2.6 },
+].reverse();
+
+const paywallByCatData = [
+  { cat: "Music & Audio", pct: 47.6 },
+  { cat: "Health & Fitness", pct: 46.4 },
+  { cat: "Education", pct: 45.9 },
+  { cat: "Photo & Video", pct: 41.9 },
+  { cat: "News", pct: 37.5 },
+  { cat: "Utilities", pct: 33.3 },
+  { cat: "Entertainment", pct: 31.4 },
+  { cat: "Sports", pct: 31.2 },
+  { cat: "Productivity", pct: 29.1 },
+  { cat: "AI", pct: 19.0 },
+  { cat: "Finance", pct: 15.8 },
+  { cat: "Business", pct: 14.8 },
+  { cat: "Food & Drink", pct: 14.1 },
+  { cat: "Shopping", pct: 3.8 },
+  { cat: "Travel", pct: 3.6 },
+].reverse();
+
+const personalizationByCatData = [
+  { cat: "Education", pct: 43.2 },
+  { cat: "Productivity", pct: 32.6 },
+  { cat: "Finance", pct: 26.3 },
+  { cat: "Lifestyle", pct: 25.8 },
+  { cat: "Shopping", pct: 25.6 },
+  { cat: "Health & Fitness", pct: 23.8 },
+  { cat: "Business", pct: 23.1 },
+  { cat: "Entertainment", pct: 20.0 },
+  { cat: "Music & Audio", pct: 19.0 },
+  { cat: "Sports", pct: 18.8 },
+  { cat: "Social Networking", pct: 17.7 },
+  { cat: "Photo & Video", pct: 16.1 },
+  { cat: "News", pct: 15.6 },
+  { cat: "Food & Drink", pct: 15.6 },
+  { cat: "Developer Tools", pct: 12.1 },
+  { cat: "Travel", pct: 8.9 },
+  { cat: "AI", pct: 7.1 },
+].reverse();
+
+// ── shared tooltip ──────────────────────────────────────────────────
+const CustomTooltip = ({ active, payload, label, suffix = "" }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div style={{ background: "#fff", border: `1px solid ${BORDER}`, borderRadius: 8, padding: "8px 14px", fontFamily: "Inter, sans-serif" }}>
+        <p style={{ color: TEXT, margin: 0, fontWeight: 600, fontSize: 12 }}>{label}</p>
+        <p style={{ color: ACCENT, margin: 0, fontSize: 13 }}>{payload[0].value}{suffix}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
+// ── beeswarm (standalone) ───────────────────────────────────────────
+function BeeswarmChart({ data }) {
+  const W = 720, ROW_H = 64;
+  const LEFT = 158, RIGHT = 28, TOP = 40, BOTTOM = 48;
+  const PW = W - LEFT - RIGHT;
+  const H = TOP + data.length * ROW_H + BOTTOM;
+  const MAX_X = 120;
+  const colors = ["#0079FF", "#95C492", "#F3AC92", "#E2C76E", "#6BAFA8", "#C8D8E8", "#7BAFD4", "#D4A0D0", "#A8B8D8"];
+  const sx = v => LEFT + (v / MAX_X) * PW;
+  const jitter = i => Math.sin(i * 17.31 + 0.7) * 13 * Math.cos(i * 3.17 + 1.1);
+  const overallAvg = 25;
+  return (
+    <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ overflow: "visible", fontFamily: "Inter, sans-serif" }}>
+      {[0,15,30,45,60,75,90,105,120].map((v) => (
+        <g key={v}>
+          <line x1={sx(v)} y1={TOP - 10} x2={sx(v)} y2={H - BOTTOM} stroke="#c8c4be" strokeWidth={1} />
+          <text x={sx(v)} y={H - BOTTOM + 14} textAnchor="middle" fill={MUTED} fontSize={9}>{v}{v === 120 ? "+" : ""}</text>
+        </g>
+      ))}
+      <g>
+        <line x1={sx(overallAvg)} y1={TOP - 28} x2={sx(overallAvg)} y2={H - BOTTOM} stroke={ACCENT} strokeWidth={1.5} strokeDasharray="4 3" />
+        <text x={sx(overallAvg) + 3} y={TOP - 20} textAnchor="middle" fill={TEXT} fontSize={9} fontWeight="600">Overall avg: {overallAvg}</text>
+      </g>
+      {data.map((d, i) => {
+        const color = colors[i % colors.length];
+        const yc = TOP + i * ROW_H + ROW_H / 2;
+        const bh = 14;
+        return (
+          <g key={d.cat}>
+            {i % 2 === 0 && <rect x={LEFT} y={yc - ROW_H / 2} width={PW} height={ROW_H} fill="#00000004" />}
+            <text x={LEFT - 8} y={yc - 5} textAnchor="end" fill={TEXT} fontSize={10} fontWeight="600">{d.cat}</text>
+            <text x={LEFT - 8} y={yc + 9} textAnchor="end" fill={MUTED} fontSize={8}>n={d.n} · σ={d.std}</text>
+            <rect x={sx(d.q1)} y={yc - bh / 2} width={Math.max(1, sx(d.q3) - sx(d.q1))} height={bh} fill={color} rx={2} opacity={0.4} />
+            <line x1={sx(d.median)} y1={yc - bh / 2} x2={sx(d.median)} y2={yc + bh / 2} stroke={color} strokeWidth={2} />
+            <text x={sx(d.mean)} y={yc + 4} textAnchor="middle" fill={color} fontSize={12} fontWeight="bold">×</text>
+            {d.vals.map((v, j) => (
+              <circle key={j} cx={sx(v)} cy={yc + jitter(j + i * 137)} r={2.2} fill={color} opacity={0.9} />
+            ))}
+          </g>
+        );
+      })}
+      <g transform={`translate(${LEFT}, ${H - BOTTOM + 28})`}>
+        <rect x={0} y={-4} width={40} height={8} fill={MUTED} opacity={0.15} rx={2} />
+        <text x={46} y={3.5} fill={MUTED} fontSize={8}>Q1–Q3 box</text>
+        <line x1={90} y1={0} x2={100} y2={0} stroke={MUTED} strokeWidth={2} />
+        <text x={104} y={3.5} fill={MUTED} fontSize={8}>Median</text>
+        <text x={148} y={3.5} fill={MUTED} fontSize={8}>× Mean</text>
+        <circle cx={200} cy={0} r={2.2} fill={MUTED} opacity={0.5} />
+        <text x={206} y={3.5} fill={MUTED} fontSize={8}>Each dot = 1 app</text>
+      </g>
+    </svg>
+  );
+}
+
+// ── screen comparison ───────────────────────────────────────────────
+function ScreenCompare() {
+  return (
+    <div className="screen-compare">
+      <div className="flow-row">
+        <h4>Cleo · Onboarding</h4>
+        <div className="meta">Product to use. The flow asks <em>what you want from the app</em>. Pure product-led asking.</div>
+        <img className="flow-img" src="viz/screens/SCR-20260425-hjtl.png" alt="Cleo iOS onboarding, 14 screens, as seen on Mobbin." loading="lazy" />
+        <div className="breadcrumb">Mobbin.com › Search "Cleo" › Flows › Onboarding</div>
+      </div>
+      <div className="flow-row">
+        <h4>Monzo · Setting up an account</h4>
+        <div className="meta">Both, braided. The progress bar names the four steps — <em>About you</em>, <em>Your finances</em>, <em>Your account</em>, <em>Your identity</em> — then asks what you want from Monzo and how you'll use it. Product questions and identity checks in one flow.</div>
+        <img className="flow-img" src="viz/screens/SCR-20260425-hnif.png" alt="Monzo iOS account setup, showing a four-step progress bar (About you, Your finances, Your account, Your identity) and personalization questions about goals and account use." loading="lazy" />
+        <div className="breadcrumb">Mobbin.com › Search "Monzo" › Flows › Onboarding › Setting up an account</div>
+      </div>
+      <div className="caption">Two flows from the same category, doing different work. Pure product-led asking on the left, both kinds braided on the right. Screens from Mobbin. (Lemonade's pure-underwriting flow shows up later, in Section VII.)</div>
+    </div>
+  );
+}
+
+// ── chart components ────────────────────────────────────────────────
+function Chart1_AvgByCategory() {
+  return (
+    <div className="chart-block">
+      <h3 className="chart-title">Average Onboarding Length by Category</h3>
+      <p className="chart-sub">Total screens including nested flows · 986 apps</p>
+      <ResponsiveContainer width="100%" height={620}>
+        <BarChart data={catAvgData} layout="vertical" margin={{ left: 10, right: 60, top: 8, bottom: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8e4de" horizontal={false} />
+          <XAxis type="number" tick={{ fill: MUTED, fontSize: 10 }} domain={[0, 45]} />
+          <YAxis type="category" dataKey="cat" tick={{ fill: TEXT, fontSize: 11 }} width={110} />
+          <Tooltip content={<CustomTooltip suffix=" screens" />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+          <Bar dataKey="screens" isAnimationActive={true} animationDuration={1400} radius={[0, 6, 6, 0]} maxBarSize={24}>
+            {catAvgData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+            <LabelList dataKey="screens" position="right" style={{ fill: TEXT, fontSize: 11, fontWeight: 600, fontFamily: "Inter, sans-serif" }} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <div className="chart-legend">
+        {[["#0079FF", "Long (compliance / personalization)"], ["#95C492", "Medium"], ["#F3AC92", "Short (intent-driven)"]].map(([c, l]) => (
+          <div className="item" key={l}><div className="swatch" style={{ background: c }} />{l}</div>
+        ))}
+      </div>
+      <p className="chart-caption"><span className="label">CHART 1</span>Average onboarding length by category · Mobbin, 986 apps</p>
+    </div>
+  );
+}
+
+function Chart2_CategorySpread() {
+  return (
+    <div className="chart-block">
+      <h3 className="chart-title">Onboarding Length: Category Spread</h3>
+      <p className="chart-sub">Each dot is one app. Box = Q1–Q3 range. Some categories agree on length, others don't.</p>
+      <BeeswarmChart data={spreadCats} />
+      <div className="callout-grid">
+        <div className="callout">
+          <div className="h">AI & Dev Tools: Tight consensus</div>
+          <div className="b">σ of just 7–13. Almost every AI tool onboards in 10–25 screens. The category has converged on "get to value fast."</div>
+        </div>
+        <div className="callout">
+          <div className="h">Finance: Total disagreement</div>
+          <div className="b">σ of 31.5 with a range of 3–187. Neo-banks and KYC marathons coexist. Two completely different onboarding philosophies.</div>
+        </div>
+      </div>
+      <p className="chart-caption"><span className="label">CHART 2</span>Onboarding length — category spread · box plot</p>
+    </div>
+  );
+}
+
+function Chart3_ByPlatform() {
+  return (
+    <div className="chart-block">
+      <h3 className="chart-title">Onboarding Length by Platform</h3>
+      <p className="chart-sub">Average total screens including nested flows</p>
+      <div className="pullstat">
+        <div className="pre">Web onboarding is</div>
+        <div className="n">21% shorter</div>
+        <div className="post">than iOS on average</div>
+      </div>
+      <ResponsiveContainer width="100%" height={360}>
+        <BarChart data={platformData} margin={{ left: 0, right: 40, top: 16, bottom: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8e4de" vertical={false} />
+          <XAxis dataKey="platform" tick={{ fill: TEXT, fontSize: 14, fontWeight: 600 }} />
+          <YAxis tick={{ fill: MUTED, fontSize: 11 }} domain={[0, 32]} />
+          <Tooltip content={<CustomTooltip suffix=" screens" />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+          <Bar dataKey="screens" isAnimationActive={true} animationDuration={1400} radius={[8, 8, 0, 0]} maxBarSize={120}>
+            {platformData.map((entry) => <Cell key={entry.platform} fill={entry.color} />)}
+            <LabelList dataKey="screens" position="top" style={{ fill: TEXT, fontSize: 13, fontWeight: 800, fontFamily: "Inter, sans-serif" }} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <p className="chart-caption"><span className="label">CHART 3</span>Onboarding length by platform · 986 apps</p>
+    </div>
+  );
+}
+
+function Chart4_TopShortest() {
+  const colorFor = cat =>
+    cat === "AI" ? ACCENT :
+    cat === "Shopping" ? "#D4A0D0" :
+    cat === "Entertainment" ? "#E2C76E" :
+    cat === "Lifestyle" ? SOFT :
+    cat === "News" ? "#7BAFD4" :
+    cat === "Graphics & Design" ? "#F3AC92" :
+    cat === "Business" ? "#E2C76E" :
+    cat === "Maps & Nav" ? "#6BAFA8" :
+    cat === "Health & Fitness" ? "#A8B8D8" :
+    cat === "Travel" ? "#7BAFD4" :
+    BRAND;
+  return (
+    <div className="chart-block">
+      <h3 className="chart-title">Top 20 Shortest Onboarding Flows</h3>
+      <p className="chart-sub">Excluding Apple native apps</p>
+      <ResponsiveContainer width="100%" height={580}>
+        <BarChart data={top20Shortest} layout="vertical" margin={{ left: 10, right: 60, top: 8, bottom: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8e4de" horizontal={false} />
+          <XAxis type="number" tick={{ fill: MUTED, fontSize: 10 }} domain={[0, 7]} />
+          <YAxis type="category" dataKey="app" tick={{ fill: TEXT, fontSize: 11 }} width={130} />
+          <Tooltip content={<CustomTooltip suffix=" screens" />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+          <Bar dataKey="screens" isAnimationActive={true} animationDuration={1400} radius={[0, 6, 6, 0]} maxBarSize={28}>
+            {top20Shortest.map((entry) => <Cell key={entry.app} fill={colorFor(entry.cat)} />)}
+            <LabelList dataKey="screens" position="right" style={{ fill: TEXT, fontSize: 11, fontWeight: 700, fontFamily: "Inter, sans-serif" }} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <div className="chart-legend">
+        {[["#0079FF", "AI"], ["#D4A0D0", "Shopping"], ["#E2C76E", "Entertainment / Business"], ["#95C492", "Lifestyle"], ["#7BAFD4", "News / Travel"], ["#F3AC92", "Graphics & Design"], ["#6BAFA8", "Maps & Nav"], ["#A8B8D8", "Health & Fitness"]].map(([c, l]) => (
+          <div className="item" key={l}><div className="swatch" style={{ background: c }} />{l}</div>
+        ))}
+      </div>
+      <p className="chart-caption"><span className="label">CHART 4</span>Top 20 shortest onboarding flows · excluding Apple native apps</p>
+    </div>
+  );
+}
+
+function Chart5_LongestOther() {
+  const colorFor = cat =>
+    cat === "Lifestyle" ? SOFT :
+    cat === "Social Networking" ? BRAND :
+    cat === "Business" ? "#E2C76E" :
+    cat === "Education" ? "#6BAFA8" :
+    cat === "Productivity" ? "#F3AC92" :
+    ACCENT;
+  return (
+    <div className="chart-block">
+      <h3 className="chart-title">Longest Onboarding — Excluding Finance &amp; Health</h3>
+      <p className="chart-sub">Top 20 across all other categories</p>
+      <ResponsiveContainer width="100%" height={580}>
+        <BarChart data={top10LongestOther} layout="vertical" margin={{ left: 10, right: 60, top: 8, bottom: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8e4de" horizontal={false} />
+          <XAxis type="number" tick={{ fill: MUTED, fontSize: 10 }} domain={[0, 110]} />
+          <YAxis type="category" dataKey="app" tick={{ fill: TEXT, fontSize: 11 }} width={140} />
+          <Tooltip content={<CustomTooltip suffix=" screens" />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+          <Bar dataKey="screens" isAnimationActive={true} animationDuration={1400} radius={[0, 6, 6, 0]} maxBarSize={28}>
+            {top10LongestOther.map((entry) => <Cell key={entry.app} fill={colorFor(entry.cat)} />)}
+            <LabelList dataKey="screens" position="right" style={{ fill: TEXT, fontSize: 11, fontWeight: 700, fontFamily: "Inter, sans-serif" }} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <div className="chart-legend">
+        {[["#95C492", "Lifestyle"], ["#C8D8E8", "Social Networking"], ["#E2C76E", "Business"], ["#6BAFA8", "Education"], ["#F3AC92", "Productivity"], ["#0079FF", "Other"]].map(([c, l]) => (
+          <div className="item" key={l}><div className="swatch" style={{ background: c }} />{l}</div>
+        ))}
+      </div>
+      <p className="chart-caption"><span className="label">CHART 5</span>Longest onboarding flows — excluding Finance &amp; Health</p>
+    </div>
+  );
+}
+
+function Chart6_PaywallVsPersonal() {
+  return (
+    <div className="chart-block">
+      <h3 className="chart-title">Paywall vs Personalization</h3>
+      <p className="chart-sub">How 986 apps combine the two moves in onboarding · average screens per group</p>
+      <ResponsiveContainer width="100%" height={340}>
+        <BarChart data={paywallVsPersonalData} margin={{ left: 0, right: 40, top: 20, bottom: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8e4de" vertical={false} />
+          <XAxis dataKey="group" tick={{ fill: TEXT, fontSize: 11, fontWeight: 600 }} />
+          <YAxis tick={{ fill: MUTED, fontSize: 11 }} domain={[0, 50]} label={{ value: "Avg screens", angle: -90, position: "insideLeft", fill: MUTED, fontSize: 11 }} />
+          <Tooltip content={<CustomTooltip suffix=" avg screens" />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+          <Bar dataKey="avg" isAnimationActive={true} animationDuration={1400} radius={[8, 8, 0, 0]} maxBarSize={120}>
+            {paywallVsPersonalData.map((entry) => <Cell key={entry.group} fill={entry.color} />)}
+            <LabelList dataKey="avg" position="top" style={{ fill: TEXT, fontSize: 13, fontWeight: 800, fontFamily: "Inter, sans-serif" }} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <div className="callout-grid">
+        {paywallVsPersonalData.slice().reverse().map((d) => (
+          <div className="callout" key={d.group}>
+            <div className="h" style={{ color: d.color === "#e8e4de" ? TEXT : d.color }}>{d.group}</div>
+            <div className="b">{d.count} apps · avg {d.avg} screens</div>
+          </div>
+        ))}
+      </div>
+      <p className="chart-caption"><span className="label">CHART 6</span>Paywall vs personalization · 986 apps</p>
+    </div>
+  );
+}
+
+function Chart7_OfPaywalling() {
+  return (
+    <div className="chart-block">
+      <h3 className="chart-title">Of the apps that paywall in onboarding…</h3>
+      <p className="chart-sub">Only 29% have asked anything about the user first</p>
+      <div className="pullstat">
+        <div className="pre">of paywalling apps</div>
+        <div className="n">71%</div>
+        <div className="post">do it without personalizing first</div>
+      </div>
+      <div style={{ display: "flex", height: 48, borderRadius: 10, overflow: "hidden", margin: "20px 0 10px", border: `1px solid ${BORDER}` }}>
+        <div style={{ width: "71%", background: "#F3AC92", display: "flex", alignItems: "center", justifyContent: "center", color: "#8b4a2c", fontFamily: "Inter", fontSize: 13, fontWeight: 700 }}>155 apps · 71%</div>
+        <div style={{ width: "29%", background: "#0079FF", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontFamily: "Inter", fontSize: 12, fontWeight: 700 }}>62 · 29%</div>
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", fontFamily: "Inter", fontSize: 11, color: MUTED }}>
+        <span>Paywall only — no personalization</span>
+        <span>Both</span>
+      </div>
+      <p className="chart-caption" style={{ marginTop: 18 }}><span className="label">CHART 7</span>Of 217 apps paywalling in onboarding</p>
+    </div>
+  );
+}
+
+function Chart8_Top10Longest() {
+  const colorFor = cat =>
+    cat === "Finance" ? "#0079FF" :
+    cat === "Health & Fitness" ? "#6BAFA8" :
+    cat === "Lifestyle" ? SOFT :
+    cat === "Business" ? "#E2C76E" :
+    BRAND;
+  return (
+    <div className="chart-block">
+      <h3 className="chart-title">Top 10 Longest Onboarding Flows</h3>
+      <p className="chart-sub">7 of 10 are Finance apps. Mostly regulatory, not personalization.</p>
+      <ResponsiveContainer width="100%" height={420}>
+        <BarChart data={top10Longest} layout="vertical" margin={{ left: 10, right: 60, top: 8, bottom: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8e4de" horizontal={false} />
+          <XAxis type="number" tick={{ fill: MUTED, fontSize: 10 }} domain={[0, 200]} />
+          <YAxis type="category" dataKey="app" tick={{ fill: TEXT, fontSize: 11 }} width={140} />
+          <Tooltip content={<CustomTooltip suffix=" screens" />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+          <Bar dataKey="screens" isAnimationActive={true} animationDuration={1400} radius={[0, 6, 6, 0]} maxBarSize={28}>
+            {top10Longest.map((entry) => <Cell key={entry.app} fill={colorFor(entry.cat)} />)}
+            <LabelList dataKey="screens" position="right" style={{ fill: TEXT, fontSize: 11, fontWeight: 700, fontFamily: "Inter, sans-serif" }} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <div className="chart-legend">
+        {[["#0079FF", "Finance"], ["#6BAFA8", "Health & Fitness"], ["#95C492", "Lifestyle"], ["#E2C76E", "Business"]].map(([c, l]) => (
+          <div className="item" key={l}><div className="swatch" style={{ background: c }} />{l}</div>
+        ))}
+      </div>
+      <p className="chart-caption"><span className="label">CHART 8</span>Top 10 longest onboarding flows · 986 apps</p>
+    </div>
+  );
+}
+
+function Chart9_PatternsOverall() {
+  return (
+    <div className="chart-block">
+      <h3 className="chart-title">What Patterns Appear in Onboarding</h3>
+      <p className="chart-sub">% of 986 apps that include each pattern</p>
+      <ResponsiveContainer width="100%" height={340}>
+        <BarChart data={patternsData} layout="vertical" margin={{ left: 10, right: 60, top: 8, bottom: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8e4de" horizontal={false} />
+          <XAxis type="number" tick={{ fill: MUTED, fontSize: 10 }} domain={[0, 50]} unit="%" />
+          <YAxis type="category" dataKey="pattern" tick={{ fill: TEXT, fontSize: 11 }} width={140} />
+          <Tooltip content={<CustomTooltip suffix="%" />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+          <Bar dataKey="pct" isAnimationActive={true} animationDuration={1400} radius={[0, 6, 6, 0]} maxBarSize={28}>
+            {patternsData.map((entry) => <Cell key={entry.pattern} fill={entry.color} />)}
+            <LabelList dataKey="pct" position="right" formatter={(v) => `${v}%`} style={{ fill: TEXT, fontSize: 11, fontWeight: 700, fontFamily: "Inter, sans-serif" }} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <p className="chart-caption"><span className="label">CHART 9</span>Onboarding patterns · share of 986 apps including each</p>
+    </div>
+  );
+}
+
+function Chart10_TutorialByCat() {
+  return (
+    <div className="chart-block">
+      <h3 className="chart-title">Which Categories Include a Tutorial</h3>
+      <p className="chart-sub">% of apps per category that teach the user how to use the product</p>
+      <ResponsiveContainer width="100%" height={500}>
+        <BarChart data={tutorialByCatData} layout="vertical" margin={{ left: 10, right: 60, top: 8, bottom: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8e4de" horizontal={false} />
+          <XAxis type="number" tick={{ fill: MUTED, fontSize: 10 }} domain={[0, 25]} unit="%" />
+          <YAxis type="category" dataKey="cat" tick={{ fill: TEXT, fontSize: 11 }} width={140} />
+          <Tooltip content={<CustomTooltip suffix="%" />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+          <Bar dataKey="pct" isAnimationActive={true} animationDuration={1400} radius={[0, 6, 6, 0]} maxBarSize={22} fill="#7BAFD4">
+            <LabelList dataKey="pct" position="right" formatter={(v) => `${v}%`} style={{ fill: TEXT, fontSize: 11, fontWeight: 700, fontFamily: "Inter, sans-serif" }} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <p className="chart-caption"><span className="label">CHART 10</span>Tutorial inclusion by category · overall average 7.9%</p>
+    </div>
+  );
+}
+
+function Chart11_PaywallByCat() {
+  return (
+    <div className="chart-block">
+      <h3 className="chart-title">Which Categories Front-Load the Paywall</h3>
+      <p className="chart-sub">% of apps per category that paywall during onboarding</p>
+      <ResponsiveContainer width="100%" height={500}>
+        <BarChart data={paywallByCatData} layout="vertical" margin={{ left: 10, right: 60, top: 8, bottom: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8e4de" horizontal={false} />
+          <XAxis type="number" tick={{ fill: MUTED, fontSize: 10 }} domain={[0, 50]} unit="%" />
+          <YAxis type="category" dataKey="cat" tick={{ fill: TEXT, fontSize: 11 }} width={140} />
+          <Tooltip content={<CustomTooltip suffix="%" />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+          <Bar dataKey="pct" isAnimationActive={true} animationDuration={1400} radius={[0, 6, 6, 0]} maxBarSize={22} fill="#E2C76E">
+            <LabelList dataKey="pct" position="right" formatter={(v) => `${v}%`} style={{ fill: TEXT, fontSize: 11, fontWeight: 700, fontFamily: "Inter, sans-serif" }} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <p className="chart-caption"><span className="label">CHART 11</span>Front-loaded paywall by category · overall 22%</p>
+    </div>
+  );
+}
+
+function Chart12_PersonalizationByCat() {
+  return (
+    <div className="chart-block">
+      <h3 className="chart-title">Which Categories Personalize</h3>
+      <p className="chart-sub">% of apps per category that personalize during onboarding</p>
+      <ResponsiveContainer width="100%" height={540}>
+        <BarChart data={personalizationByCatData} layout="vertical" margin={{ left: 10, right: 60, top: 8, bottom: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8e4de" horizontal={false} />
+          <XAxis type="number" tick={{ fill: MUTED, fontSize: 10 }} domain={[0, 50]} unit="%" />
+          <YAxis type="category" dataKey="cat" tick={{ fill: TEXT, fontSize: 11 }} width={140} />
+          <Tooltip content={<CustomTooltip suffix="%" />} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+          <Bar dataKey="pct" isAnimationActive={true} animationDuration={1400} radius={[0, 6, 6, 0]} maxBarSize={22} fill="#0079FF">
+            <LabelList dataKey="pct" position="right" formatter={(v) => `${v}%`} style={{ fill: TEXT, fontSize: 11, fontWeight: 700, fontFamily: "Inter, sans-serif" }} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <p className="chart-caption"><span className="label">CHART 12</span>Personalization by category · overall 23.4%</p>
+    </div>
+  );
+}
+
+// ── prose ───────────────────────────────────────────────────────────
+function EssayPreview() {
+  return (
+    <div className="wrap">
+      <header className="title">
+        <div className="kicker">Late Night Research Club · 001</div>
+        <h1>The Long Onboarding: A Study of 1,460 Flows</h1>
+        <div className="byline">By Rebekah Bek</div>
+      </header>
+
+      <h2 className="section"><span className="num">I</span> The Raccoon</h2>
+
+      <p className="lede">There is a screen inside an app called BitePal, buried about halfway through its onboarding, where the app asks you to name a raccoon.</p>
+
+      <p>The raccoon is small and cartoon and it lives, for the moment, inside a bin. Someone drew the raccoon. Someone decided the bin was funny. You have not given the app your email. You have not paid for anything. You have not been shown, yet, what the app actually does. But the raccoon is there, and it needs a name, and the app will wait.</p>
+
+      <p>I named mine Caramel.</p>
+
+      <p>BitePal, if you haven't heard of it, is an AI calorie-counter. If you count every screen between the moment you tap the icon and the moment you arrive inside the product, you will count sixty-one.</p>
+
+      <p>That is almost two and a half times the overall average, and roughly four times the number of screens most people who write about onboarding will tell you is acceptable. And yet users walk through all sixty-one, and then pay.</p>
+
+      <p>Everyone agrees, broadly, that onboarding should be short. Nielsen Norman Group recommends skipping it when you can. The growth writers treat every extra screen as a tax. This is the sort of consensus the internet does not often produce, and it has been produced here.</p>
+
+      <p>So I went to Mobbin — where every onboarding flow from 986 apps is documented, screen by screen — and I looked at the numbers.</p>
+
+      <p className="video-plug">The study this piece sits on top of — 1,460 onboarding flows in eight minutes — is <a href="https://youtu.be/Qsq-Sj_rojU" target="_blank" rel="noopener noreferrer">here as a video</a>. Watch it for every chart included in this piece, plus flows that didn't make it in.</p>
+
+      <p>The average app runs 25 onboarding screens. The range is 3 to 187.</p>
+
+      <p>That is the first thing that did not match the consensus. A category of apps was apparently running well past the point the growth blogs had condemned, and the apps running longest were not, on the whole, the ones doing worse.</p>
+
+      <p>Lemonade runs a hundred and forty-three screens. Monzo, a hundred and fourteen. Noom, a hundred and thirteen. Philips Hue, ninety-nine. Hinge, ninety-five. Duolingo, seventy-six. These are all well-regarded apps. None of them are apologizing for the length.</p>
+
+      <p>At the other end: Google News, two screens. Procreate Pocket, two. Midjourney, three. Netflix, four. Microsoft Copilot, four.</p>
+
+      <p>So the collective wisdom was right about some apps, and wrong about others.</p>
+
+      <h2 className="section"><span className="num">II</span> How long is long</h2>
+
+      <p>The average app has 25 onboarding screens. That is the number to put down first, because most of the conversation about onboarding is happening without it.</p>
+
+      <p>It is a mean drawn across 986 apps on Mobbin, counting every screen — including the ones inside nested flows, the permission prompts, the small illustrated pages most users do not register as screens at all.</p>
+
+      <p>An average flattens. The better view is by category.</p>
+
+      <Chart1_AvgByCategory />
+
+      <p>Finance averages 40 screens. Health and Fitness, 36. Education and Lifestyle, 29. Then a long fall. Maps and Navigation lands at 13; Graphics and Design at 14. The categories on either end of that drop are not running the same kind of flow.</p>
+
+      <p>The long ones are where the app has to confirm something — a regulatory check, a personal fact — before it can begin. The short ones are where the user walked in already knowing what they came for: a destination, a search, a picture. At the top, compliance and personalization reign. At the bottom, intent.</p>
+
+      <p>An AI tool and a health tracker are not playing the same game. Asking them to produce onboarding of comparable length is a category error.</p>
+
+      <p>But the averages hide the more interesting story, which is what happens <em>inside</em> each category.</p>
+
+      <Chart2_CategorySpread />
+
+      <p>Some of these categories have figured out what their onboarding is for. Others are still arguing about it, inside their own bar.</p>
+
+      <p>AI is the clearest case of the first kind. Almost every AI product lives between 10 and 25 screens. Prompt, generation, user typing within a minute of opening the icon — the category has settled on <em>get to value fast</em>, and most of its apps are converging on the same number of screens to get there. Developer Tools is tighter still. For these kinds of products, there is a right answer, and most of the apps have found it.</p>
+
+      <p>Finance is the opposite. The category's standard deviation is 31.5; its range runs from 3 screens to 187. Cleo at 47 and Lemonade at 143 are both tagged Finance, but they are not, in any meaningful sense, running the same kind of flow. One has decided money is a product to use. The other has decided it is a risk to price. Most flows live somewhere on the line between.</p>
+
+      <ScreenCompare />
+
+      <p>The conversation about "the right length for onboarding" is several conversations, each asking a different question. The plain average — 25 screens — is where those questions get averaged out.</p>
+
+      <Chart3_ByPlatform />
+
+      <p>Platform turns out to matter less than you'd think. Web averages 21 screens; iOS, 27. The gap is real — about a fifth — and tracks the patience the surface earns: a browser tab is closer to leaving than a downloaded app. But the platform spread is small next to the category spread, and the category spread is where the argument lives.</p>
+
+      <p style={{ padding: "18px 20px", background: "#f5f2ee", borderLeft: `3px solid ${ACCENT}`, borderRadius: "0 8px 8px 0", fontSize: "0.95em", margin: "24px 0" }}>A note on what this data can show. Mobbin documents the flows; it cannot tell me why a given app is doing well. Noom is long and grossing, but the data cannot prove the length is the reason. What the dataset supports is patterns the best-regarded apps share. Copying a pattern will not copy a result.</p>
+
+      <p>Length is not a universal variable. You cannot say an app's onboarding is long or short without first saying what kind of app it is, what the user came to do, or what the product has to confirm before it can begin.</p>
+
+      <p>In every discussion of long onboarding flows, someone in the comments writes: <em>the best onboarding is the one with a skip button.</em> It gets upvoted. It sounds right. And it is right — for an app where the user already knows what they came to do. For an app that needs to know who you are before it can help you, the skip button skips the part that makes the product work.</p>
+      <h2 className="section"><span className="num">III</span> Length follows the ask</h2>
+
+      <p>What sets the length of onboarding, more than anything, is what the user has to give the app before the app can do what it's for.</p>
+
+      <p>Midjourney is three screens. You sign in, you read a line of house rules, and you arrive at a prompt box. The prompt box is the product. You came knowing you wanted to make a picture, and the app's one job is to get you to the place where the picture is made. Asking you anything else would be asking for something it did not need. So it doesn't.</p>
+
+      <p>Noom is a hundred and thirteen. The app is going to tell you how to eat. Before it can, it needs to know what you weigh and what you want to weigh, and how you have tried to get there before, and how you speak to yourself when it isn't going well, and whether you believe, in some small part, that you can change. You can see why it takes the screens it takes. You would not trust a plan made for you by a stranger who had not asked.</p>
+
+      <p>They are not apps of different quality, so much as apps answering different questions.</p>
+
+      <Chart4_TopShortest />
+
+      <p>At the short end, the pattern holds. Midjourney, 3. Google News, 2. Procreate Pocket, 2. Netflix, 4. Microsoft Copilot, 4. Amazon Shopping, 5. What these apps share is that the user arrives already in possession of what the app needs — the picture, the search, the purchase, the page to read — and the onboarding is the place they hand it over. Then the app gets out of their way.</p>
+
+      <p>The categories cluster. AI, Graphics and Design, News, Shopping, Maps and Navigation — the same cluster sitting at the bottom of the average-by-category axis from the last section, for the same reason. The user walked in already knowing what they came for. The app's job is to close the distance as quickly as it can.</p>
+
+      <p>The long end is doing something else.</p>
+
+      <Chart5_LongestOther />
+
+      <p>Philips Hue runs ninety-nine screens because smart-home setup is a negotiation with hardware. Hinge, ninety-five, because matchmaking is a negotiation with taste. Duolingo, seventy-six, because the product has to teach you something, and teaching begins with placing you. Tinder, eighty-five. Bumble, ninety-three. Upwork, ninety-seven.</p>
+
+      <p>None of these apps knows what to show you until you have told it enough about yourself for it to know. You arrived with an intention, but the intention was general — <em>find someone, learn a language, furnish a room with light</em> — and the intention has to be resolved into something the app can act on. The screens are where the resolving happens.</p>
+
+      <p>Finance is doing something stranger — holding both kinds of long onboarding at once — which Section VII takes on directly. Set that aside for a moment, and the longest flows are mostly apps that need to know who you are before they can begin. Not your name and address. Who you are in the way the app cares about. What you want. What you won't do. What you like.</p>
+
+      <p>The length of onboarding is not a design choice separate from the product. It is set, in advance, by what the product has to confirm before it can begin. Ask less of the user, and the flow is short. Ask more, and the flow is long. I think the only bad version is the one with zero intent, where the app asks a lot and does nothing with it.</p>
+
+      <p>When the app is going to ask that much — ninety screens, a hundred screens — what is the user getting in return?</p>
+
+      <h2 className="section"><span className="num">IV</span> The opening line</h2>
+
+      <p>There is a way to talk about onboarding that treats it as a preface. Something before the book. A set of screens you move through in order to arrive at the thing you came for, which is somewhere else.</p><p>
+The apps that understand their own work do not think of it this way.</p><p>
+Someone opening Midjourney wants to make a picture. The emotional state is simple — intention, curiosity, a task. Someone opening Noom is doing something harder. They have decided, again, to try. There is hope in that, and underneath the hope, the weight of every previous attempt. You do not walk into that moment the same way you walk into a prompt box.</p><p>
+Onboarding is the product's opening line — the first thing the product says to the user, in the way the user will remember. Get it wrong and the user is five screens of forms deep, annoyed and losing interest, when they needed first to feel that the app understood why they were there.</p><p>
+The tone is set by screen two or three, and it is almost never revised. A user who feels interrogated early will carry that feeling through the remaining eighty screens. A user who feels heard will keep going — not because the flow is short, but because it doesn't feel like a cost.
+This is why a flow of 25 screens by one app can feel like barely a minute, and a flow of 25 by another can feel like an interrogation. The screens are the same length. The emotional register is different.</p>
+
+      <p>You can feel it by the fourth or fifth screen of any good one. Duolingo's owl shows up and you know, already, that this is going to be the kind of app that cheers when you get a word right. Noom asks you what kind of person you are before it asks you anything else, and the asking tells you that the app believes the answer will matter. Headspace opens with a breath. BitePal opens, a little improbably, with a raccoon.</p>
+
+      <p>Each of these is an opening line. Each of them is, in effect, a promise.</p>
+
+      <p>The apps that don't work have figured this out in the negative. The screens are not coordinated. The first question is a form field. The second is a permission request. The third is a discount code you did not ask for. Nobody wrote an opening line, and by screen five the user knows it. What sets in is a disconnect: <em>this app is not going to give me what I want.</em> A long onboarding can open well. A short one can open badly. Length was never the variable.</p>
+
+      <h2 className="section"><span className="num">V</span> When long flows feel short</h2>
+
+      <p>Walk through BitePal's sixty-one screens and you notice what they are not: a form. The progress bar appears early and never leaves. You can see that you are a quarter of the way through, then half, then three-quarters. The app is telling you that something is being assembled on the other side, and you keep going because you want to see what it is.</p>
+
+      <p>This is the pattern the apps that worked had in common. A form is long. A conversation isn't — even when it takes the same amount of time.</p>
+
+      <p>In Noom, each question is a slider between two statements.</p>
+
+      <p>The first asks what you want. You can either reach a lower weight, or change your lifestyle to a healthier one. You drag a slider toward the one you agree with more. There are four positions: <em>Agree most</em> at each end, and <em>Agree a little more</em> on each side. No typing. No open-ended boxes. Just two statements and a continuum between them, and you committing to one.</p>
+
+      <p>This goes on for ten questions. Some ask whether you need a program to reach your weight goals, or whether you can do it on your own. Others ask how you relate to structure, and to change. The questions are not factual. They are asking who you are, not what you weigh — and the slider gives you room to say you are <em>mostly</em> this kind of person, which feels more honest than radio buttons would.</p>
+
+      <p>At the end of the ten questions, the app pauses. <em>Analyzing your profile…</em> appears on a soft green screen with a puzzle piece. When it finishes, it tells you who you are. You are a <em>Structure Seeker</em>. Or something like Structure Seeker — Noom has a few of these. <em>You're ready to get with the program. Hungry for innovation and invigoration — you will succeed in a new, promising environment.</em></p>
+
+      <p>The sentence has the precision and emotional register of a horoscope reading, and it makes the user feel seen.</p>
+
+      <p>From there, Noom shifts into something different. The screens that follow are positioning: Noom is based on real psychology, you can still eat your favorite foods, nothing is off limits, you will not be punished for messing up. These are not questions. They are the app telling you what to think about the app, delivered after you have spent several minutes telling the app about yourself. First you talk, then Noom talks; by the time Noom starts talking, you are in the frame of mind to listen.</p>
+
+      <p>Somewhere in there, Noom asks you a trivia question. <em>When is the best time to weigh yourself?</em> You pick <em>first thing in the morning, before you've eaten.</em> The next screen says <em>You're right!</em> with a citation to the International Journal of Behavioral Nutrition and Physical Activity. This is the smartest screen in the flow. It is the only one that turns the user into a participant rather than a subject — it makes you feel smart, like you've already learned something and are a step closer to succeeding. That is a different kind of flattery than the mirror. The mirror tells you who you are. This tells you what you can do.</p>
+
+      <div className="screen-compare">
+        <div className="flow-row">
+          <h4>Noom · Structure Seeker</h4>
+          <div className="meta">The mirror. After ten slider questions, the app pauses, analyzes, and tells the user who they are.</div>
+          <img className="flow-img" src="viz/screens/SCR-20260424-mvms.png" alt="Noom's Structure Seeker behavioral profile flow — slider question, analyzing screen, profile card, yo-yo effect chart." loading="lazy" />
+          <div className="breadcrumb">Mobbin.com › Search "Noom" › Flows › Onboarding › Completing a behavioral profile quiz</div>
+        </div>
+        <div className="flow-row">
+          <h4>Noom · Behavior-change quiz</h4>
+          <div className="meta">The participant move. A trivia question, a right answer, a real citation — the user is being taught and being flattered in the same screen.</div>
+          <img className="flow-img" src="viz/screens/SCR-20260424-mxwq.png" alt="Noom's behavior-change quiz — setup, trivia question, You're right screen with IJBNPA citation, Great job transition." loading="lazy" />
+          <div className="breadcrumb">Mobbin.com › Search "Noom" › Flows › Onboarding › Completing a behavioral profile quiz</div>
+        </div>
+        <div className="caption">The mirror and the trivia, back to back. Screens from Mobbin.</div>
+      </div>
+
+      <p>None of this is necessary to open the app. None of it feels like length.</p>
+
+      <p>Noom runs a hundred and thirteen screens. Duolingo, seventy-six. BitePal, sixty-one. None of their users, by sheer screen count, would be described as moving quickly through onboarding.</p>
+
+      <p>Duolingo does this too. By screen eight, the app is asking you to pick a language. By screen twelve, you are doing a tiny first lesson. You get a word right. A small animation plays. The owl shows up. You are already learning, and the remaining sixty-plus screens — yes, sixty-plus — arrive as confirmation of something already underway. The onboarding has become the product.</p>
+
+      <p>Headspace uses silence. You spend a screen breathing, before you are ever shown a feature. The breath itself is the thing you came to do. By the time Headspace starts asking questions — about your sleep, your stress, what brought you here — you have already meditated for twenty seconds. The questions arrive in the aftermath of the thing that works.</p>
+
+      <p>BitePal, despite the length, does it too. Each screen is small. Each screen adds a piece to a plan that, by the time you reach the end, feels like it has your name on it. The raccoon is part of this. You named the raccoon; it is in your plan; leaving means leaving Caramel in the bin.</p>
+
+      <p>The mechanic is simple, once you see it, and it still works on you even when you know it's happening. A progress bar that appears early. Questions that feel like telling, not answering. A moment partway through where the user does the thing — a word translated, a breath taken, a name chosen. And underneath all of it, the sense that a plan is being assembled.</p>
+
+      <p>The apps that didn't work inverted this. The progress bar came late or not at all, the questionnaire asked everything up front, and the ending produced a sign-up form where a plan should have been.</p>
+
+      <p>Done well, a long onboarding reads as a conversation the user wants to finish. Duolingo, Noom, BitePal. Done well, a short one does the same work with less of the user's time — Headspace in 21 screens, Calm in 14. Each figured this out while the consensus around them was still counting screens.</p>
+
+      <h2 className="section"><span className="num">VI</span> The long walk to the paywall</h2>
+
+      <p>By screen seventy-two of Noom's onboarding, something odd happens. Seven progress bars, stacked, filling in sequence. <em>Based on your answers…</em> <em>Preparing your profile…</em> <em>Calibrating your program…</em> One after another. You have been in the app for eight minutes. You have answered questions you are not sure a calorie tracker needed to know. You have been told you are a Structure Seeker. You have agreed that your problem is not what you eat, exactly, but your relationship to it. You have been reading, for several screens, about research: meta-analyses, studies in the <em>International Journal of Behavioral Nutrition and Physical Activity</em>, a chart titled <em>Noom is better together — 32% faster</em>.</p>
+
+      <p>Then the paywall arrives.</p>
+
+      <div className="screen-compare">
+        <div className="flow-row">
+          <h4>Noom · Subscribing to personalised plan</h4>
+          <div className="meta">The paywall as the next screen in the plan. The graph projecting weight loss. The plan with the user's name on it (<em>Judy's 2-Month Personalized Course</em>). The 15-minute reservation. The trial price.</div>
+          <img className="flow-img" src="viz/screens/SCR-20260425-htcx.png" alt="Noom iOS subscription flow — projected weight chart, personalized plan card with the user's name, reservation timer, and trial price." loading="lazy" />
+          <div className="breadcrumb">Mobbin.com › Search "Noom" › Flows › Onboarding › Subscribing to personalised plan</div>
+        </div>
+      </div>
+
+      <p>It arrives not as a pitch, but as the next screen in the plan, and the plan is already yours. The Structure Seeker is on the page. The program is calibrating. The price is $209 for the year, at the time of writing. You are not being asked to buy a subscription; you are being asked whether you would like the thing that you have, in the last eight minutes, been telling the app that you want.</p>
+
+      <p>Most apps do not do this.</p>
+
+      <Chart6_PaywallVsPersonal />
+
+      <p>Of the 986 apps, 217 put up a paywall during onboarding. Of those, 155 — about 71% — ask for money without first asking the user anything about themselves. Only 62 apps, roughly one in fifteen across the full set, do both: they personalize, then they paywall. Those 62 apps run the longest onboarding flows on average — 42 screens. An app that does neither averages 21.</p>
+
+      <p>The split is the whole argument. Paywalling early and personalizing well are not competing moves. They are different crafts, practiced by different apps, and the apps that have figured out both — roughly 6% of the sample — are writing a different kind of script.</p>
+
+      <p>The script is roughly this. Ask the user about themselves. Not as a form — as a conversation where each answer visibly shapes what comes next. Build a little something from what they tell you. Show them the thing you built. Then, at the end of the assembly, say: here is the plan. Here is what it costs. And let them decide.</p>
+
+      <p>What the other 71% are doing is the older version of the same exchange. Here is the product. It has features. Three tiers. One is on sale. Please enter your card.</p>
+
+      <p>The difference is not cosmetic. The user who has spent eight minutes telling an app what they weigh, what they have tried, and how they speak to themselves in the morning, is no longer the user who tapped the icon. They have invested something in the app — not money, but self-description, which is harder to walk back. The paywall, when it comes, is a continuation of an act already in progress. It is what the last eight minutes were for.</p>
+
+      <p>The user who is handed the paywall on screen five has invested nothing. They are being pitched. They haven't agreed to be in a conversation, and they know a pitch when they see one. Their options are to pay or to leave, and most of them leave.</p>
+
+      <p>The averages bear out a quieter point. Paywall-only apps come in at 31 screens. Personalize-only, 35. The ones that do both, 42. A longer flow, assembled well, doesn't make payment harder. It makes it likelier.</p>
+
+      <Chart7_OfPaywalling />
+
+      <p>BitePal belongs to the 6%. Noom, too. Calm. A small catalog of trial-gated apps — card up front, free for a week, billed on day eight — that have figured out that asking precedes selling. The long flow is not a tax on the user. It is what makes the ask possible.</p>
+
+      <p>The question this section opened with — what is the user getting in return for ninety screens — has an answer, at least for these apps. A plan. The sense that the app took them seriously enough to ask. And an offer that reads as the next step in something they started.</p>
+
+      <h2 className="section"><span className="num">VII</span> What the long flow is for</h2>
+
+      <p>This piece has been working with two categories: long because earned, long because required. There is a third — and the data for it sits where the two should have worked best.</p>
+      <p>Lemonade runs a hundred and forty-three screens. Walk the front of the flow — 15 screens to get a quote on renters insurance — and what you find isn't a compliance document. It's a chatbot. <em>Maya</em> asks about your building. You answer. Maya tells you she's analyzing your data. <em>Connecting to municipal databases. Connecting to environmental databases.</em> The loading screen is staged the way Noom's <em>Calibrating your program</em> is staged. A screen labeled <em>Analysis Complete</em> arrives, with star ratings: Building Age, four stars; Distance From Coast, four; Fire Hazard Proximity, three. The stars are the mirror — the app has heard you, and this is what it understood.</p>
+
+      <div className="screen-compare">
+        <div className="flow-row">
+          <h4>Lemonade · Getting a quote</h4>
+          <div className="meta">Maya the chatbot in renters insurance. Confession (the building, the address), staged loading (<em>Connecting to municipal databases</em>), mirror (Building Age, Distance From Coast, Fire Hazard Proximity, in stars). The flow ends in a quote.</div>
+          <img className="flow-img" src="viz/screens/SCR-20260425-hpjd.png" alt="Lemonade iOS renters insurance onboarding — Maya chatbot asking about the building, staged loading screens connecting to municipal and environmental databases, an Analysis Complete screen with star ratings, and a quote screen showing $19/month." loading="lazy" />
+          <div className="breadcrumb">Mobbin.com › Search "Lemonade" › Flows › Onboarding › Getting a quote</div>
+        </div>
+      </div>
+
+      <p>What comes next is not a plan. It is a price.</p><p>
+The moves are all there — the chat-as-confession, the staged loading, the mirror. What is missing is the assembly: the moment where what was built has the user's name on it. Lemonade has used the emotional grammar of personalization to underwrite a transaction. And this is where the observation gets uncomfortable. Maya asked real questions and the stars reflected real data. </p><p>
+But the flow felt, the whole way through, like it was building a plan. The plan turns out to be a price. Whether that is clever or manipulative is a question the data cannot answer. My own read: it's both, and I'm not sure those are mutually exclusive. The user got what they came for. The quote is accurate. Nothing here is false. What Lemonade did was dress a transaction in the emotional language of a relationship — and the user, at the end of it, got a price, not a plan. That is not cheating. It is something subtler, and harder to name.</p>
+
+      <p>Monzo's 114 screens are doing something else again. Threaded through the regulatory minimum (address, national ID, FSCS notices) are questions that are not compliance: what the account is for, how the user plans to spend, whether this is a main account or a secondary one. Mercury asks about the business. Kit asks what the user is saving toward. The neobanks braid the required and the earned into a single flow, so the regulatory minutes carry a little of the weight of the personalization ones. Which is why Finance's standard deviation is 31.5 and not lower.</p>
+
+      <p>The category is the one place in the dataset where every kind of long flow shares a roof. Which makes it less an exception to the argument than a laboratory for it.</p>
+
+      <p>Outside Finance the question is simpler. Long flows aim at a plan (Noom, BitePal, Duolingo). A small group aim at a price using the moves of a plan (Lemonade). A meaningful share aim at nothing — long because of compliance, with no use made of the minutes once the law's quota has been met. Upwork at 97 screens is mostly a gig-worker compliance flow. Parts of Insurance. Parts of Telecom. A scattering of productivity tools that have decided, mid-flow, that what they really need is a form.</p>
+
+      <Chart8_Top10Longest />
+
+      <p>The Mobbin dataset puts the scale on the page. Across the 986 apps, verification is the most common pattern by a wide margin — appearing in close to 44% of flows. Personalization sits at 23%. Most of the verification builds to neither a plan nor a price. The minutes add up; nothing is assembled.</p>
+
+      <p>You can tell the difference by the feel of the screens. A pure-verification flow asks in the register of a bank teller, not a friend. It does not acknowledge what you answered; it stores it. The progress bar, if there is one, counts forms remaining, not pieces of a plan. There is no <em>you're right!</em>. There is no raccoon. What arrives at the end is a status — <em>verified</em>, <em>approved</em>, <em>pending</em>, <em>denied</em> — rather than something with the user's name on it.</p>
+
+      <p>None of this is criticism of the apps. Lemonade is not a bad insurer for using the moves to underwrite. Chase UK is not a bad bank for needing to KYC. What the data surfaces is a quieter point: the long flow, as a form, is being used for several different purposes, and the conversation about onboarding has mostly been arguing about the wrong one.</p>
+
+      <p>There is a final mistake, less visible in the data and quieter in the product. An app that should have asked something of its user and didn't — that dropped them into the product without enough to go on — is making the same error a pure-compliance flow makes at the other extreme: misreading what its work requires. Calm exists in a category of meditation apps that drop the user into a library on screen one. BitePal, in a category of calorie trackers that hand over a food log. Duolingo, in a category of language apps that offer every lesson at once. None of those unnamed apps asked anything of the user — which is not neutrality. It is an opening line that says I did not want to know you.</p><p>
+Unless, of course, not knowing you is exactly what the work requires. Midjourney at three screens is not saying it doesn't care. It is saying it already knows what you came for — a picture, a prompt box, the product — and anything else would be a question it didn't need to ask. The error, in both directions, is misreading what the work calls for. </p>
+      <h2 className="section"><span className="num">VIII</span> The moves</h2>
+
+      <p>Go back to Noom for a moment. The sliders between two statements; the pause and the <em>Structure Seeker</em> card. The trivia question with a real citation. Those are three of the five moves — a small, borrowed set — that make a hundred screens feel like a conversation rather than a form. They are not proprietary, and they are not new. They are the rest of the sentence.</p>
+
+      <p>The earliest is the progress bar. It arrives on screen two or three — not at screen twenty, not when the end is in sight, but right away. A progress bar is, among other things, a promise: <em>there is an end to this, and here is how far in we are.</em> The user who can see the bar moving has been told, without being told, that their time is being accounted for. Duolingo and Noom and BitePal all put the bar up before the user has really started, and leave it there. Which is the other thing the bar does, quietly, along the way: it keeps count of what has been built, not just what has been asked.</p>
+
+      <p>Then the slider that feels like confession. Noom's binary sliders, Hinge's prompts, BitePal's plate-shaped dietary questions — each asks the user something and offers, on the same screen, room to answer honestly. The opposite move is a radio button with four pre-written options, none of which are quite the thing the user would have said. The confession-slider gives the user the sense that the app wanted the real answer, not the closest one. That small thing, repeated across a dozen screens, is what separates personalization from a survey.</p>
+
+      <p>After the confession, the mirror. The app, having heard something about the user, tells them who they are. <em>Structure Seeker.</em> <em>Careful Beginner.</em> <em>Adventurous Saver.</em> The category is roughly a horoscope in precision, and still, somehow, it lands. The mirror is the moment the app pays back the confession with something that looks like attention. It says, in effect: <em>I heard you, and this is what I understood.</em> The user may or may not agree with the label, but they now know the app was listening.</p>
+
+      <p>Somewhere in the middle, the act. Before the paywall, before the big assembly, the app lets the user do the thing. Duolingo's first lesson, on screen twelve. Headspace's twenty-second breath. BitePal's raccoon. None of these is a preview. Each is a small, completed iteration of the thing the product is for. A user who has already translated one word has become, in a tiny way, a language learner — and that small transformation is the point. The act is where the app stops being a pitch and becomes a thing the user has already done.</p>
+
+      <p>Then, late in the flow, the assembly. Often preceded by a staged loading screen, the app shows the user the plan it has built from their answers. <em>Here is your program. Here is what it will focus on. Here is when we think you will see results.</em> The plan is bespoke only in the sense that a restaurant meal is bespoke — the kitchen made it for you, out of ingredients it was always going to use. What matters is that the user sees the ingredients being theirs.</p>
+
+
+      <div className="screen-compare">
+        <div className="flow-row">
+          <h4>Duolingo · Onboarding</h4>
+          <div className="meta">Same vocabulary, different register. Progress bar from screen one. A staged pause where the course is <em>building</em>. Then the placement, then the motivation.</div>
+          <img className="flow-img" src="viz/screens/SCR-20260424-oqoj.png" alt="Duolingo iOS onboarding — language picker, course building pause, level check, motivation question." loading="lazy" />
+          <div className="breadcrumb">Mobbin.com › Search "Duolingo" › Flows › Onboarding</div>
+        </div>
+        <div className="caption">Duolingo running the five-move vocabulary in its own voice. Screens from Mobbin.</div>
+      </div>
+
+      <Chart9_PatternsOverall />
+
+      <p>Verification is the most common pattern across the 986 apps, by a wide margin — appearing in close to 44% of flows. Personalization sits at 23%. Paywalls, 22%. Then a long drop: social seeding around 9%, tutorials at 8%, account connections at 7%.</p>
+
+      <p>The surprise is not that verification dominates. It has to, given how many apps need to identify a user. The surprise is how much distance sits between verification and everything else. The average user walking into an average app is close to twice as likely to be verified as to be personalized to. They are more than five times as likely to be verified as to be taught how to use the thing they downloaded. The patterns that carry the work this piece has been describing — the ones that make the long flow feel like a conversation — are, in aggregate, the less common moves.</p>
+
+      <p>The category version shows the shape more clearly.</p>
+
+      <Chart10_TutorialByCat />
+
+      <p>Productivity sits at 22% — close to three times the 8% overall. Health and Fitness, 11%. Developer Tools, 9%. These are categories where the product has to teach you something: a new workflow, a new habit, a new piece of software. The onboarding is where the teaching begins. Lifestyle, by contrast, sits at 3%; Shopping, under 3%. The apps that require learning teach. The ones that don't, don't bother.</p>
+
+      <p>Which is the quiet regularity the chart surfaces: the patterns cluster where they make sense. The categories that need to earn commitment use the earning moves. The ones that don't need to, don't. The right long flow, done well, uses the moves the work calls for and omits the ones it doesn't.</p>
+
+      <p>The apps that get it wrong have the screens. The screens don't have a purpose. </p>
+      <h2 className="section"><span className="num">IX</span> What the ones that worked had in common</h2>
+
+      <p>What these apps have in common is not length. Midjourney is three screens. Netflix, four. What they share with Noom's hundred and thirteen is fit — between what the app is for, and what it asks the user to do before it begins. The category data makes that fit visible.</p>
+      <div className="screen-compare">
+        <div className="flow-row">
+          <h4>Midjourney · The entire onboarding</h4>
+          <div className="meta">A landing page, a sign-in, and the product. That is the flow.</div>
+          <div className="triptych">
+            <img className="triptych-img" src="viz/screens/midjourney-landing.png" alt="Midjourney landing page with ASCII logo." loading="lazy" />
+            <img className="triptych-img" src="viz/screens/midjourney-login.png" alt="Midjourney login modal — Continue with Discord or Google." loading="lazy" />
+            <img className="triptych-img" src="viz/screens/midjourney-product.png" alt="Midjourney Explore feed with Subscribe to start creating prompt." loading="lazy" />
+          </div>
+          <div className="breadcrumb">Mobbin.com › Search "Midjourney" › Flows › Onboarding</div>
+        </div>
+        <div className="caption">Landing, sign-in, product. Screens from Mobbin.</div>
+      </div>
+
+
+      <Chart11_PaywallByCat />
+
+      <p>The categories that paywall earliest are running on subscription — Music and Audio near the top, Health and Fitness and Education just below. Travel and Shopping barely paywall at all, because the money there is in the transaction at the end. The personalization chart follows the same logic: Education leads, Productivity follows, AI sits at the bottom because the first prompt does all the asking.
+</p><p>The overlap between the two charts is small, and it's the most interesting part. Health and Fitness and Education sit near the top of both — these are the categories where the ask and the sale have stopped being separate things. You are not being personalized and then sold to. You are being personalized, and the sale is where that ends up. Noom understood this. So did Duolingo. Most apps still haven't.</p><Chart12_PersonalizationByCat />
+
+      <p>The same view, this time for personalization. Education leads — close to half its apps ask the user something before beginning. Productivity follows at a third. Finance, Lifestyle, Shopping, and Health and Fitness all sit above a fifth. AI and Travel sit at the bottom, around 7–9%, for the same reason their flows are short: the user arrives with a prompt or a destination, which is all the placement the product needs.</p><p>
+        Noom asks for ten minutes, builds a plan, then shows a number. Duolingo places you, lets you translate a word, then shows you Super. BitePal asks about your kitchen, names a raccoon, then shows you the program. None of these apps is paywalling early or late. They are paywalling on the right screen, which is the one after the user has been shown what they came for.</p>
+
+      <p>The consensus has been arguing about length. The apps that figured it out had already moved on. They were asking what the screens were for.</p>
+
+      <h2 className="section"><span className="num">X</span> Caramel</h2>
+
+      <p>Caramel is still on my phone. I have not opened BitePal in weeks. I do not know whether I lost weight or whether the app did what it said it would do.</p>
+
+      <p>But somewhere in the sixty-one screens, a designer put a raccoon inside a functional flow — a small decision that suggested someone had cared about something not-entirely-functional. This is the kind of thing that gets flagged in review as <em>unnecessary</em>, or <em>shall we cut for brevity</em>, or <em>scope creep</em>. The small ornaments and strange little touches that someone fought for, and someone else quietly deleted.</p>
+
+      <div className="caramel-hero">
+        <img src="viz/screens/bitepal-caramel.png" alt="Caramel the raccoon, named during BitePal's onboarding, on the app's Today screen." loading="lazy" />
+        <div className="caption">Caramel.</div>
+      </div>
+
+      <p>Maybe they do not move a metric.</p>
+
+      <p>What I know is that I still think about Caramel. Which seems like it should count for…something.</p>
+
+      <a className="video-embed" href="https://youtu.be/Qsq-Sj_rojU" target="_blank" rel="noopener noreferrer">
+        <div className="frame-wrap">
+          <img src="https://img.youtube.com/vi/Qsq-Sj_rojU/maxresdefault.jpg" alt="I Studied 1,460 Onboarding Flows — Late Night Research Club 001" />
+          <div className="play-button" aria-hidden="true">
+            <svg width="68" height="48" viewBox="0 0 68 48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74 0 13.05 0 24 0 24s0 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C68 34.95 68 24 68 24s0-10.95-1.48-16.26z" fill="#FF0000"/><path d="M45 24L27 14v20" fill="#fff"/></svg>
+          </div>
+        </div>
+        <div className="video-caption">The Mobbin data study of 1,460 onboarding flows this piece came from. <span className="video-caption-cue">Watch on YouTube →</span></div>
+      </a>
+
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<EssayPreview />);
+</script>
+</body>
+</html>
