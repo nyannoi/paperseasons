@@ -758,7 +758,7 @@ function Chart6_PaywallVsPersonal() {
   return (
     <div className="chart-block">
       <h3 className="chart-title">Paywall vs Personalization</h3>
-      <p className="chart-sub">How 986 apps combine the two moves in onboarding · average screens per group</p>
+      <p className="chart-sub">How 986 apps combine personalization and paywalling in onboarding · average screens per group</p>
       <ResponsiveContainer width="100%" height={340}>
         <BarChart data={paywallVsPersonalData} margin={{ left: 0, right: 40, top: 20, bottom: 8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e8e4de" vertical={false} />
@@ -931,12 +931,11 @@ const sections = [
   { id: "s2", num: "II", title: "How long is long", sub: "Finance averages 40 screens. AI averages 18. Length varies wildly by category." },
   { id: "s3", num: "III", title: "Length follows the ask", sub: "The longer the flow, the more the app needs from you before it can start." },
   { id: "s4", num: "IV", title: "The first five screens", sub: "By screen five, the user knows if the app was built for them." },
-  { id: "s5", num: "V", title: "When long flows feel short", sub: "How Noom, Duolingo, and BitePal turn 60+ screens into a conversation." },
+  { id: "s5", num: "V", title: "When long flows feel short", sub: "Inside Noom, Duolingo, and BitePal." },
   { id: "s6", num: "VI", title: "The long walk to the paywall", sub: "Only 6% of apps personalize before they paywall. They run the longest flows." },
-  { id: "s7", num: "VII", title: "Plan, price, or nothing", sub: "Some flows build a plan. Some build a price. Most just run long." },
-  { id: "s8", num: "VIII", title: "Five things that work", sub: "A progress bar, personal questions, a mirror, a taste of the product, and a plan. Five things that work." },
-  { id: "s9", num: "IX", title: "Putting it together", sub: "The best apps asked exactly what they needed. Nothing more, nothing less." },
-  { id: "s10", num: "X", title: "Caramel", sub: "The small things that someone fought for." },
+  { id: "s7", num: "VII", title: "Five things that work", sub: "What makes a hundred screens feel like a conversation." },
+  { id: "s8", num: "VIII", title: "The right number", sub: "It was never about how many screens." },
+  { id: "s9", num: "IX", title: "Caramel", sub: "The small things that someone fought for." },
 ];
 
 function SideNav() {
@@ -1094,31 +1093,40 @@ function EssayPreview() {
 
       <p>I think the only bad version is the one with zero intent, where the app asks a lot and does nothing with it.</p>
 
-      <p>When the app is going to ask that much — ninety screens, a hundred screens — what does the first one say?</p>
-
       <PullQuote>An app that's going to tell you how to eat should probably ask what you eat first.</PullQuote>
 
       <h2 className="section" id="s4"><span className="num">IV</span> The first five screens<span className="subtitle">By screen five, the user knows if the app was built for them.</span></h2>
 
-      <p>Most people treat onboarding as a preface. Something before the book. A set of screens you move through in order to arrive at the thing you came for, which is somewhere else.</p>
+      <p>When the app is going to ask that much — ninety screens, a hundred screens — what does the first one say?</p>
 
-      <p>The apps that understand their own work do not think of it this way.</p>
+      <p>Most people treat onboarding as a preface. Something to get through before the product starts. A set of screens you move through in order to arrive at the thing you came for, which is somewhere else.</p>
+
+      <p>The apps that know their audience don't treat onboarding this way.</p>
 
       <p>Someone opening Midjourney wants to make a picture. The emotional state is simple — intention, curiosity, a task. Someone opening Noom is doing something harder. They have decided, again, to try. There is hope in that, and underneath the hope, the weight of every previous attempt. You do not walk into that moment the same way you walk into a prompt box.</p>
 
       <p>Onboarding is the product's opening line. The first thing it says to the user, in the way the user will remember. Get it wrong and the user is five screens of forms deep, annoyed and losing interest, when they needed first to feel that the app understood why they were there.</p>
 
-      <p>The tone is set by screen 2 or 3, and it is almost never revised. A user who feels interrogated early will carry that feeling through the remaining 80 screens. A user who feels heard will keep going — because the flow feels like it's going somewhere. This is why a flow of 25 screens by one app can feel like barely a minute, and a flow of 25 by another can feel like an interrogation. The screens are the same length. The emotional register is different.</p>
+      <p>The tone is set by screen 2 or 3, and it is almost never revised. A user who feels interrogated early will carry that feeling through the remaining 80 screens. A user who feels heard will keep going — because the flow feels like it's going somewhere. This is why a flow of 25 screens by one app can feel like barely a minute, and a flow of 25 by another can feel like an interrogation. The screens are the same length. The feeling is different.</p>
 
       <p>You can feel it by the fourth or fifth screen of any good one. Duolingo's owl shows up and you know, already, that this is going to be the kind of app that cheers when you get a word right. Noom asks you what kind of person you are before it asks you anything else, and the asking tells you that the app believes the answer will matter. Headspace opens with a breath. BitePal opens, a little improbably, with a raccoon.</p>
 
+      <div className="screen-compare">
+        <div className="flow-row">
+          <h4>Headspace · First screen</h4>
+          <div className="meta">No questions. No sign-up form. Just: <em>Breathe in.</em></div>
+          <img className="flow-img" src="viz/screens/Headspace iOS 0.png" alt="Headspace iOS first screen showing 'Breathe in' with the app's orange meditation character." loading="lazy" style={{ maxHeight: "420px", width: "auto", margin: "0 auto" }} />
+          <div className="breadcrumb">Mobbin.com › Search "Headspace" › Flows › Onboarding</div>
+        </div>
+      </div>
+
       <p>Each of these is an opening line. Each of them is a promise.</p>
 
-      <p>The apps that don't work have figured this out in the negative. The screens are not coordinated. The first question is a form field. The second is a permission request. The third is a discount code you did not ask for. Nobody wrote an opening line, and by screen five the user knows it. What sets in is a disconnect: <em>this app is not going to give me what I want.</em> A long onboarding can open well. A short one can open badly. Length was never the variable.</p>
+      <p>The apps that don't work have figured this out in the negative. The screens are not coordinated. The first question is a form field. The second is a permission request. The third is a discount code you did not ask for. Nobody thought about the flow, and by screen five the user knows it. What sets in is a disconnect: <em>this app is not going to give me what I want.</em> A long onboarding can open well. A short one can open badly. Length was never the variable.</p>
 
       <PullQuote>A long onboarding can open well. A short one can open badly. Length was never the variable.</PullQuote>
 
-      <h2 className="section" id="s5"><span className="num">V</span> When long flows feel short<span className="subtitle">Inside Noom's 113-screen onboarding</span></h2>
+      <h2 className="section" id="s5"><span className="num">V</span> When long flows feel short<span className="subtitle">Inside Noom, Duolingo, and BitePal.</span></h2>
 
       <p>Walk through BitePal's 61 screens and you notice what they are not: a form. The progress bar appears early and never leaves. You can see that you are a quarter of the way through, then half, then three-quarters. The app is telling you that something is being assembled on the other side, and you keep going because you want to see what it is.</p>
 
@@ -1126,7 +1134,7 @@ function EssayPreview() {
 
       <p>In Noom, each question is a slider between two statements.</p>
 
-      <p>The first asks what you want. You can either reach a lower weight, or change your lifestyle to a healthier one. You drag a slider toward the one you agree with more. There are four positions: <em>Agree most</em> at each end, and <em>Agree a little more</em> on each side. No typing. No open-ended boxes. Just two statements and a continuum between them, and you committing to one.</p>
+      <p>The first asks what you want. You can either reach a lower weight, or change your lifestyle to a healthier one. You drag a slider toward the one you agree with more. There are four positions: <em>Agree most</em> at each end, and <em>Agree a little more</em> on each side. No typing, no open-ended boxes. Just two statements and a continuum between them, and you committing to one.</p>
 
       <p>This goes on for ten questions. Some ask whether you need a program to reach your weight goals, or whether you can do it on your own. The questions are not factual. They are asking who you are, not what you weigh — and the slider gives you room to say you are <em>mostly</em> this kind of person, which feels more honest than radio buttons would.</p>
 
@@ -1136,22 +1144,22 @@ function EssayPreview() {
 
       <p>From there, Noom shifts into something different. The screens that follow are positioning: Noom is based on real psychology, you can still eat your favorite foods, nothing is off limits, you will not be punished for messing up. First you talk, then Noom talks; by the time Noom starts talking, you are in the frame of mind to listen.</p>
 
-      <p>Somewhere in there, Noom asks you a trivia question. <em>When is the best time to weigh yourself?</em> You pick <em>first thing in the morning, before you've eaten.</em> The next screen says <em>You're right!</em> with a citation to the International Journal of Behavioral Nutrition and Physical Activity. It makes you feel smart — like you've already learned something and are a step closer to succeeding. That is a different kind of flattery than the mirror. The mirror tells you who you are. This tells you what you can do.</p>
+      <p>Somewhere in there, Noom asks you a trivia question. <em>When is the best time to weigh yourself?</em> You pick <em>first thing in the morning, before you've eaten.</em> The next screen says <em>You're right!</em> with a citation to the International Journal of Behavioral Nutrition and Physical Activity. It makes you feel smart — like you've already learned something and are a step closer to succeeding. That is a different kind of flattery. The profile tells you who you are. This tells you what you can do.</p>
 
       <div className="screen-compare">
         <div className="flow-row">
           <h4>Noom · Structure Seeker</h4>
-          <div className="meta">The mirror. After ten slider questions, the app pauses, analyzes, and tells the user who they are.</div>
+          <div className="meta">After ten slider questions, the app pauses, analyzes, and tells the user who they are.</div>
           <img className="flow-img" src="viz/screens/SCR-20260424-mvms.png" alt="Noom's Structure Seeker behavioral profile flow." loading="lazy" />
           <div className="breadcrumb">Mobbin.com › Search "Noom" › Flows › Onboarding › Completing a behavioral profile quiz</div>
         </div>
         <div className="flow-row">
           <h4>Noom · Behavior-change quiz</h4>
-          <div className="meta">The participant move. A trivia question, a right answer, a real citation — the user is being taught and being flattered in the same screen.</div>
+          <div className="meta">A trivia question, a right answer, a real citation — the user is being taught and being flattered in the same screen.</div>
           <img className="flow-img" src="viz/screens/SCR-20260424-mxwq.png" alt="Noom's behavior-change quiz." loading="lazy" />
           <div className="breadcrumb">Mobbin.com › Search "Noom" › Flows › Onboarding › Completing a behavioral profile quiz</div>
         </div>
-        <div className="caption">The mirror and the trivia, back to back. Screens from Mobbin.</div>
+        <div className="caption">The profile and the trivia, back to back. Screens from Mobbin.</div>
       </div>
 
       <p>None of this is necessary to open the app. None of it feels like length. In fact, it felt vaguely soothing — like a first therapy session.</p>
@@ -1160,13 +1168,11 @@ function EssayPreview() {
 
       <p>Headspace uses silence. You spend a screen breathing, before you are ever shown a feature. The breath itself is the thing you came to do. By the time Headspace starts asking questions — about your sleep, your stress, what brought you here — you have already meditated for 20 seconds. The questions arrive after the breath — in the aftermath of the thing you came for.</p>
 
-      <p>BitePal, despite the length, does it too. Each screen is small. Each screen adds a piece to a plan that, by the time you reach the end, feels like it has your name on it. The raccoon is part of this. You named the raccoon; it is in your plan; leaving means leaving Caramel in the bin.</p>
+      <p>BitePal, despite the length, does it too. Each screen is small. Each screen adds a piece to something that, by the time you reach the end, feels like it was stitched together just for you. The raccoon is part of this. You named the raccoon; it is in your plan; leaving means leaving Caramel in the bin.</p>
 
-      <p>The mechanic is simple, once you see it, and it still works on you even when you know it's happening. A progress bar that appears early. Questions that feel like telling, not answering. A moment partway through where the user does the thing — a word translated, a breath taken, a name chosen. And underneath all of it, the sense that a plan is being assembled.</p>
+      <p>It still works on you even when you see what they're doing. Done well, a long onboarding is a conversation the user is enjoying, and wants to finish. Done well, a short one does the same work with less of the user's time — Headspace in 21 screens, Calm in 14.</p>
 
-      <p>The apps that didn't work inverted this. The progress bar came late or not at all, the questionnaire asked everything up front, and the ending produced a sign-up form where a plan should have been.</p>
-
-      <p>Done well, a long onboarding reads as a conversation the user wants to finish. Duolingo, Noom, BitePal. Done well, a short one does the same work with less of the user's time — Headspace in 21 screens, Calm in 14. Each figured this out while everyone else was still counting screens.</p>
+      <p>And then there are the apps that skip the conversation entirely. No questions, no profile, no plan — just the product, dropped in your lap. A library of meditations, a food log, every lesson at once. Without a conversation, the app is saying, whether they mean it or not: <em>I did not want to know you.</em></p>
 
       <PullQuote>A form is long. A conversation isn't, even when it takes the same amount of time.</PullQuote>
 
@@ -1193,36 +1199,38 @@ function EssayPreview() {
 
       <p>Of the 986 apps, 217 put up a paywall during onboarding. Of those, 155 — about 71% — ask for money without first asking the user anything about themselves. That number surprised me. Only 62 do both: personalize, then paywall. Those 62 run the longest flows on average — 42 screens. An app that does neither averages 21.</p>
 
-      <p>Paywalling early and personalizing well are not competing moves. The apps that do both — roughly 6% of the sample — are writing a different kind of script.</p>
+      <p>The apps that personalize and paywall — roughly 6% of the sample — are writing a different kind of script.</p>
 
-      <p>The script is roughly this. Ask the user about themselves. Not as a form — as a conversation where each answer visibly shapes what comes next. Build a little something from what they tell you. Show them the thing you built. Then, at the end of the assembly, say: here is the plan. Here is what it costs. And let them decide.</p>
+      <p>The script is roughly this. Ask the user about themselves. Not as a form — as a conversation where each answer visibly shapes what comes next. Build a little something from what they tell you. Show them the thing you built. Then, at the end, say: here is the plan. Here is what it costs. And let them decide.</p>
 
-      <p>What the other 71% are doing is the older version of the same exchange. Here is the product. It has features. Three tiers. One is on sale. Please enter your card.</p>
+      <p>The other 71%: here is the product. It has features. Three tiers. One is on sale. Please enter your card.</p>
 
-      <p>The user who has spent 8 minutes telling an app what they weigh, what they have tried, and how they speak to themselves in the morning, is no longer the user who tapped the icon. They have invested something in the app — not money, but self-description, which is harder to turn back from. The paywall, when it comes, is a continuation of everything the user just did. It is what the last 8 minutes were for.</p>
+      <p>The user who has spent 8 minutes telling an app what they weigh, what they have tried, and how they speak to themselves in the morning, is no longer the same user who downloaded the app. They have invested something — not money (yet), but self-description and some level of vulnerability, which is harder to turn back from. The paywall, when it comes, is a continuation of everything the user just did. It is what the last 8 minutes were for.</p>
 
-      <p>The user who is handed the paywall on screen five has invested nothing. They are being pitched. They haven't agreed to be in a conversation, and they know a pitch when they see one. Their options are to pay or to leave, and you can guess which one they pick.</p>
-
-      <p>Paywall-only apps come in at 31 screens. Personalize-only, 35. The ones that do both, 42. A longer flow, assembled well, doesn't make payment harder. It makes it likelier.</p>
+      <p>Conversely, the user who is handed the paywall on screen five has invested nothing. They are being pitched. They haven't agreed to be in a conversation, and they know a pitch when they see one. Their options are to pay or to leave, and you can guess which one they pick.</p>
 
       <Chart7_OfPaywalling />
 
-      <p>BitePal belongs to the 6%. Noom, too. Calm. A small catalog of trial-gated apps — card up front, free for a week, billed on day eight — that have figured out that asking precedes selling. The long flow is not a tax on the user. It is what makes the ask possible.</p>
+      <p>The numbers back it up. Paywall-only apps come in at 31 screens. Personalize-only, 35. The ones that do both, 42.</p>
 
-      <p>The question — what is the user getting in return for ninety screens — has an answer, at least for these apps. A plan. The sense that the app took them seriously enough to ask. And an offer that reads as the next step in something they started.</p>
+      <p>BitePal belongs to the 6%. Noom, too. Calm. All trial-gated — card up front, free for a week, billed on day eight. What the user gets in return for ninety screens is a plan with their name on it and an offer that feels like the next step, not a pitch. Length doesn't kill the sale. Length, done right, is the sale.</p>
 
       <PullQuote>Don't paywall before you've earned it.</PullQuote>
 
-      <h2 className="section" id="s7"><span className="num">VII</span> Plan, price, or nothing<span className="subtitle">Some flows build a plan. Some build a price. Most just run long.</span></h2>
+      <div style={{ height: "32px" }} />
 
-      <p>Two categories so far: long because earned, long because required. There is a third, and it shows up most clearly in Finance.</p>
+      <p>Not everyone buys it. The same pattern — a personalized quiz that never mentioned a price was coming — gets called manipulative, with a passion. (There's a real comment on Mobbin's video about this, with 28 likes and 5 replies. They really hate it.) If the user doesn't know there's a paywall at the end, personalization isn't a conversation — it's a bait and switch. The pattern works. Just make sure the user knows what's coming.</p>
 
-      <p>Lemonade runs 143 screens. Tap through the first 15 screens — getting a quote on renters insurance — and what you find isn't a compliance document. It's a chatbot. <em>Maya</em> asks about your building. You answer. Maya tells you she's analyzing your data. <em>Connecting to municipal databases. Connecting to environmental databases.</em> A screen labeled <em>Analysis Complete</em> arrives, with star ratings: Building Age, four stars; Distance From Coast, four; Fire Hazard Proximity, three. The stars are the mirror — the app has heard you, and this is what it understood.</p>
+      <div style={{ height: "32px" }} />
+
+      <p>Then there's Lemonade. Not every app that personalizes before the paywall is building a plan.</p>
+
+      <p>Lemonade runs 143 screens. Tap through the first 15 screens — getting a quote on renters insurance — and what you find isn't a compliance document. It's a chatbot. <em>Maya</em> asks about your building. You answer. Maya tells you she's analyzing your data. <em>Connecting to municipal databases. Connecting to environmental databases.</em> A screen labeled <em>Analysis Complete</em> arrives, with star ratings: Building Age, four stars; Distance From Coast, four; Fire Hazard Proximity, three. The app is reflecting back what you told it, dressed up in stars.</p>
 
       <div className="screen-compare">
         <div className="flow-row">
           <h4>Lemonade · Getting a quote</h4>
-          <div className="meta">Maya the chatbot in renters insurance. Confession (the building, the address), staged loading (<em>Connecting to municipal databases</em>), mirror (Building Age, Distance From Coast, Fire Hazard Proximity, in stars). The flow ends in a quote.</div>
+          <div className="meta">Maya the chatbot in renters insurance. Personal questions (the building, the address), a loading sequence (<em>Connecting to municipal databases</em>), then the app reflects it back in star ratings. The flow ends in a quote.</div>
           <img className="flow-img" src="viz/screens/SCR-20260425-hpjd.png" alt="Lemonade iOS renters insurance onboarding." loading="lazy" />
           <div className="breadcrumb">Mobbin.com › Search "Lemonade" › Flows › Onboarding › Getting a quote</div>
         </div>
@@ -1230,33 +1238,15 @@ function EssayPreview() {
 
       <p>What comes next is not a plan. It is a price.</p>
 
-      <p>Five things that work are all there — the personal questions, the staged loading, the mirror. What's missing is the assembly: the moment the answers become a plan with the user's name on it. Lemonade used the emotional weight of personalization to land a price. Maya asked real questions and the stars reflected real data.</p>
+      <p>The flow does everything the good ones do — asks personal questions, shows you what it heard, makes you feel like something is being built. Except that, what's being built is a quote. The user, at the end of the flow, gets a price instead of a plan. Nothing here is technically wrong. The quote is accurate and necessary. But what Lemonade did was dress a transaction in the emotional language of a relationship.</p>
 
-      <p>But the flow felt, the whole way through, like it was building a plan. The plan turns out to be a price. My own read: it's both clever and manipulative. The user got what they came for. The quote is accurate. Nothing here is false. What Lemonade did was dress a transaction in the emotional language of a relationship — and the user, at the end of it, got a price, not a plan.</p>
+      <p>My own read: it's both clever and manipulative. It works, and that is precisely why I keep thinking about it.</p>
 
-      <p>Monzo's 114 screens are doing something else. Between the regulatory screens — address, national ID, FSCS notices — are questions that have nothing to do with compliance: what the account is for, how the user plans to spend, whether this is a main account or a secondary one. Mercury asks about the business. Kit asks what the user is saving toward. The neobanks weave compliance and personalization into a single flow — which is why Finance is so spread out.</p>
+      <p style={{ padding: "18px 20px", background: "#f5f2ee", borderLeft: `3px solid ${ACCENT}`, borderRadius: "0 8px 8px 0", fontSize: "0.95em", margin: "24px 0" }}>A note on personalization: this study only covers onboarding flows. Some apps like Netflix, YouTube, and Spotify don't ask questions at all — they watch what you do and personalize from there.</p>
 
-      <p>Finance is the one category where every kind of long flow shows up. It's the best place to study what length is for.</p>
+      <h2 className="section" id="s7"><span className="num">VII</span> Five things that work<span className="subtitle">What makes a hundred screens feel like a conversation.</span></h2>
 
-      <p>Long flows do three things. Some aim at a plan — Noom, BitePal, Duolingo. Some aim at a price, using the moves of a plan — Lemonade. And some aim at nothing: long because of compliance, with nothing built from the time spent. Upwork at 97 screens. Parts of Insurance. Parts of Telecom. A scattering of productivity tools that have decided, mid-flow, that what they really need is a form. You can almost feel the exact meeting where it happened.</p>
-
-      <Chart8_Top10Longest />
-
-      <p>The Mobbin dataset puts the scale on the page. Across the 986 apps, verification is the most common pattern by a wide margin, appearing in close to 44% of flows. Personalization sits at 23%. Most of the verification builds to neither a plan nor a price. The minutes add up; nothing is assembled.</p>
-
-      <p>You can tell the difference by the feel of the screens. A pure-verification flow asks in the register of a bank teller, not a friend. It does not acknowledge what you answered; it stores it. The progress bar, if there is one, counts forms remaining, not pieces of a plan. There is no <em>you're right!</em>. There is no raccoon. What arrives at the end is a status — <em>verified</em>, <em>approved</em>, <em>pending</em>, <em>denied</em> — rather than something with the user's name on it.</p>
-
-      <p>None of this is criticism of the apps. Lemonade is not a bad insurer for using the moves to underwrite. Chase UK is not a bad bank for needing to KYC. The long flow is being used for several different purposes. Most of the conversation about onboarding loses this nuance and argues over length for length's sake.</p>
-
-      <p>There is one more mistake, quieter than the others. Some apps drop the user into the product without asking anything at all — a library of meditations, a food log, every lesson at once. The first five screens, whether they meant it or not: <em>I did not want to know you.</em></p>
-
-      <p>Midjourney at three screens is different. It doesn't need to know you — the prompt box is the product. The error is never the length. The error is not knowing what your onboarding needs to do.</p>
-
-      <PullQuote>A long flow that builds nothing is just a form with more steps.</PullQuote>
-
-      <h2 className="section" id="s8"><span className="num">VIII</span> Five things that work<span className="subtitle">Five things that make a hundred screens feel like a conversation</span></h2>
-
-      <p>The things that made Noom's flow work show up everywhere. There are five of them, and they are simple enough that you'll recognize each one.</p>
+      <p>Noom's flow worked for a reason. So did Duolingo's, and BitePal's. The same five things keep showing up.</p>
 
       <p>The earliest is <strong>the progress bar</strong>. It arrives on screen 2 or 3 — not at screen 20, not when the end is in sight, but right away. A progress bar is a promise: <em>there is an end to this, and here is how far in we are.</em> It keeps count of what has been built, not just what has been asked.</p>
 
@@ -1264,14 +1254,14 @@ function EssayPreview() {
 
       <p>After the questions, <strong>a mirror</strong> that reflects what the user said. The app, having heard something about the user, tells them who they are. <em>Structure Seeker.</em> <em>Careful Beginner.</em> <em>Adventurous Saver.</em> The mirror is the app's response to the questions. It says: <em>I heard you, and this is what I understood.</em> Like an MBTI result — imprecise, unfalsifiable, and yet I eat it up. Every. Single. Time.</p>
 
-      <p>Somewhere in the middle, <strong>a moment where the user tries the product</strong>. Before the paywall, before the plan is revealed, the app lets the user do the thing. Duolingo's first lesson, on screen twelve. Headspace's twenty-second breath. BitePal's raccoon. None of these is a preview. Each is a small taste of the product itself. A user who has already translated one word has become, in a tiny way, a language learner — and that small transformation is the point. This is where the app stops being a pitch and becomes something already experienced.</p>
+      <p>Somewhere in the middle, <strong>a moment where the user tries the product</strong>. Before the paywall, before the plan is revealed, the app lets the user do the thing. Duolingo's first lesson, on screen 12. Headspace's 20-second breath. BitePal's raccoon. None of these is a preview. Each is a small taste of the product itself. A user who has already translated one word has become, in a tiny way, a language learner — and that small transformation is the point. This is where the app stops being a pitch and becomes something already experienced.</p>
 
       <p>Hinge does this at screen 15. The app asks you to write your profile answers — <em>Typical Sunday</em>, <em>My best Dad Joke</em>, <em>You should leave a comment if</em> — and suddenly you are doing the thing. You are being funny for a stranger. You are choosing which version of yourself to lead with. The onboarding is 95 screens long, and by screen 15, you are already on a dating app, creating the most dateable version of yourself.</p>
 
       <div className="screen-compare">
         <div className="flow-row">
           <h4>Hinge · Completing account setup</h4>
-          <div className="meta">The act. By screen 15, the user is writing profile prompts — being funny for a stranger, choosing which version of themselves to lead with.</div>
+          <div className="meta">By screen 15, the user is writing profile prompts.</div>
           <img className="flow-img" src="viz/screens/SCR-20260427-qsfl.png" alt="Hinge iOS onboarding — photo upload, profile prompts (Typical Sunday, My best Dad Joke, You should leave a comment if), and voice prompt recording." loading="lazy" />
           <div className="breadcrumb">Mobbin.com › Search "Hinge" › Flows › Onboarding › Completing account setup</div>
         </div>
@@ -1282,24 +1272,12 @@ function EssayPreview() {
       <div className="screen-compare">
         <div className="flow-row">
           <h4>Duolingo · Onboarding</h4>
-          <div className="meta">Same vocabulary, different register. Progress bar from screen one. A staged pause where the course is <em>building</em>. Then the placement, then the motivation.</div>
+          <div className="meta">All five in one flow. Progress bar from screen one. A pause where the course is <em>building</em>. Then the placement, then the motivation.</div>
           <img className="flow-img" src="viz/screens/SCR-20260424-oqoj.png" alt="Duolingo iOS onboarding." loading="lazy" />
           <div className="breadcrumb">Mobbin.com › Search "Duolingo" › Flows › Onboarding</div>
         </div>
-        <div className="caption">Duolingo running the five-move vocabulary in its own voice. Screens from Mobbin.</div>
+        <div className="caption">Duolingo running all five in its own voice. Screens from Mobbin.</div>
       </div>
-
-      <Chart9_PatternsOverall />
-
-      <p>Verification dominates — close to 44% of flows include it, which makes sense given how many apps need to identify a user. After that, the numbers drop fast. Personalization sits at 23%. Paywalls, 22%. Tutorials, 8%. The patterns that make a long flow feel like a conversation are, across the dataset, the less common ones.</p>
-
-      <p>The category version shows the shape more clearly.</p>
-
-      <Chart10_TutorialByCat />
-
-      <p>Productivity sits at 22% — close to three times the 8% overall. Health and Fitness, 11%. Developer Tools, 9%. These are categories where the product has to teach you something: a new workflow, a new habit, a new piece of software. The onboarding is where the teaching begins. Lifestyle, by contrast, sits at 3%; Shopping, under 3%. The apps that require learning teach. The ones that don't, don't bother.</p>
-
-      <p>The pattern is straightforward. Categories that need to ask more, do more. The ones that don't, skip it.</p>
 
       <p>The apps that get it wrong have the screens. The screens don't have a purpose.</p>
 
@@ -1315,9 +1293,11 @@ function EssayPreview() {
         </ol>
       </div>
 
-      <h2 className="section" id="s9"><span className="num">IX</span> Putting it together<span className="subtitle">The best apps asked exactly what they needed. Nothing more, nothing less.</span></h2>
+      <h2 className="section" id="s8"><span className="num">VIII</span> The right number<span className="subtitle">It was never about how many screens.</span></h2>
 
-      <p>What these apps have in common is not length. Midjourney is 3 screens. Netflix, 4. What they share with Noom's 113 is a match between what the app is for and what it asks the user to do before it begins.</p>
+      <p>Midjourney runs 3 screens. Noom runs 113. Both are doing it right.</p>
+
+      <p>What they share is a match between what the app is for and what it asks the user to do before it begins.</p>
 
       <div className="screen-compare">
         <div className="flow-row">
@@ -1333,19 +1313,27 @@ function EssayPreview() {
         <div className="caption">Landing, sign-in, product. Screens from Mobbin.</div>
       </div>
 
+      <Chart9_PatternsOverall />
+
+      <p>Across 986 apps, the patterns that make a long flow feel like a conversation are the less common ones. Personalization sits at 23%. Paywalls, 22%. Tutorials, 8%. Most apps are still just verifying identity and getting out of the way.</p>
+
+      <p>Zoom out to the category level and the same split holds. The categories that paywall most are the ones running on subscription. The categories that personalize most are the ones where the product needs to know who you are. Health and Fitness and Education sit near the top of both — the asking and the selling have become the same flow.</p>
+
       <Chart11_PaywallByCat />
 
-      <p>The categories that paywall earliest are running on subscription — Music and Audio near the top, Health and Fitness and Education just below. Travel and Shopping barely paywall at all, because the money there is in the transaction at the end. Health and Fitness and Education sit near the top of both charts — these are the categories where the ask and the sale have stopped being separate things. You are not being personalized and then sold to. You are being personalized, and the sale is where that ends up. Noom understood this. So did Duolingo. Most apps still haven't.</p>
+      <p>Personalization splits along the same lines.</p>
 
       <Chart12_PersonalizationByCat />
 
-      <p>Noom asks for ten minutes, builds a plan, then shows a number. Duolingo places you, lets you translate a word, then shows you Super. BitePal asks about your kitchen, names a raccoon, then shows you the program. None of these apps is paywalling early or late. They are paywalling on the right screen, which is the one after the user has been shown what they came for.</p>
+      <p>The conventional wisdom was simple: less friction, more conversions. Every extra screen is a chance for the user to leave. And for some apps — the ones where the user already knows what they came to do — that's right. Midjourney at 3 screens is not cutting corners. It's being true to what the user needs.</p>
 
-      <p>Everyone has been arguing about how many screens. The apps that got it right were asking what the screens were for.</p>
+      <p>But the apps running 80, 100, 113 screens aren't ignoring that advice out of carelessness. They're running long because the product doesn't work without what the user tells them first.</p>
 
-      <h2 className="section" id="s10"><span className="num">X</span> Caramel<span className="subtitle">The small things that someone fought for.</span></h2>
+      <PullQuote>Everyone has been arguing about how many screens. The apps that got it right were asking what the screens were for.</PullQuote>
 
-      <p>Caramel is still on my phone. I have not opened BitePal in weeks. I do not know whether I lost weight or whether the app did what it said it would do.</p>
+      <h2 className="section" id="s9"><span className="num">IX</span> Caramel<span className="subtitle">The small things that someone fought for.</span></h2>
+
+      <p>Caramel is still on my phone. I have not opened BitePal in weeks. I do not know whether I lost weight, or whether the app did what it said it would do.</p>
 
       <p>But somewhere in the 61 screens, a designer put a raccoon inside a functional flow — a small decision that suggested someone had cared about something not-entirely-functional. This is the kind of thing that gets flagged in review as <em>unnecessary</em>, or <em>shall we cut for brevity</em>, or <em>scope creep</em>. The small ornaments and strange little touches that someone fought for, and someone else quietly deleted.</p>
 
@@ -1356,7 +1344,7 @@ function EssayPreview() {
 
       <p>Maybe they do not move a metric.</p>
 
-      <p>What I know is that I still think about Caramel. Which seems like it should count for…something.</p>
+      <p>What I know is that I still think about Caramel. Sixty-one screens, and the one I remember is the one that had nothing to do with onboarding.</p>
 
       <a className="video-embed" href="https://youtu.be/Qsq-Sj_rojU" target="_blank" rel="noopener noreferrer">
         <div className="frame-wrap">
@@ -1367,6 +1355,21 @@ function EssayPreview() {
         </div>
         <div className="video-caption">The Mobbin data study of 1,460 onboarding flows this piece came from. <span className="video-caption-cue">Watch on YouTube →</span></div>
       </a>
+
+      <div style={{ margin: "36px 0 0", padding: "28px 24px 24px", background: "#f5f2ee", borderRadius: "12px", fontSize: "0.92em", lineHeight: 1.7 }}>
+        <div style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: "0.85em", textTransform: "uppercase", letterSpacing: "0.04em", color: ACCENT, marginBottom: "14px" }}>Onboarding by the numbers</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 32px" }}>
+          <div><strong>986</strong> apps studied</div>
+          <div><strong>1,460</strong> onboarding flows</div>
+          <div><strong>25</strong> screens on average</div>
+          <div><strong>113</strong> longest (Noom)</div>
+          <div><strong>71%</strong> of paywalling apps don't personalize first</div>
+          <div><strong>6%</strong> personalize then paywall</div>
+        </div>
+        <div style={{ marginTop: "16px", fontSize: "0.9em", color: "#888" }}>
+          Data from <a href="https://mobbin.com" target="_blank" rel="noopener noreferrer" style={{ color: ACCENT }}>Mobbin</a>. All flows captured on iOS. Revenue figures: BitePal reported roughly $400K in its first year; Noom subscription was $209/year at time of writing.
+        </div>
+      </div>
 
     </div>
     </>
