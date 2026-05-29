@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Late Night Research Club 002 — The Dashboard Was Always a Shield</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #edeae4;
+      --card:    #fafafa;
+      --text:    #141414;
+      --muted:   #64748b;
+      --accent:  #0079FF;
+      --soft:    #95C492;
+      --warm:    #F3AC92;
+      --brand:   #C8D8E8;
+      --border:  #e8e4de;
+      --nav-w:   236px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      width: var(--nav-w);
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 36px 20px 36px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      scrollbar-width: none;
+    }
+    nav::-webkit-scrollbar { display: none; }
+
+    .nav-logo { margin-bottom: 24px; }
+
+    .nav-series {
+      font-size: 11px;
+      font-weight: 700;
+      color: #999;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .nav-ep-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 3px;
+    }
+
+    .nav-ep-meta {
+      font-size: 12px;
+      color: #999;
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+
+    .nav-sec-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #bbb;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      margin-top: 4px;
+    }
+
+    nav a {
+      display: block;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: #aaa;
+      padding: 3px 0;
+      line-height: 1.4;
+      transition: color 0.12s;
+    }
+    nav a:hover { color: var(--text); }
+    nav a.active { color: var(--text); font-weight: 700; }
+
+    /* ─── MAIN ─── */
+    main {
+      flex: 1;
+      min-width: 0;
+      padding: 40px 40px 100px 20px;
+    }
+
+    .content-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: 8px 0 52px;
+    }
+
+    .lnrc-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 54px;
+      font-weight: 500;
+      line-height: 1.08;
+      color: var(--text);
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-deck {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 20px;
+      font-style: italic;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 22px;
+      max-width: 540px;
+    }
+
+    .hero-byline {
+      font-size: 12px;
+      color: #999;
+      letter-spacing: 0.01em;
+    }
+    .hero-byline span { color: #bbb; margin: 0 7px; }
+
+    /* ─── ARTICLE ─── */
+    article {
+      background: var(--card);
+      border-radius: 4px;
+      padding: 52px 52px 48px;
+      margin-bottom: 2px;
+    }
+    article:first-of-type { border-radius: 20px 20px 4px 4px; }
+    article:last-of-type  { border-radius: 4px 4px 20px 20px; }
+
+    .sec-num {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 34px;
+      font-weight: 500;
+      line-height: 1.18;
+      color: var(--text);
+      margin-bottom: 26px;
+      letter-spacing: -0.3px;
+    }
+
+    p {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 20px;
+      line-height: 1.68;
+      color: var(--text);
+      margin-bottom: 22px;
+    }
+    p:last-of-type { margin-bottom: 0; }
+
+    em { font-style: italic; }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── TAKEAWAY ─── */
+    .takeaway {
+      border-top: 1px solid var(--border);
+      margin-top: 44px;
+      padding-top: 26px;
+      text-align: center;
+    }
+
+    .takeaway-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .takeaway p {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 19px;
+      font-style: italic;
+      color: var(--text);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* ─── FIVE WAYS SUMMARY BLOCK ─── */
+    .five-ways {
+      border-top: 1px solid var(--border);
+      margin-top: 44px;
+      padding-top: 26px;
+    }
+    .five-ways-label {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+      text-align: center;
+    }
+    .way-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .way-item:last-child { border-bottom: none; }
+    .way-roman {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      min-width: 28px;
+      padding-top: 3px;
+      text-align: right;
+    }
+    .way-body { flex: 1; }
+    .way-title {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .way-desc {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 17px;
+      color: #666;
+      line-height: 1.52;
+    }
+
+    /* ─── CHART SHELL ─── */
+    .chart-shell {
+      background: var(--card);
+      border-radius: 4px;
+      padding: 36px 36px 28px;
+      margin-bottom: 2px;
+    }
+
+    /* ─── SCREENSHOT BLOCK ─── */
+    .shot-block {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 32px 0;
+    }
+
+    .shot-header {
+      padding: 13px 18px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .shot-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+
+    .shot-desc {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      line-height: 1.4;
+    }
+
+    .shot-img {
+      background: #ede9e3;
+      min-height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 12px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-style: italic;
+    }
+
+    .shot-footer {
+      padding: 9px 18px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+
+    /* ─── FLOW BLOCK ─── */
+    .flow-block {
+      margin: 36px -40px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px 20px;
+    }
+    .flow-block h4 {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin: 0 0 4px;
+    }
+    .flow-block .flow-meta {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .flow-block img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .flow-block .flow-breadcrumb {
+      margin-top: 10px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ─── TIP BOX ─── */
+    .tip-box {
+      background: #f0f5ff;
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 15px 20px;
+      margin: 32px 0;
+    }
+    .tip-box p {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 13px;
+      line-height: 1.55;
+      color: #334;
+      margin: 0;
+    }
+
+    /* ─── VIDEO SECTION ─── */
+    .video-section {
+      background: var(--card);
+      border-radius: 4px;
+      padding: 40px 52px;
+      margin-bottom: 2px;
+      text-align: center;
+    }
+
+    .video-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .video-title {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .video-frame {
+      background: #ddd9d2;
+      border-radius: 10px;
+      height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: var(--muted);
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+
+    /* ─── STATS ─── */
+    .stats-section {
+      background: var(--card);
+      border-radius: 4px 4px 20px 20px;
+      padding: 44px 52px 52px;
+    }
+
+    .stats-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 36px 52px;
+    }
+
+    .stat-num {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+
+    .stat-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.4;
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      body { flex-direction: column; }
+      nav {
+        width: 100%;
+        height: auto;
+        position: static;
+        padding: 20px 20px 12px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      main { padding: 12px 16px 60px; }
+      article { padding: 32px 24px; }
+      .hero h1 { font-size: 36px; }
+      p { font-size: 18px; }
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+
+    .chart-mount {
+      margin: 32px 0;
+      background: var(--card);
+      border-radius: 16px;
+      padding: 32px 20px 24px;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+      font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+    }
+
+    /* ─── STUDY FINDINGS ─── */
+    .study-findings {
+      border-top: 1px solid var(--border);
+      margin-top: 44px;
+      padding-top: 26px;
+    }
+    .study-findings-label {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .finding-item {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .finding-item:last-child { margin-bottom: 0; }
+    .finding-num {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      min-width: 20px;
+      padding-top: 3px;
+      flex-shrink: 0;
+    }
+    .finding-body {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 0;
+    }
+    .finding-body strong {
+      font-weight: 600;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ─────────────── NAV ─────────────── -->
+<nav id="nav">
+  <div class="nav-logo">
+    <a href="https://mobbin.com" target="_blank" rel="noopener">
+      <svg width="40" height="19" viewBox="0 0 54 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M32.7692 25H18.7133V18.4824L12.6527 24.9996L0 24.9938V11.6998L10.9981 0H26.2012V6.2193L32.1234 0H45.295V10.2294H54V25H38.5056V18.8313L32.7692 25Z" fill="#141414"/>
+      </svg>
+    </a>
+  </div>
+
+  <div>
+    <div class="nav-series">Late Night Research Club</div>
+    <div class="nav-ep-title">002 — Dashboards</div>
+    <div class="nav-ep-meta">2,108 screens · 536 apps<br>April 2026</div>
+  </div>
+
+  <div>
+    <div class="nav-sec-label">Contents</div>
+    <a href="#s1">I. Horse shit</a>
+    <a href="#s2">II. The most searched term</a>
+    <a href="#s3">III. First statement</a>
+    <a href="#s4">IV. Care</a>
+    <a href="#s5">V. Vocabulary</a>
+    <a href="#s6">VI. Interpretation</a>
+    <a href="#s7">VII. Restraint</a>
+    <a href="#s8">VIII. Back to the board</a>
+    <a href="#stats">By the numbers</a>
+  </div>
+</nav>
+
+<!-- ─────────────── MAIN ─────────────── -->
+<main>
+<div class="content-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="lnrc-tag">Late Night Research Club · 002</div>
+    <h1>The Dashboard Was Always a Shield</h1>
+    <p class="hero-deck">Most dashboards show you the data. The best ones almost protect you from it.</p>
+    <div class="hero-byline">
+      Mobbin <span>·</span> April 2026 <span>·</span> 2,108 screens <span>·</span> 536 apps <span>·</span> 19 categories
+    </div>
+  </div>
+
+  <!-- ─── I ─── -->
+  <article id="s1">
+    <div class="sec-num">I</div>
+    <h2>Horse shit</h2>
+
+    <p>Nearly two hundred years ago, the word "dashboard" meant something you could smell.</p>
+
+    <p>Horse-drawn carriages moved fast enough that mud — and whatever fun stuff the horse left on the road — flew forward and hit the passengers. So they built a wooden board across the front of the carriage. A <em>dash</em>-board. Something to block what dashed forward when the horse ran.</p>
+
+    <p>The job was simple: take the mess and put a clean surface between you and it.</p>
+
+    <p>A shield, essentially.</p>
+
+    <p>The form kept changing. The board became a row of gauges in early automobiles. The gauges became a glass screen on a 747. The screen became a rectangle inside a browser tab. The name, though, never changed, because the job never changed either. You're still sitting behind a board that's trying to make sense of what's flying at you.</p>
+
+    <p>The <a href="https://youtu.be/kdRkuqu8apE?si=zuK0NY1m1xAEms6Q" target="_blank" rel="noopener">video that accompanies this study</a> covers what the best dashboards do. This essay goes deeper on why they work across 536 apps and 2,108 dashboard screens on Mobbin.</p>
+
+    <div class="study-findings">
+      <div class="study-findings-label">What Mobbin's study of 2,108 dashboard screens found</div>
+      <div class="finding-item">
+        <div class="finding-num">1.</div>
+        <p class="finding-body"><strong>"Dashboard" is the most searched term on Mobbin.</strong> 8.9% of all free-text searches. Designers filter for it 3.27× more than any other web pattern in the top ten.</p>
+      </div>
+      <div class="finding-item">
+        <div class="finding-num">2.</div>
+        <p class="finding-body"><strong>1 in 5 apps put the dashboard on the home screen.</strong> The first thing you see after logging in.</p>
+      </div>
+      <div class="finding-item">
+        <div class="finding-num">3.</div>
+        <p class="finding-body"><strong>Five patterns in how the best ones handle the job.</strong> First statement. Care. Vocabulary. Interpretation. Restraint.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- ─── II ─── -->
+  <article id="s2">
+    <div class="sec-num">II</div>
+    <h2>The most searched term</h2>
+
+    <p>"Dashboard" is the most searched term on Mobbin. Not onboarding. Not profile. Not even login. Dashboard.</p>
+
+    <p>It accounts for 8.9% of all free-text searches, nearly double the next term. On the web pattern filter side, designers filter for "Dashboard" 3.27 times more often than any other pattern in the top ten. Filter & Sort is second at 11%. Dashboard is at 36%.</p>
+
+    <div id="chart-searches" class="chart-mount"></div>
+    <div id="chart-filters" class="chart-mount"></div>
+
+    <p>Design systems have been built entirely around dashboards, and templates are everywhere. You can generate one from a prompt in seconds. And yet, designers are still searching for a solution.</p>
+
+    <p>Curiously, the problem turns out to be two hundred years old.</p>
+
+    <p>The modern dashboard has the same job it always did. Take the mess, and put a clean surface between you and it.</p>
+
+    <p>Which brings us to: what exactly is a clean surface?</p>
+
+    <p>Some designers take "clean" literally and focus on which chart and which layout. Others go deeper into whether to show raw numbers, or explain what they mean. Whether to show everything, or make the executive decision on what the user needs to see.</p>
+
+    <p>The second is much harder. And more interesting.</p>
+
+    <div class="takeaway">
+      <div class="takeaway-label">Takeaway</div>
+      <p>Dashboards might be the hardest UI problem in product design.</p>
+    </div>
+  </article>
+
+  <!-- ─── IV ─── -->
+  <article id="s3">
+    <div class="sec-num">III</div>
+    <h2>First statement</h2>
+
+    <p>What's the first thing you see in a product?</p>
+
+    <p>Nearly 1 in 5 apps on Mobbin put the dashboard on the home screen. You log in, and the product immediately tells you what you should care about.</p>
+
+    <div id="chart-composition" class="chart-mount"></div>
+
+    <p>Shopify's Live View puts a globe in your browser. Real-time dots — actual visitors on your store, right now. Each one is a person who found you and is still browsing your site. The design doesn't give you a session count to interpret. It shows you the world with your customers on it. Mid-campaign, you know in two seconds whether it's working.</p>
+
+    <div class="shot-block">
+      <div class="shot-header">
+        <div class="shot-title">Shopify — Live View</div>
+        <div class="shot-desc">A globe with real-time visitor dots. The design encodes a feeling, not just a metric.</div>
+      </div>
+      <img src="dashboard-ss/Shopify Web 422.png" alt="Shopify Live View dashboard" style="width:100%;display:block;" />
+      <div class="shot-footer">Mobbin → Shopify → Dashboard</div>
+    </div>
+
+    <p>Front, a customer service platform, uses a heatmap where darker squares mean busier hours. You see a full week of support volume, every day and hour compressed into a grid you can scan in three seconds. One glance tells you when your team was overwhelmed and when they weren't.</p>
+
+    <div class="shot-block">
+      <div class="shot-header">
+        <div class="shot-title">Front — Dashboard</div>
+        <div class="shot-desc">A week of support volume compressed into a heatmap. Darker means busier. You scan it in three seconds.</div>
+      </div>
+      <img src="dashboard-ss/Front Web 275.png" alt="Front dashboard heatmap" style="width:100%;display:block;" />
+      <div class="shot-footer">Mobbin → Front → Dashboard</div>
+    </div>
+
+    <p>Navattic, a sales demo software, shows you which companies are watching your interactive demo: Dropbox, PagerDuty, Ramp, Brex — all with visitor counts and time-on-site. The product turns anonymous demo views into named accounts. You log in and see "Dropbox: 8 visitors, 8m 16s" and immediately understand what you bought.</p>
+
+    <div class="shot-block">
+      <div class="shot-header">
+        <div class="shot-title">Navattic — Analytics Dashboard</div>
+        <div class="shot-desc">Named accounts, visitor counts, time-on-site. The dashboard is the proof of purchase.</div>
+      </div>
+      <img src="dashboard-ss/Navattic Web 145.png" alt="Navattic analytics dashboard showing named company visitors" style="width:100%;display:block;" />
+      <div class="shot-footer">Mobbin → Navattic → Dashboard</div>
+    </div>
+
+    <p>With all these apps, you log in. And in about four seconds, the product has either made its case or it hasn't.</p>
+
+    <div class="takeaway">
+      <div class="takeaway-label">Takeaway</div>
+      <p>Does your first screen capture what your product is?</p>
+    </div>
+  </article>
+
+  <!-- ─── V ─── -->
+  <article id="s4">
+    <div class="sec-num">IV</div>
+    <h2>Care</h2>
+
+    <p>You open Fey, the stock portfolio tracker, and see the drop. Before the all-too-familiar rush of anxiety hits, you notice a label at the bottom of the chart: key events, earnings dates, what changed. You breathe a sigh of relief.</p>
+
+    <div class="shot-block">
+      <div class="shot-header">
+        <div class="shot-title">Fey — Dashboard</div>
+        <div class="shot-desc">Inline annotations surface the "why" before you have to ask.</div>
+      </div>
+      <img src="dashboard-ss/Fey Web 24.png" alt="Fey dashboard" style="width:100%;display:block;" />
+      <div class="shot-footer">Mobbin → Fey → Dashboard</div>
+    </div>
+
+    <p>You've just finished a long run. You're still breathing hard as you check Runna, a personalized training app. It's already packaged your run into a recap: what improved, what to focus on, tips and advice. You haven't decided how to feel about the session yet, but the app is already celebrating you. It feels good.</p>
+
+    <div class="flow-block">
+      <h4>Runna · Workout highlight</h4>
+      <div class="flow-meta">Post-run, the app sequences through what happened: the run detail, an effort rating, a milestone celebration, and a full lap breakdown. The data is all there. The app decides what order you see it in.</div>
+      <img src="dashboard-ss/runna flow.png" alt="Runna post-run flow showing run detail, effort rating, milestone celebration, and lap breakdown" />
+      <div class="flow-breadcrumb">Mobbin → Runna → Run detail → Workout highlight</div>
+    </div>
+
+    <p>Origin, a financial planning app, puts a daily market brief next to your portfolio. The chart shows what happened. The brief tells you what to make of it — again, before you've had time to worry. You don't have to open a second app or spiral into a news site. You nod and close the app.</p>
+
+    <div class="shot-block">
+      <div class="shot-header">
+        <div class="shot-title">Origin — Dashboard</div>
+        <div class="shot-desc">Market brief lives alongside the chart. The interpretation is built in.</div>
+      </div>
+      <img src="dashboard-ss/Origin Web 63.png" alt="Origin dashboard with weekly recap modal" style="width:100%;display:block;" />
+      <div class="shot-footer">Mobbin → Origin → Dashboard</div>
+    </div>
+
+    <p>The question these dashboards answered went further than <em>what will they want to know?</em> It was <em>how do I want them to feel when they open this?</em></p>
+
+    <div class="takeaway">
+      <div class="takeaway-label">Takeaway</div>
+      <p>Anticipate the emotional state. Then design for it.</p>
+    </div>
+  </article>
+
+  <!-- ─── VI ─── -->
+  <article id="s5">
+    <div class="sec-num">V</div>
+    <h2>Vocabulary</h2>
+
+    <p>Your Duolingo streak is forty-three. It's the same thing as saying you've completed forty-three consecutive days of lessons, but it feels different. "Streak" implies momentum. It implies risk. Something worth protecting.</p>
+
+    <p>You don't say "I've maintained a forty-three-day consecutive daily active learning engagement cadence on the Duolingo platform." You say, at 11:57pm, slamming your drink down and shocking your friends, "WAIT I need to keep my Duolingo streak."</p>
+
+    <div class="flow-block">
+      <h4>Duolingo · Streak</h4>
+      <div class="flow-meta">The same fact as "days in a row" — but a completely different feeling.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <img src="dashboard-ss/Duolingo iOS 220.png" alt="Duolingo streak dashboard" style="width:100%;display:block;border-radius:8px;border:1px solid var(--border);" />
+        <img src="dashboard-ss/Duolingo iOS 545.png" alt="Duolingo streak dashboard" style="width:100%;display:block;border-radius:8px;border:1px solid var(--border);" />
+      </div>
+      <div class="flow-breadcrumb">Mobbin → Duolingo → Dashboard</div>
+    </div>
+
+    <p>Every morning, Oura gives you a single number: your Readiness Score. It decided what heart rate variability and sleep stage distribution and respiratory rate mean together, combined them into a verdict, gave it a name, and made it the thing you check before you get out of bed to know How Ready You Are For The Day. You now have vocabulary for the state of your health that you didn't have before Oura existed.</p>
+
+    <div class="flow-block">
+      <h4>Oura · Readiness Score</h4>
+      <div class="flow-meta">Heart rate variability, sleep stages, respiratory rate — collapsed into one verdict you check before getting out of bed.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <img src="dashboard-ss/Oura iOS 26.png" alt="Oura Readiness Score dashboard" style="width:100%;display:block;border-radius:8px;border:1px solid var(--border);" />
+        <img src="dashboard-ss/Oura iOS 55.png" alt="Oura Readiness Score dashboard" style="width:100%;display:block;border-radius:8px;border:1px solid var(--border);" />
+      </div>
+      <div class="flow-breadcrumb">Mobbin → Oura → Dashboard</div>
+    </div>
+
+    <p>Apple Watch frames exercise as rings to close. The design is simple: three colored circles that fill as you move. But "I closed my rings today" became a phrase people casually say out loud, to friends who don't own an Apple Watch, in conversations that have nothing to do with fitness apps.</p>
+
+    <div class="flow-block">
+      <h4>Apple Fitness · Rings</h4>
+      <div class="flow-meta">Move, Exercise, Stand — three goals, three circles.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <img src="dashboard-ss/Apple Fitness iOS 10.png" alt="Apple Fitness rings dashboard" style="width:100%;display:block;border-radius:8px;border:1px solid var(--border);" />
+        <img src="dashboard-ss/Apple Fitness iOS 11.png" alt="Apple Fitness rings dashboard" style="width:100%;display:block;border-radius:8px;border:1px solid var(--border);" />
+      </div>
+      <div class="flow-breadcrumb">Mobbin → Apple Fitness → Dashboard</div>
+    </div>
+
+    <p>The word repeats until it becomes part of your daily life without you noticing. You open the app for the data, and then one day you open it for the vocabulary.</p>
+
+    <div class="takeaway">
+      <div class="takeaway-label">Takeaway</div>
+      <p>Give users vocabulary for accomplishments. Leaving your product feels like losing them.</p>
+    </div>
+  </article>
+
+  <!-- ─── VII ─── -->
+  <article id="s6">
+    <div class="sec-num">VI</div>
+    <h2>Interpretation</h2>
+
+    <p>You open Amplitude, the analytics platform, and go to Anomaly Detection. There's a chart, but there's also a lone sentence at the top: 308 anomalies have triggered since June 1, 2023. This puts the whole chart into context for you.</p>
+
+    <div class="shot-block">
+      <div class="shot-header">
+        <div class="shot-title">Amplitude — Anomaly Detection</div>
+        <div class="shot-desc">308 anomalies flagged since June 1. The dashboard did the scanning. You just review what it found.</div>
+      </div>
+      <img src="dashboard-ss/Amplitude Web 205.png" alt="Amplitude anomaly detection showing 308 flagged anomalies since June 2023" style="width:100%;display:block;" />
+      <div class="shot-footer">Mobbin → Amplitude → Analytics</div>
+    </div>
+
+    <p>In Linktree analytics, a message is already waiting before you've looked at the accompanying chart. "On Sunday, January 22, your clicks jumped to 27 from zero — your recent post is really catching eyes!"</p>
+
+    <div class="shot-block">
+      <div class="shot-header">
+        <div class="shot-title">Linktree — Analytics</div>
+        <div class="shot-desc">A message waiting before you've looked at the chart. The spike is named, the cause explained, the moment celebrated.</div>
+      </div>
+      <img src="dashboard-ss/Linktree Web 221.png" alt="Linktree analytics dashboard with AI chat open, proactively explaining a traffic spike" style="width:100%;display:block;" />
+      <div class="shot-footer">Mobbin → Linktree → Analytics</div>
+    </div>
+
+    <p>In Binance, a cryptocurrency app, there's a chart showing a year of Fear &amp; Greed data, BTC price overlaid. Above it, labeled "Powered by AI," a single sentence: "Recent trends show a shift from Fear to Neutral. Sentiment remains steady without significant extremes impacting market behavior." Again, you read the conclusion before you see the data.</p>
+
+    <div class="shot-block">
+      <div class="shot-header">
+        <div class="shot-title">Binance — Fear &amp; Greed Index</div>
+        <div class="shot-desc">The AI reads the chart before you do. The interpretation sits above the data — you get the verdict first, the evidence second.</div>
+      </div>
+      <div style="max-width:320px;margin:0 auto;">
+        <img src="dashboard-ss/Binance iOS 125.png" alt="Binance Fear and Greed Index with AI-generated interpretation above the chart" style="width:100%;display:block;border-radius:12px;border:1px solid var(--border);" />
+      </div>
+      <div class="shot-footer">Mobbin → Binance → Analytics</div>
+    </div>
+
+    <p>It's the same reason you're reading this instead of staring at a spreadsheet right now. Every number in this essay lives in a file you could open. You came for the <em>so?</em> The best dashboards give you the same thing.</p>
+
+    <div class="takeaway">
+      <div class="takeaway-label">Takeaway</div>
+      <p>Answer the "so what" before they have to ask.</p>
+    </div>
+  </article>
+
+  <!-- ─── VIII ─── -->
+  <article id="s7">
+    <div class="sec-num">VII</div>
+    <h2>Restraint</h2>
+
+    <p>Last week's traffic is somewhere inside a certain analytics tool. The sidebar has Reports, Advertising, Explore, Configure. Reports has six subcategories. Engagement alone has seven. You click Acquisition. That's not quite it. You try Traffic Acquisition. ...still nope. You build a custom Exploration. Fifteen minutes, three help articles and one youtube video in, you have a number.</p>
+
+    <p>There's white space at the bottom of the Plausible dashboard. That's where all of that would go.</p>
+
+    <div class="shot-block">
+      <div class="shot-header">
+        <div class="shot-title">Plausible Analytics — Dashboard</div>
+        <div class="shot-desc">Five stats. One chart. Two columns. Every panel links deeper — the detail exists, it's just one click away. Other analytics tools have hundreds of reports. Plausible has this screen.</div>
+      </div>
+      <img src="dashboard-ss/Plausible Analytics Web 29.png" alt="Plausible Analytics dashboard — minimal, single-screen view" style="width:100%;display:block;" />
+      <div class="shot-footer">Mobbin → Plausible Analytics → Dashboard</div>
+    </div>
+
+    <p>Plausible didn't fail to build the rest. They chose not to, and even wrote manifestos about why they chose not to.</p>
+
+    <p>Revolut does exchange rates, crypto, savings vaults, spending analytics, budget tracking, stock investing. The home screen is your balance. It's three buttons, and everything else is one tap away.</p>
+
+    <div class="shot-block">
+      <div class="shot-header">
+        <div class="shot-title">Revolut — Home</div>
+        <div class="shot-desc">Balance. Three buttons. "Transactions will appear here."</div>
+      </div>
+      <img src="dashboard-ss/Revolut Web 50.png" alt="Revolut home screen showing balance and minimal action buttons" style="width:100%;display:block;" />
+      <div class="shot-footer">Mobbin → Revolut → Home</div>
+    </div>
+
+    <p>Plausible and Revolut have nothing else in common. Restraint is the whole point.</p>
+
+    <div class="takeaway">
+      <div class="takeaway-label">Takeaway</div>
+      <p>Blank space is part of the design.</p>
+    </div>
+  </article>
+
+  <!-- ─── IX ─── -->
+  <article id="s8">
+    <div class="sec-num">VIII</div>
+    <h2>Back to the board</h2>
+
+    <p>Two thousand, one hundred and eight dashboards later, the mess is different. Numbers now, not mud. But it still flies forward. And someone still has to decide what to build between the user and what's coming.</p>
+
+    <p>Most of the time, people build more. More charts. More metrics. More tabs. More glass. The mess is still there behind all of it, and now there's a summarized mess on the board as well.</p>
+
+    <p>Occasionally, someone builds something that works. The answer is already there, waiting. You didn't have to look very hard, or work very hard for it.</p>
+
+    <p>Designers keep searching "dashboard" on Mobbin because they're looking for evidence that someone else figured this out. Some of them have.</p>
+
+    <p>I have a cashback app on my phone called ShopBack. The design is...let's just say it's not on Mobbin. Among a whole lot of mess, the home screen does highlight the only thing I care about: lifetime earnings. This number goes up, a little, every time I use it. Sometimes the number is 0.2 cents. I have never deleted the app.</p>
+
+    <p>I'm pretty sure that if this shield didn't exist, I would have never noticed the earnings at all.</p>
+
+    <div style="margin:32px auto;text-align:center;max-width:280px;">
+      <img src="dashboard-ss/shopback.PNG" alt="ShopBack home screen showing lifetime earnings" style="width:100%;border-radius:18px;border:1px solid var(--border);" />
+    </div>
+
+  </article>
+
+  <!-- VIDEO -->
+  <div class="video-section" id="video">
+    <div class="video-label">Watch the video</div>
+    <div class="video-title">I Studied 2,108 Dashboards To Find What Sticks</div>
+    <div class="video-frame">[YouTube embed]</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-section" id="stats">
+    <div class="stats-label">Dashboards by the numbers</div>
+    <div class="stats-grid">
+
+      <div>
+        <div class="stat-num">2,108</div>
+        <div class="stat-desc">Dashboard screens studied across 536 apps and websites on Mobbin</div>
+      </div>
+      <div>
+        <div class="stat-num">8.9%</div>
+        <div class="stat-desc">"Dashboard" as a share of all free-text searches on Mobbin — the #1 term by a wide margin</div>
+      </div>
+      <div>
+        <div class="stat-num">3.27×</div>
+        <div class="stat-desc">How much more designers filter for "Dashboard" than any other web pattern in the top 10</div>
+      </div>
+      <div>
+        <div class="stat-num">19%</div>
+        <div class="stat-desc">Apps that use the dashboard as their home screen — about 1 in 5</div>
+      </div>
+    </div>
+    <div id="chart-platform" class="chart-mount"></div>
+    <div id="chart-category" class="chart-mount"></div>
+    <div class="tip-box" style="margin-top:36px;">
+      <p>This study covers 2,108 dashboard-tagged screens across 536 apps and websites on Mobbin, snapshot April 2026. Engagement = saves + exports on Mobbin — it reflects what designers are actively collecting as references, not end-user behavior inside the apps themselves.</p>
+    </div>
+  </div>
+
+</div><!-- /content-wrap -->
+</main>
+
+
+
+
+<!-- ─── CHARTS + NAV ─── -->
+<script>
+(function() {
+  var ACCENT="#0079FF",SOFT="#95C492",WARM="#F3AC92",BRAND="#C8D8E8";
+  var TEXT="#141414",MUTED="#64748b",CARD="#fafafa",BORDER="#e8e4de";
+  var FONT="'DM Sans',-apple-system,system-ui,sans-serif";
+
+  function mk(tag,css,kids){
+    var e=document.createElement(tag);
+    if(css) Object.assign(e.style,css);
+    (kids||[]).forEach(function(c){
+      if(c==null)return;
+      e.appendChild(typeof c==='string'?document.createTextNode(c):c);
+    });
+    return e;
+  }
+  function cTitle(t,sub){
+    var d=mk('div',{marginBottom:'18px'});
+    d.appendChild(mk('div',{fontSize:'14px',fontWeight:'700',color:TEXT,fontFamily:FONT,marginBottom:sub?'4px':'0px'},[t]));
+    if(sub)d.appendChild(mk('div',{fontSize:'12px',color:MUTED,fontFamily:FONT,lineHeight:'1.4'},[sub]));
+    return d;
+  }
+  function cCap(t){
+    var p=mk('p',{fontSize:'11px',color:MUTED,marginTop:'18px',fontStyle:'italic',textAlign:'center',fontFamily:FONT,lineHeight:'1.5',marginBottom:'0'});
+    p.appendChild(document.createTextNode(t));
+    return p;
+  }
+
+  /* SVG donut */
+  function donut(pct,color,size,sw){
+    sw=sw||20;size=size||160;
+    var r=(size-sw)/2,cx=size/2,cy=size/2,circ=2*Math.PI*r;
+    var ns='http://www.w3.org/2000/svg';
+    var svg=document.createElementNS(ns,'svg');
+    svg.setAttribute('width',size);svg.setAttribute('height',size);
+    svg.setAttribute('viewBox','0 0 '+size+' '+size);
+    var tr=document.createElementNS(ns,'circle');
+    tr.setAttribute('cx',cx);tr.setAttribute('cy',cy);tr.setAttribute('r',r);
+    tr.setAttribute('fill','none');tr.setAttribute('stroke','#e4e0da');tr.setAttribute('stroke-width',sw);
+    svg.appendChild(tr);
+    var pr=document.createElementNS(ns,'circle');
+    pr.setAttribute('cx',cx);pr.setAttribute('cy',cy);pr.setAttribute('r',r);
+    pr.setAttribute('fill','none');pr.setAttribute('stroke',color);pr.setAttribute('stroke-width',sw);
+    pr.setAttribute('stroke-dasharray','0 '+circ);
+    pr.setAttribute('transform','rotate(-90 '+cx+' '+cy+')');
+    pr.style.transition='stroke-dasharray 1s cubic-bezier(.4,0,.2,1)';
+    svg.appendChild(pr);
+    requestAnimationFrame(function(){requestAnimationFrame(function(){
+      var d=circ*pct/100;pr.setAttribute('stroke-dasharray',d+' '+(circ-d));
+    });});
+    return svg;
+  }
+
+  /* shared tooltip */
+  var TIP=mk('div',{position:'fixed',background:CARD,border:'1px solid '+BORDER,borderRadius:'8px',
+    padding:'8px 13px',fontFamily:FONT,fontSize:'13px',fontWeight:'600',color:TEXT,
+    pointerEvents:'none',zIndex:'9999',opacity:'0',transition:'opacity 0.1s',whiteSpace:'nowrap'});
+  document.body.appendChild(TIP);
+
+  /* bar chart */
+  function barChart(parent,rows,domain,suffix,lw){
+    lw=lw||'165px';suffix=suffix||'';
+    var wrap=mk('div',{width:'100%'});
+    rows.forEach(function(r){
+      var pct=Math.min(100,(r.v/domain)*100);
+      var barColor=r.color||(r.hi?ACCENT:BRAND);
+      var row=mk('div',{display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px',fontFamily:FONT});
+      var lbl=mk('div',{width:lw,minWidth:lw,fontSize:'12px',fontWeight:'600',
+        color:r.hi?ACCENT:TEXT,textAlign:'right',lineHeight:'1.3',flexShrink:'0'},[r.label]);
+      var track=mk('div',{flex:'1',height:'20px',background:'#ece8e2',borderRadius:'4px',
+        overflow:'hidden',position:'relative',cursor:'default'});
+      var fill=mk('div',{width:'0%',height:'100%',background:barColor,borderRadius:'4px',
+        transition:'width 0.9s cubic-bezier(.4,0,.2,1)'});
+      fill._t=pct+'%';
+      track.appendChild(fill);
+      var val=mk('div',{fontSize:'12px',fontWeight:'600',color:r.hi?ACCENT:MUTED,
+        flexShrink:'0',minWidth:'38px'},[r.v+suffix]);
+      var tipTxt=r.label+': '+r.v+suffix+(r.note?' ('+r.note+')':'');
+      track.addEventListener('mouseenter',function(){TIP.textContent=tipTxt;TIP.style.opacity='1';});
+      track.addEventListener('mousemove',function(e){TIP.style.left=(e.clientX+14)+'px';TIP.style.top=(e.clientY-32)+'px';});
+      track.addEventListener('mouseleave',function(){TIP.style.opacity='0';});
+      row.appendChild(lbl);row.appendChild(track);row.appendChild(val);
+      wrap.appendChild(row);
+    });
+    parent.appendChild(wrap);
+    requestAnimationFrame(function(){requestAnimationFrame(function(){
+      wrap.querySelectorAll('div').forEach(function(d){if(d._t)d.style.width=d._t;});
+    });});
+  }
+
+  /* ── mounts ── */
+  function mountSearches(node){
+    node.appendChild(cTitle('Top searches on Mobbin','"Dashboard" is #1 — nearly double the next term'));
+    var outer=mk('div',{display:'flex',justifyContent:'center',margin:'20px 0 6px'});
+    var wrap=mk('div',{position:'relative',width:'180px',height:'180px',display:'flex',alignItems:'center',justifyContent:'center'});
+    wrap.appendChild(donut(8.95,ACCENT,180,22));
+    wrap.appendChild(mk('div',{position:'absolute',textAlign:'center',fontFamily:FONT,pointerEvents:'none'},[
+      mk('div',{fontSize:'11px',color:MUTED,marginBottom:'3px',fontWeight:'600'},['dashboard']),
+      mk('div',{fontSize:'38px',fontWeight:'800',color:TEXT,lineHeight:'1'},['8.9%']),
+      mk('div',{fontSize:'11px',color:MUTED,marginTop:'3px'},['of all searches'])
+    ]));
+    outer.appendChild(wrap);node.appendChild(outer);
+    node.appendChild(cCap('Share of all free-text searches across Mobbin visitors.'));
+  }
+
+  function mountFilters(node){
+    node.appendChild(cTitle('Top screen patterns filtered on Web','Dashboard leads by 3.27x — next is Filter & Sort at 11%'));
+    barChart(node,[
+      {label:'Dashboard',              v:36.0,hi:true},
+      {label:'Filter & Sort',          v:11.0},
+      {label:'Login',                  v:10.2},
+      {label:'Home',                   v:9.2},
+      {label:'Signup',                 v:6.5},
+      {label:'Settings & Preferences', v:6.3},
+      {label:'Chat Bot',               v:5.5},
+      {label:'My Account & Profile',   v:5.3},
+      {label:'Charts',                 v:5.1},
+      {label:'Notifications',          v:4.7},
+    ],42,'%','185px');
+    node.appendChild(cCap('Top 10 most-filtered web patterns on Mobbin (last 3 months). Share of top-10 uses.'));
+  }
+
+  function mountPlatform(node){
+    node.appendChild(cTitle('Dashboard coverage by platform','Over half of web apps ship a dashboard. Less than half of iOS apps do.'));
+    var row=mk('div',{display:'flex',gap:'24px',justifyContent:'center',flexWrap:'wrap',margin:'20px 0 8px'});
+    [{name:'Web',pct:54.8,color:ACCENT,meta:'234 of 427 apps'},
+     {name:'iOS',pct:40.8,color:SOFT,  meta:'346 of 848 apps'},
+     {name:'Android',pct:36.8,color:WARM,meta:'131 of 356 apps'}
+    ].forEach(function(p){
+      var col=mk('div',{textAlign:'center'});
+      var dw=mk('div',{position:'relative',width:'160px',height:'160px',display:'inline-flex',alignItems:'center',justifyContent:'center'});
+      dw.appendChild(donut(p.pct,p.color,160,20));
+      dw.appendChild(mk('div',{position:'absolute',textAlign:'center',fontFamily:FONT,pointerEvents:'none'},[
+        mk('div',{fontSize:'26px',fontWeight:'800',color:TEXT,lineHeight:'1'},[p.pct+'%'])
+      ]));
+      col.appendChild(dw);
+      col.appendChild(mk('div',{fontSize:'15px',fontWeight:'700',color:TEXT,marginTop:'10px',fontFamily:FONT},[p.name]));
+      col.appendChild(mk('div',{fontSize:'11px',color:MUTED,marginTop:'2px',fontFamily:FONT},[p.meta]));
+      row.appendChild(col);
+    });
+    node.appendChild(row);
+    node.appendChild(cCap('Share of apps with 1+ dashboard-tagged screen. Baselines: 848 iOS, 427 Web, 356 Android. Snapshot: April 2026.'));
+  }
+
+  function mountCategory(node){
+    node.appendChild(cTitle('Apps with dashboards by category','Business leads — over twice as many as AI'));
+    barChart(node,[
+      {label:'Business',                v:102,hi:true},
+      {label:'Finance',                 v:76},
+      {label:'Health & Fitness',        v:71},
+      {label:'Productivity',            v:58},
+      {label:'AI',                      v:55},
+      {label:'Social Networking',       v:41},
+      {label:'Shopping',                v:35},
+      {label:'Lifestyle',               v:33},
+      {label:'Developer Tools',         v:32},
+      {label:'Education',               v:27},
+      {label:'Travel & Transportation', v:25},
+      {label:'News',                    v:19},
+      {label:'Food & Drink',            v:19},
+      {label:'Photo & Video',           v:17},
+      {label:'CRM',                     v:17},
+      {label:'Crypto & Web3',           v:16},
+      {label:'Entertainment',           v:15},
+      {label:'Sports',                  v:11},
+      {label:'Maps & Navigation',       v:5},
+    ],120,' apps','175px');
+    node.appendChild(cCap('Unique apps per category. Compound tags expanded. 536 unique apps, 19 categories with 30+ dashboard screens.'));
+  }
+
+  function mountEngagement(node){
+    node.appendChild(cTitle('Engagement per dashboard screen by category','AI and B2B dashboards saved 2x more than average — Sports is 25x below AI'));
+    node.appendChild(mk('div',{fontFamily:FONT,fontSize:'11px',color:MUTED,marginBottom:'10px',textAlign:'right',opacity:'0.8'},['- -  overall avg: 293']));
+    barChart(node,[
+      {label:'AI',                      v:619,color:ACCENT},
+      {label:'Business',                v:577,color:ACCENT},
+      {label:'CRM',                     v:510,color:ACCENT},
+      {label:'Finance',                 v:413,color:ACCENT},
+      {label:'Crypto / Web3',           v:412,color:ACCENT},
+      {label:'Developer Tools',         v:359,color:ACCENT},
+      {label:'Health & Fitness',        v:284,color:SOFT},
+      {label:'Travel & Transportation', v:228,color:SOFT},
+      {label:'Education',               v:225,color:SOFT},
+      {label:'Entertainment',           v:198,color:SOFT},
+      {label:'Productivity',            v:191,color:SOFT},
+      {label:'Social Networking',       v:166,color:WARM},
+      {label:'Lifestyle',               v:163,color:WARM},
+      {label:'Food & Drink',            v:131,color:WARM},
+      {label:'Shopping',                v:88, color:WARM},
+      {label:'Photo & Video',           v:83, color:WARM},
+      {label:'Maps & Navigation',       v:77, color:WARM},
+      {label:'News',                    v:74, color:WARM},
+      {label:'Sports',                  v:24, color:WARM},
+    ],700,'','175px');
+    var leg=mk('div',{display:'flex',gap:'16px',justifyContent:'center',marginTop:'14px',flexWrap:'wrap'});
+    [[ACCENT,'B2B / SaaS / Finance'],[SOFT,'Mid-tier'],[WARM,'Consumer / Content']].forEach(function(item){
+      var ld=mk('div',{display:'flex',alignItems:'center',gap:'6px',fontFamily:FONT});
+      ld.appendChild(mk('div',{width:'10px',height:'10px',borderRadius:'2px',background:item[0],flexShrink:'0'}));
+      ld.appendChild(mk('span',{fontSize:'11px',color:MUTED},[item[1]]));
+      leg.appendChild(ld);
+    });
+    node.appendChild(leg);
+    node.appendChild(cCap('Only categories with 30+ dashboard screens. Engagement = saves + exports on Mobbin. Reflects designer interest, not end-user behavior.'));
+  }
+
+  function mountComposition(node){
+    node.appendChild(cTitle('Patterns that travel with Dashboard','Nearly half of dashboard apps also have Charts. 1 in 5 put the dashboard on the home screen.'));
+    barChart(node,[
+      {label:'Charts',                v:266,note:'49.6%'},
+      {label:'Home',                  v:100,hi:true,note:'approx. 1 in 5 apps'},
+      {label:'My Account & Profile',  v:77, note:'14.4%'},
+      {label:'Date & Time',           v:76, note:'14.2%'},
+      {label:'Progress',              v:75, note:'14.0%'},
+      {label:'Timeline & History',    v:39, note:'7.3%'},
+      {label:'Wallet & Balance',      v:34, note:'6.3%'},
+      {label:'User / Group Profile',  v:26, note:'4.9%'},
+      {label:'Map',                   v:25, note:'4.7%'},
+      {label:'Achievements & Awards', v:20, note:'3.7%'},
+      {label:'Calendar',              v:17, note:'3.2%'},
+    ],280,' apps','185px');
+    node.appendChild(cCap('Pattern co-occurrence at the app level — each of the 536 dashboard apps counted once.'));
+  }
+
+  /* mount */
+  var mounts={'chart-searches':mountSearches,'chart-filters':mountFilters,'chart-platform':mountPlatform,
+    'chart-category':mountCategory,'chart-engagement':mountEngagement,'chart-composition':mountComposition};
+  Object.keys(mounts).forEach(function(id){var n=document.getElementById(id);if(n)mounts[id](n);});
+
+  /* nav */
+  var secs=["s1","s2","s3","s4","s5","s6","s7","s8","s9","stats"],nls={};
+  secs.forEach(function(id){var l=document.querySelector('nav a[href="#'+id+'"]');if(l)nls[id]=l;});
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        Object.keys(nls).forEach(function(k){nls[k].classList.remove('active');});
+        if(nls[e.target.id])nls[e.target.id].classList.add('active');
+      }
+    });
+  },{threshold:0.25});
+  secs.forEach(function(id){var el=document.getElementById(id);if(el)obs.observe(el);});
+})();
+</script>
+</body>
+</html>
